@@ -49,8 +49,8 @@ class EventMessage {
             println(message)
         }
 
-        fun inputPrompt(message: String) {
-            print("${greenColor}${message}: $defaultColor")
+        fun inputPrompt(message: String = "", delimiter: String = ": ") {
+            print("$greenColor$message$delimiter$defaultColor")
         }
     }
 }

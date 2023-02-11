@@ -1,8 +1,13 @@
 package commands
 
-class ClearCommand : Command {
+import EventMessage
+import Organization
+import java.util.LinkedList
+
+class ClearCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(s: String) {
-        TODO("Not yet implemented")
+        collection.clear()
+        EventMessage.blueMessageln("Коллекция очищена")
     }
 
     override fun getInfo(): String = "очистить коллекцию"

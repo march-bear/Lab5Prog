@@ -79,19 +79,25 @@ class Organization  {
     }
 
     override fun toString(): String {
-        return "Организация $name:\n" +
-                "id=$id,\n" +
-                "coordinates=$coordinates,\n" +
-                "creationDate=$creationDate,\n" +
-                "annualTurnover=$annualTurnover,\n" +
-                "fullName=$fullName,\n" +
-                "employeesCount=$employeesCount,\n" +
-                "type=$type,\n" +
-                "postalAddress=$postalAddress)"
+        return "\u001B[33mОрганизация $name:\u001B[39m\n" +
+                "id: \u001B[33m$id\u001B[39m\n" +
+                "координаты: \u001B[33m${coordinates.toString()}\u001B[39m\n" +
+                "дата создания: \u001B[33m$creationDate\u001B[39m\n" +
+                "годовой оборот: \u001B[33m$annualTurnover\u001B[39m\n" +
+                "полное имя: \u001B[33m$fullName\u001B[39m\n" +
+                "количество сотрудников: \u001B[33m$employeesCount\u001B[39m\n" +
+                "тип: \u001B[33m$type\u001B[39m\n" +
+                "почтовый адрес: \u001B[33m$postalAddress\u001B[39m"
     }
 }
 
-class Coordinates(x: Double?, y: Int?) {
+class Coordinates {
+
+    constructor(x: Double?, y: Int?) {
+        this.x = x
+        this.y = y
+    }
+
     companion object {
         fun xIsValid(x: Double?): Boolean = x != null
         fun yIsValid(y: Int?): Boolean = y != null
@@ -108,9 +114,17 @@ class Coordinates(x: Double?, y: Int?) {
                 throw Exception()
             field = y
         }
+
+    override fun toString(): String {
+        return "$x $y"
+    }
 }
 
-class Address(zipCode: String?) {
+class Address {
+    constructor(zipCode: String?) {
+        this.zipCode = zipCode
+    }
+
     companion object {
         fun zipCodeIsValid(zipCode: String?): Boolean = zipCode != null
     }
@@ -121,6 +135,10 @@ class Address(zipCode: String?) {
                 throw Exception()
             field = zipCode
         }
+
+    override fun toString(): String {
+        return zipCode.toString()
+    }
 }
 
 enum class OrganizationType {

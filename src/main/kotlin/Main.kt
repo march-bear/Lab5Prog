@@ -1,19 +1,31 @@
+import commands.CommandNotFountException
+import commands.ExitCommandCall
 import java.util.*
 
 fun main(args: Array<String>) {
     val collection = CollectionInvoker(LinkedList<Organization>())
-    collection.execute("help")
-    collection.execute("add")
-    collection.execute("show")
+    val scanner = Scanner(System.`in`)
 
-
-    val scanner: Scanner = Scanner(System.`in`)
-    try {
-        while (true) {
+    EventMessage.yellowMessageln("Программа готова. " +
+            "Для просмотра доступных команд воспользуйтесь командой \u001b[3m`help`\u001b[0m")
+    while (true) {
+        try {
+            EventMessage.inputPrompt(delimiter = ">>> ")
             collection.execute(scanner.nextLine())
+        } catch (e: CommandNotFountException) {
+            EventMessage.redMessageln(e.message ?: "")
+        } catch (e: ExitCommandCall) {
+            EventMessage.yellowMessageln("Завершение работы программы...")
+            EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
+            break
+        } catch (e: NoSuchElementException) {
+            EventMessage.yellowMessageln("Завершение работы программы...")
+            EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
+            break
+        } catch (e: RuntimeException) {
+            EventMessage.yellowMessageln("Завершение работы программы...")
+            EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
             break
         }
-    } catch (e: Exception) {
-        println("Выход из интерактивного режима...")
     }
 }

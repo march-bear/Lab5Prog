@@ -11,7 +11,7 @@ class ShowCommand(private val collection: LinkedList<Organization>) : Command {
         if (collection.size == 0)
             EventMessage.blueMessageln("Коллекция пуста")
         for (element in collection)
-            println("${element}\n")
+            println("$element\n")
     }
 
     override fun getInfo(): String =
