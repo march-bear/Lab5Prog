@@ -22,6 +22,10 @@ class EventMessage {
             print("${blueColor}${message}${defaultColor}")
         }
 
+        fun greenMessage(message: String) {
+            print("${greenColor}${message}${defaultColor}")
+        }
+
         fun defaultMessage(message: String) {
             print(message)
         }
@@ -35,6 +39,10 @@ class EventMessage {
 
         fun blueMessageln(message: String) {
             println("${blueColor}${message}${defaultColor}")
+        }
+
+        fun greenMessageln(message: String) {
+            println("${greenColor}${message}${defaultColor}")
         }
 
         fun defaultMessageln(message: String) {

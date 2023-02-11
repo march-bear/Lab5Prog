@@ -3,7 +3,7 @@ package commands
 import kotlin.collections.HashMap
 
 class HelpCommand (private val commandMap: HashMap<String, Command>) : Command {
-    override fun execute() {
+    override fun execute(s: String) {
         for (command in commandMap) {
             EventMessage.defaultMessage("${command.key}: ")
             EventMessage.blueMessageln(command.value.getInfo())

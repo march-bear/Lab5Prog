@@ -1,7 +1,7 @@
 package commands
 
 class UpdateCommand : Command {
-    override fun execute() {
+    override fun execute(s: String) {
         TODO("Not yet implemented")
     }
 

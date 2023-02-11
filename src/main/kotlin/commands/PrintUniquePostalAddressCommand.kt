@@ -1,7 +1,7 @@
 package commands
 
 class PrintUniquePostalAddressCommand : Command {
-    override fun execute() {
+    override fun execute(s: String) {
         TODO("Not yet implemented")
     }
 

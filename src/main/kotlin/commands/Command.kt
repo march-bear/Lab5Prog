@@ -1,6 +1,6 @@
 package commands
 
 interface Command {
-    fun execute()
+    fun execute(s: String)
     fun getInfo(): String
 }

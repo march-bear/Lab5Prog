@@ -15,14 +15,16 @@ class CollectionInvoker(collection: LinkedList<Organization>) {
     }
 
     fun execute(commandName: String) {
+
         val command: Command = commandMap[commandName] ?: throw Exception()
-        command.execute()
+
+        command.execute("")
     }
 
     init {
         register("help", HelpCommand(commandMap))
-        register("info", InfoCommand())
-        register("show", ShowCommand())
+        register("info", InfoCommand(collection))
+        register("show", ShowCommand(collection))
         register("add", AddCommand(collection))
         register("update", UpdateCommand())
         register("remove_by_id", RemoveByIdCommand())

@@ -3,17 +3,24 @@ import java.lang.System.currentTimeMillis
 import java.util.Date
 
 class Organization  {
-    private companion object {
-        var idCounter: Long = 1
+    companion object {
+        private var idCounter: Long = 1
+        fun nameIsValid(name: String?): Boolean = name != "" && name != null
+        fun coordinatesIsValid(coordinates: Coordinates?): Boolean = coordinates != null
+        fun annualTurnoverIsValid(annualTurnover: Int?): Boolean = annualTurnover != null && annualTurnover > 0
+        fun fullNameIsValid(fullName: String?): Boolean = fullName == null || fullName.length in 0..925
+        fun employeesCountIsValid(employeesCount: Long?): Boolean = employeesCount == null || employeesCount > 0
+        fun typeIsValid(type: OrganizationType?): Boolean = type != null
+
     }
+
     private var id: Long = idCounter++ // Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private var name: String? // Поле не может быть null, Строка не может быть пустой
-        set(name: String?) {
-            when (name) {
-                null -> throw Exception()
-                "" -> throw Exception()
-                else -> field = name
-            }
+        set(name) {
+            if (nameIsValid(name))
+                field = name
+            else
+                throw Exception()
         }
     private var coordinates: Coordinates? // Поле не может быть null
         set(coordinates: Coordinates?) {
@@ -58,7 +65,7 @@ class Organization  {
         annualTurnover: Int?,
         fullName: String?,
         employeesCount: Long?,
-        type: OrganizationType,
+        type: OrganizationType?,
         postalAddress: Address?,
     ) {
         this.name = name
@@ -70,9 +77,25 @@ class Organization  {
         this.type = type
         this.postalAddress = postalAddress
     }
+
+    override fun toString(): String {
+        return "Организация $name:\n" +
+                "id=$id,\n" +
+                "coordinates=$coordinates,\n" +
+                "creationDate=$creationDate,\n" +
+                "annualTurnover=$annualTurnover,\n" +
+                "fullName=$fullName,\n" +
+                "employeesCount=$employeesCount,\n" +
+                "type=$type,\n" +
+                "postalAddress=$postalAddress)"
+    }
 }
 
-class Coordinates {
+class Coordinates(x: Double?, y: Int?) {
+    companion object {
+        fun xIsValid(x: Double?): Boolean = x != null
+        fun yIsValid(y: Int?): Boolean = y != null
+    }
     private var x: Double? = null // Поле не может быть null
         set(x: Double?) {
             if (x == null)
@@ -87,7 +110,11 @@ class Coordinates {
         }
 }
 
-class Address {
+class Address(zipCode: String?) {
+    companion object {
+        fun zipCodeIsValid(zipCode: String?): Boolean = zipCode != null
+    }
+
     private var zipCode: String? = null //Поле не может быть null
         set(zipCode: String?) {
             if (zipCode == null)
