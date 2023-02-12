@@ -79,15 +79,15 @@ class Organization  {
     }
 
     override fun toString(): String {
-        return "\u001B[33mОрганизация $name:\u001B[39m\n" +
-                "id: \u001B[33m$id\u001B[39m\n" +
-                "координаты: \u001B[33m${coordinates.toString()}\u001B[39m\n" +
-                "дата создания: \u001B[33m$creationDate\u001B[39m\n" +
-                "годовой оборот: \u001B[33m$annualTurnover\u001B[39m\n" +
-                "полное имя: \u001B[33m$fullName\u001B[39m\n" +
-                "количество сотрудников: \u001B[33m$employeesCount\u001B[39m\n" +
-                "тип: \u001B[33m$type\u001B[39m\n" +
-                "почтовый адрес: \u001B[33m$postalAddress\u001B[39m"
+        return "название организации: \u001B[34m$name:\u001B[39m\n" +
+                "id: \u001B[34m$id\u001B[39m\n" +
+                "координаты: \u001B[34m${coordinates.toString()}\u001B[39m\n" +
+                "дата создания: \u001B[34m$creationDate\u001B[39m\n" +
+                "годовой оборот: \u001B[34m$annualTurnover\u001B[39m\n" +
+                "полное имя: \u001B[34m$fullName\u001B[39m\n" +
+                "количество сотрудников: \u001B[34m$employeesCount\u001B[39m\n" +
+                "тип: \u001B[34m$type\u001B[39m\n" +
+                "почтовый адрес: \u001B[34m$postalAddress\u001B[39m"
     }
 }
 

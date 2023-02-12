@@ -8,10 +8,17 @@ class ShowCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(arguments: String) {
         if (arguments != "")
             throw Exception()
-        if (collection.size == 0)
+        if (collection.size == 0) {
             EventMessage.blueMessageln("Коллекция пуста")
-        for (element in collection)
-            println("$element\n")
+            return
+        }
+        EventMessage.defaultMessageln("Элементы коллекции:")
+        for (element in collection) {
+            EventMessage.defaultMessageln("----------------------")
+            println("$element")
+            EventMessage.defaultMessageln("----------------------")
+        }
+        println()
     }
 
     override fun getInfo(): String =

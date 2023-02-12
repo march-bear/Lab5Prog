@@ -1,5 +1,7 @@
 package commands
 
+import exceptions.ExitCommandCall
+
 class ExitCommand : Command {
     override fun execute(s: String) {
         throw ExitCommandCall()

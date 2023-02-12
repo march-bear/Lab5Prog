@@ -9,14 +9,25 @@ class InfoCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(s: String) {
         EventMessage.defaultMessageln("Информация о коллекции:")
 
-        EventMessage.blueMessage("Количество элементов: ")
-        EventMessage.defaultMessage(collection.size.toString())
+        EventMessage.defaultMessageln("-------------------------")
 
-        EventMessage.blueMessage("Количество элементов: ")
-        EventMessage.defaultMessage(collection.size.toString())
+        EventMessage.defaultMessage("Тип коллекции: ")
+        EventMessage.blueMessageln("LinkedList")
 
-        EventMessage.blueMessage("Количество элементов: ")
-        EventMessage.defaultMessage(collection.size.toString())
+        EventMessage.defaultMessage("Дата инициализации: ")
+        EventMessage.blueMessageln("неизвестна")
+
+        EventMessage.defaultMessage("Количество элементов: ")
+        EventMessage.blueMessageln(collection.size.toString())
+
+        EventMessage.defaultMessage("id максимального элемента: ")
+        EventMessage.blueMessageln(collection.size.toString())
+
+        EventMessage.defaultMessage("id минимального элемента: ")
+        EventMessage.blueMessageln(collection.size.toString())
+        EventMessage.defaultMessageln("-------------------------")
+
+        EventMessage.defaultMessageln("\n\u00a9 ООО \"Мартовский Мишка\". Все права защищены\n")
     }
 
     override fun getInfo(): String =
