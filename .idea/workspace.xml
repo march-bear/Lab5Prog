@@ -1,33 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Lab5Prog:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/InputStreamController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Reader.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandNotFountException.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/InvalidFieldValueException.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Lab5Prog_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab5Prog.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionInvoker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/EventMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/EventMessage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandNotFountException.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommandCall.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/ExitCommandCall.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +60,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2LPrnm9ptgSsIVM2mKqJI5G1J0a" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -92,7 +81,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.language.Kotlin.scripting"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -151,7 +143,7 @@
       <workItem from="1676114394942" duration="5162000" />
       <workItem from="1676120203717" duration="5276000" />
       <workItem from="1676140605675" duration="5723000" />
-      <workItem from="1676198468385" duration="19230000" />
+      <workItem from="1676198468385" duration="26094000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -174,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676144147547</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения">
+      <created>1676221084063</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1676221084063</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +183,8 @@
     <MESSAGE value="init commit" />
     <MESSAGE value="Частично реализованы команды help, show, add;&#10;Добавлены валидаторы для значений полей классов Organization, Coordinates, Address" />
     <MESSAGE value="Исправления в уже реализованных командах;&#10;Реализован механизм завершения программы;&#10;Реализован механизм обработки EOF;&#10;Мелкие исправления" />
-    <option name="LAST_COMMIT_MESSAGE" value="Исправления в уже реализованных командах;&#10;Реализован механизм завершения программы;&#10;Реализован механизм обработки EOF;&#10;Мелкие исправления" />
+    <MESSAGE value="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения" />
+    <option name="LAST_COMMIT_MESSAGE" value="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -195,5 +195,9 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

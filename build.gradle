@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10"
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
@@ -20,6 +21,7 @@ test {
 }
 
 compileKotlin {
+    compilerOptions.freeCompilerArgs.add("-Xexport-kdoc")
     kotlinOptions.jvmTarget = '1.8'
 }
 
@@ -30,3 +32,12 @@ compileTestKotlin {
 application {
     mainClassName = 'MainKt'
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClassName
+    }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
