@@ -1,6 +1,15 @@
+package iostreamers
+
+import Address
+import CollectionController
+import Coordinates
+import Organization
+import OrganizationType
 import exceptions.InvalidFieldValueException
 import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
+import java.util.LinkedList
+import java.util.function.Supplier
 
 class Reader {
     companion object {
@@ -43,8 +52,10 @@ class Reader {
             throw InvalidFieldValueException()
         }
 
-        fun readFullName(): String? {
+        fun readFullName(collection: LinkedList<Organization>): String? {
             val fullName: String? = readStringOrNull()
+            if (!CollectionController.checkUniquenessFullName(fullName, collection))
+                throw InvalidFieldValueException("Полное имя должно быть уникальным. Повторите ввод")
             if (Organization.fullNameIsValid(fullName))
                 return fullName
             throw InvalidFieldValueException()
@@ -81,6 +92,19 @@ class Reader {
             throw InvalidFieldValueException()
         }
 
-
+        fun <T> readField(inputPromptMessage: String, readFunction: Supplier<T>,
+                          errorMessage: String = "Невалидное значение поля. Повторите ввод"): T {
+            while (true) {
+                try {
+                    EventMessage.inputPrompt(inputPromptMessage)
+                    return readFunction.get()
+                } catch (e: InvalidFieldValueException) {
+                    if (e.message == null)
+                        EventMessage.messageln(errorMessage, TextColor.RED)
+                    else
+                        EventMessage.messageln(e.message, TextColor.RED)
+                }
+            }
+        }
     }
 }

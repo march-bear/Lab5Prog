@@ -1,22 +1,25 @@
 package commands
 
-import EventMessage
+import iostreamers.EventMessage
 import Organization
+import TextColor
+import exceptions.InvalidArgumentsForCommandException
 import java.util.LinkedList
 
 class ShowCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(arguments: String) {
-        if (arguments != "")
-            throw Exception()
+    override fun execute(args: String?) {
+        if (args != null) {
+            throw InvalidArgumentsForCommandException("Команда не принимает на вход аргументы")
+        }
         if (collection.size == 0) {
-            EventMessage.blueMessageln("Коллекция пуста")
+            EventMessage.messageln("Коллекция пуста", TextColor.BLUE)
             return
         }
-        EventMessage.defaultMessageln("Элементы коллекции:")
+        EventMessage.messageln("Элементы коллекции:")
         for (element in collection) {
-            EventMessage.defaultMessageln("----------------------")
+            EventMessage.messageln("----------------------")
             println("$element")
-            EventMessage.defaultMessageln("----------------------")
+            EventMessage.messageln("----------------------")
         }
         println()
     }

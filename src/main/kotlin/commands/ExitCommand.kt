@@ -3,7 +3,7 @@ package commands
 import exceptions.ExitCommandCall
 
 class ExitCommand : Command {
-    override fun execute(s: String) {
+    override fun execute(args: String?) {
         throw ExitCommandCall()
     }
 

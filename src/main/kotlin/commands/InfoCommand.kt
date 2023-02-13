@@ -1,33 +1,33 @@
 package commands
 
-import EventMessage
+import iostreamers.EventMessage
 import Organization
 import java.util.LinkedList
 
 
 class InfoCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(s: String) {
-        EventMessage.defaultMessageln("Информация о коллекции:")
+    override fun execute(args: String?) {
+        EventMessage.messageln("Информация о коллекции:")
 
-        EventMessage.defaultMessageln("-------------------------")
+        EventMessage.messageln("-------------------------")
 
-        EventMessage.defaultMessage("Тип коллекции: ")
-        EventMessage.blueMessageln("LinkedList")
+        EventMessage.message("Тип коллекции: ")
+        EventMessage.messageln("LinkedList", TextColor.BLUE)
 
-        EventMessage.defaultMessage("Дата инициализации: ")
-        EventMessage.blueMessageln("неизвестна")
+        EventMessage.message("Дата инициализации: ")
+        EventMessage.messageln("неизвестна", TextColor.BLUE)
 
-        EventMessage.defaultMessage("Количество элементов: ")
-        EventMessage.blueMessageln(collection.size.toString())
+        EventMessage.message("Количество элементов: ")
+        EventMessage.messageln(collection.size.toString(), TextColor.BLUE)
 
-        EventMessage.defaultMessage("id максимального элемента: ")
-        EventMessage.blueMessageln(collection.size.toString())
+        EventMessage.message("id максимального элемента: ")
+        EventMessage.messageln(collection.size.toString(), TextColor.BLUE)
 
-        EventMessage.defaultMessage("id минимального элемента: ")
-        EventMessage.blueMessageln(collection.size.toString())
-        EventMessage.defaultMessageln("-------------------------")
+        EventMessage.message("id минимального элемента: ")
+        EventMessage.messageln(collection.size.toString(), TextColor.BLUE)
+        EventMessage.messageln("-------------------------")
 
-        EventMessage.defaultMessageln("\n\u00a9 ООО \"Мартовский Мишка\". Все права защищены\n")
+        EventMessage.messageln("\n\u00a9 ООО \"Мартовский Мишка\". Все права защищены\n")
     }
 
     override fun getInfo(): String =

@@ -1,14 +1,16 @@
 package commands
 
-import EventMessage
+import iostreamers.EventMessage
+import exceptions.InvalidArgumentsForCommandException
 import kotlin.collections.HashMap
-import kotlin.math.floor
 
 class HelpCommand (private val commandMap: HashMap<String, Command>) : Command {
-    override fun execute(s: String) {
+    override fun execute(args: String?) {
+        if (args != null)
+            throw InvalidArgumentsForCommandException("Команда не принимает на вход аргументы")
         for (command in commandMap) {
-            EventMessage.defaultMessage("${command.key}:" + "\t".repeat(10 - floor((command.key.length + 1) / 4.0).toInt()))
-            EventMessage.blueMessageln(command.value.getInfo())
+            EventMessage.message(String.format("%-40s", "${command.key}:"))
+            EventMessage.messageln(command.value.getInfo(), TextColor.BLUE)
         }
         println()
     }

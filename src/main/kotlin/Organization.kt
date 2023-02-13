@@ -1,20 +1,42 @@
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import java.lang.Exception
 import java.lang.System.currentTimeMillis
 import java.util.Date
+import kotlin.math.max
 
-class Organization  {
+@Serializable
+class Organization : Comparator<Organization> {
     companion object {
-        private var idCounter: Long = 1
+        fun idIsValid(id: Long?): Boolean = id != null && id > 0
         fun nameIsValid(name: String?): Boolean = name != "" && name != null
         fun coordinatesIsValid(coordinates: Coordinates?): Boolean = coordinates != null
         fun annualTurnoverIsValid(annualTurnover: Int?): Boolean = annualTurnover != null && annualTurnover > 0
         fun fullNameIsValid(fullName: String?): Boolean = fullName == null || fullName.length in 0..925
         fun employeesCountIsValid(employeesCount: Long?): Boolean = employeesCount == null || employeesCount > 0
         fun typeIsValid(type: OrganizationType?): Boolean = type != null
+        class DateAsLongSerializer : KSerializer<Date> {
+            override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.LONG)
 
+            override fun deserialize(decoder: Decoder): Date {
+                val string = decoder.decodeLong()
+                return Date(string)
+            }
+
+            override fun serialize(encoder: Encoder, value: Date) {
+                val string = value.time
+                encoder.encodeLong(string)
+            }
+
+        }
     }
 
-    private var id: Long = idCounter++ // Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private var id: Long? = -1 // Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private var name: String? // Поле не может быть null, Строка не может быть пустой
         set(name) {
             if (nameIsValid(name))
@@ -29,6 +51,8 @@ class Organization  {
                 else -> field = coordinates
             }
         }
+
+    @Serializable(with = DateAsLongSerializer::class)
     private var creationDate: Date? // Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private var annualTurnover: Int? // Поле не может быть null, Значение поля должно быть больше 0
         set(annualTurnover: Int?) {
@@ -59,15 +83,14 @@ class Organization  {
         }
     private var postalAddress: Address? // Поле может быть null
 
-    constructor(
-        name: String?,
-        coordinates: Coordinates,
-        annualTurnover: Int?,
-        fullName: String?,
-        employeesCount: Long?,
-        type: OrganizationType?,
-        postalAddress: Address?,
-    ) {
+    fun setId(id: Long?) {
+        this.id = id
+    }
+
+    fun getId(): Long? = this.id
+    fun getFullName(): String? = this.fullName
+    constructor(name: String?, coordinates: Coordinates, annualTurnover: Int?, fullName: String?,
+                employeesCount: Long?, type: OrganizationType?, postalAddress: Address?) {
         this.name = name
         this.coordinates = coordinates
         this.creationDate = Date((Math.random() * currentTimeMillis()).toLong())
@@ -79,7 +102,7 @@ class Organization  {
     }
 
     override fun toString(): String {
-        return "название организации: \u001B[34m$name:\u001B[39m\n" +
+        return "название организации: \u001B[34m$name\u001B[39m\n" +
                 "id: \u001B[34m$id\u001B[39m\n" +
                 "координаты: \u001B[34m${coordinates.toString()}\u001B[39m\n" +
                 "дата создания: \u001B[34m$creationDate\u001B[39m\n" +
@@ -89,8 +112,34 @@ class Organization  {
                 "тип: \u001B[34m$type\u001B[39m\n" +
                 "почтовый адрес: \u001B[34m$postalAddress\u001B[39m"
     }
+
+    override fun compare(o1: Organization?, o2: Organization?): Int {
+        if (o1 == null)
+            return if (o2 == null) 0 else -1
+        if (o2 == null)
+            return 1
+
+        if (o1.annualTurnover != o2.annualTurnover) {
+            if (o1.annualTurnover == null)
+                return 1
+            if (o2.annualTurnover == null)
+                return -1
+            return if (o1.annualTurnover!! < o2.annualTurnover!!) 1 else -1
+        }
+
+        if (o1.employeesCount != o2.employeesCount) {
+            if (o1.employeesCount == null)
+                return 1
+            if (o2.employeesCount == null)
+                return -1
+            return if (o2.employeesCount!! < o1.employeesCount!!) 1 else -1
+        }
+
+        return 0
+    }
 }
 
+@Serializable
 class Coordinates {
 
     constructor(x: Double?, y: Int?) {
@@ -120,6 +169,7 @@ class Coordinates {
     }
 }
 
+@Serializable
 class Address {
     constructor(zipCode: String?) {
         this.zipCode = zipCode
@@ -141,6 +191,7 @@ class Address {
     }
 }
 
+@Serializable
 enum class OrganizationType {
     COMMERCIAL, GOVERNMENT, TRUST, PRIVATE_LIMITED_COMPANY, OPEN_JOINT_STOCK_COMPANY
 }

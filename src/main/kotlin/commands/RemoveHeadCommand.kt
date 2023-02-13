@@ -1,16 +1,17 @@
 package commands
 
-import EventMessage
+import iostreamers.EventMessage
 import Organization
+import TextColor
 import java.util.LinkedList
 
 class RemoveHeadCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(s: String) {
+    override fun execute(args: String?) {
         if (collection.isEmpty()) {
-            EventMessage.redMessageln("Команда не может быть выполнена - коллекция пуста")
+            EventMessage.messageln("Команда не может быть выполнена - коллекция пуста", TextColor.RED)
             return
         }
-        EventMessage.defaultMessageln("${collection.first}")
+        EventMessage.messageln("${collection.first}")
         collection.remove()
     }
 

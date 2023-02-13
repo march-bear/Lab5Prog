@@ -1,12 +1,29 @@
 import commands.*
 import exceptions.CommandNotFountException
 import exceptions.ExitCommandCall
+import exceptions.InvalidArgumentsForCommandException
+import iostreamers.EventMessage
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.InputStreamReader
 import java.lang.Exception
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
 class CollectionController(private val collection: LinkedList<Organization>) {
+    companion object {
+        fun checkUniquenessFullName(fullName: String?, collection: LinkedList<Organization>): Boolean {
+            if (fullName == null)
+                return true
+
+            for (elem in collection)
+                if (elem.getFullName() != null && elem.getFullName() == fullName)
+                    return false
+            return true
+        }
+    }
+
     private val commandMap: HashMap<String, Command> = HashMap()
     private var inputStreamController: InputStreamController = InputStreamController()
 
@@ -19,55 +36,84 @@ class CollectionController(private val collection: LinkedList<Organization>) {
     }
 
     fun execute(commandName: String) {
-        val commandList = commandName.split(Pattern.compile("\\s+"), limit = 2)
+        val commandList = commandName.trim().split(Pattern.compile("\\s+"), limit = 2)
         if (commandList.isEmpty() || commandList[0] == "")
             return
 
         val command: Command = commandMap[commandList[0]]
             ?: throw CommandNotFountException("${commandList[0]}: команда не найдена")
 
-        command.execute(if (commandList.size == 2) commandList[1] else "")
+        try {
+            command.execute(if (commandList.size == 2) commandList[1] else null)
+        } catch (e: InvalidArgumentsForCommandException) {
+            EventMessage.messageln(e.message.toString(), TextColor.RED)
+        }
+    }
+
+    private fun loadDataFromFile(fileName: String = "data.json") {
+        val fileStream: FileInputStream
+        try {
+            fileStream = FileInputStream(fileName)
+        } catch (e: FileNotFoundException) {
+            EventMessage.messageln("${fileName}: файл не найден", TextColor.RED)
+            return
+        }
+
+        EventMessage.messageln("Чтение файла $fileName")
+        val fileReader = InputStreamReader(fileStream)
+        val jsonCode: String = fileReader.readText()
+        fileReader.close()
+        EventMessage.messageln("Чтение завершено")
+        println(jsonCode)
+        EventMessage.messageln("Загрузка данных файла $fileName в коллекцию")
+        EventMessage.messageln("Загрузка завершена")
+    }
+
+    fun loadDataFromFiles(files: Array<String>) {
+        if (files.isEmpty()) {
+            EventMessage.messageln("ВНИМАНИЕ! На вход программы не передан ни один файл. " +
+                    "Загрузка данных из файла по умолчанию...", TextColor.YELLOW)
+            loadDataFromFile()
+            return
+        }
+
+        for (file in files) {
+            loadDataFromFile(file)
+            println()
+        }
     }
 
     fun executeScript(script: String) {
-        EventMessage.yellowMessageln("Запущено исполнение скрипта")
+        EventMessage.messageln("Запущено исполнение скрипта", TextColor.YELLOW)
         val scanner = Scanner(script)
         while (scanner.hasNext()) {
             try {
                 execute(scanner.nextLine().trim())
             } catch (e: CommandNotFountException) {
-                EventMessage.redMessageln(e.message ?: "")
+                EventMessage.messageln(e.message ?: "", TextColor.RED)
             } catch (e: ExitCommandCall) {
-                EventMessage.yellowMessageln("Завершение работы программы...")
-                EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
+                EventMessage.messageln("Завершение работы программы...", TextColor.YELLOW)
+                EventMessage.messageln("Сохранение коллекции не происходит...", TextColor.YELLOW)
                 break
             }
         }
-        EventMessage.yellowMessageln("Скрипт выполнен")
+        EventMessage.messageln("Скрипт выполнен", TextColor.YELLOW)
     }
 
     fun enableInteractiveMode(script: String? = null) {
         EventMessage.interactiveMode()
-        EventMessage.yellowMessageln("Включен интерактивный режим. " +
-                "Для просмотра доступных команд воспользуйтесь командой \u001b[3m`help`\u001b[0m")
+        EventMessage.messageln("Включен интерактивный режим. " +
+                "Для просмотра доступных команд введите \u001b[3m`help`\u001b[0m", TextColor.YELLOW)
         val scanner = if (script != null) Scanner(script) else Scanner(System.`in`)
         while (true) {
             try {
                 EventMessage.inputPrompt(delimiter = ">>> ")
                 execute(scanner.nextLine().trim())
             } catch (e: CommandNotFountException) {
-                EventMessage.redMessageln(e.message ?: "")
-            } catch (e: ExitCommandCall) {
-                EventMessage.yellowMessageln("Завершение работы программы...")
-                EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
-                break
-            } catch (e: NoSuchElementException) {
-                EventMessage.yellowMessageln("Завершение работы программы...")
-                EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
-                break
+                EventMessage.messageln(e.message ?: "", TextColor.RED)
             } catch (e: RuntimeException) {
-                EventMessage.yellowMessageln("Завершение работы программы...")
-                EventMessage.yellowMessageln("Сохранение коллекции не происходит...")
+                EventMessage.messageln("Завершение работы программы...")
+                EventMessage.messageln("Сохранение коллекции не происходит...")
                 break
             }
         }

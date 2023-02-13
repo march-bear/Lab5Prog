@@ -2,115 +2,58 @@ package commands
 
 import Address
 import Coordinates
-import EventMessage
+import iostreamers.EventMessage
 import Organization
 import OrganizationType
+import exceptions.InvalidArgumentsForCommandException
 import exceptions.InvalidFieldValueException
-import java.lang.Exception
+import iostreamers.Reader
 import java.lang.IllegalArgumentException
-import java.lang.NullPointerException
 import java.lang.NumberFormatException
 import java.util.*
 
 class AddCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(s: String) {
-        var name: String?
-        var x: Double?
-        var y: Int?
-        var annualTurnover: Int?
-        var fullName: String?
-        var employeesCount: Long?
-        var type: OrganizationType?
-        var zipCode: String?
+    override fun execute(args: String?) {
+        if (args != null)
+            throw InvalidArgumentsForCommandException("Аргументы передаются на следующих строках")
 
-        while (true) {
-            try {
-                EventMessage.inputPrompt("Имя организации")
-                name = Reader.readOrganizationName()
-                break
-            } catch (e: InvalidFieldValueException) {
-                EventMessage.redMessageln("Невалидное значение поля. Повторите ввод")
-            }
-        }
+        val name: String? = Reader.readField("Имя организации",
+            {Reader.readOrganizationName()},)
 
-        EventMessage.greenMessageln("Координаты")
-        while (true) {
-            try {
-                EventMessage.inputPrompt("\tx")
-                x = Reader.readCoordinateX()
-                break
-            } catch (e: InvalidFieldValueException) {
-                EventMessage.redMessageln("\tНевалидное значение поля. Повторите ввод")
-            }
-        }
 
-        while (true) {
-            try {
-                EventMessage.inputPrompt("\ty")
-                y = Reader.readCoordinateY()
-                break
-            } catch (e: InvalidFieldValueException) {
-                EventMessage.redMessageln("\tНевалидное значение поля. Повторите ввод")
-            }
-        }
+        EventMessage.messageln("Координаты", TextColor.GREEN)
 
-        while (true) {
-            try {
-                EventMessage.inputPrompt("Годовой оборот")
-                annualTurnover = Reader.readAnnualTurnover()
-                break
-            } catch (e: InvalidFieldValueException) {
-                EventMessage.redMessageln("Невалидное значение поля. Повторите ввод")
-            }
-        }
+        val x: Double? = Reader.readField("\tx",
+            {Reader.readCoordinateX()},
+            "\tНевалидное значение поля. Повторите ввод")
 
-        while (true) {
-            EventMessage.inputPrompt("Полное имя (при наличии)")
-            fullName = Reader.readStringOrNull()
-            if (Organization.fullNameIsValid(fullName))
-                break
-            EventMessage.redMessageln("Невалидное значение поля. Повторите ввод")
-        }
+        val y: Int? = Reader.readField("\ty",
+            {Reader.readCoordinateY()},
+            "\tНевалидное значение поля. Повторите ввод")
 
-        while (true) {
-            EventMessage.inputPrompt("Количество сотрудников (при наличии)")
-            val employeesCountString = Reader.readStringOrNull()
-            employeesCount = try {
-                employeesCountString?.toLong()
-            } catch (e: NumberFormatException) {
-                -1
-            }
-            if (Organization.employeesCountIsValid(employeesCount))
-                break
-            EventMessage.redMessageln("Невалидное значение поля. Повторите ввод")
-        }
+        val annualTurnover: Int? = Reader.readField("Годовой оборот",
+            {Reader.readAnnualTurnover()})
 
-        while (true) {
-            EventMessage.inputPrompt("Тип " +
-                    "(COMMERCIAL/GOVERNMENT/TRUST/PRIVATE_LIMITED_COMPANY/OPEN_JOINT_STOCK_COMPANY)")
-            type = try {
-                Reader.readString().let { OrganizationType.valueOf(it) }
-            } catch (e: IllegalArgumentException) {
-                null
-            }
-            if (type != null)
-                break
-            EventMessage.redMessageln("Невалидное значение поля. Повторите ввод")
-        }
+        val fullName: String? = Reader.readField("Полное имя (при наличии)",
+            {Reader.readFullName(collection)})
 
-        while (true) {
-            EventMessage.inputPrompt("Почтовый адрес (ZIP-код, при наличии)")
-            zipCode = Reader.readStringOrNull()
-            if (Address.zipCodeIsValid(zipCode))
-                break
-            EventMessage.redMessageln("Невалидное значение поля. Повторите ввод")
-        }
+        val employeesCount: Long? = Reader.readField("Количество сотрудников (при наличии)",
+            {Reader.readEmployeesCount()})
+
+        val type: OrganizationType? = Reader.readField("Тип " +
+                "(COMMERCIAL/GOVERNMENT/TRUST/PRIVATE_LIMITED_COMPANY/OPEN_JOINT_STOCK_COMPANY)",
+            {Reader.readOrganizationType()})
+
+        val postalAddress: Address? = Reader.readField("Почтовый адрес (ZIP-код, при наличии)",
+            {Reader.readAddress()})
+
+
         println()
 
-        val postalAddress: Address? = if (zipCode != null) Address(zipCode) else null
-
-        collection.add(Organization(name, Coordinates(x, y), annualTurnover,
-            fullName, employeesCount, type, postalAddress))
+        val newElement = Organization(name, Coordinates(x, y), annualTurnover,
+            fullName, employeesCount, type, postalAddress)
+        newElement.setId(Generator.generateUniqueId(collection))
+        collection.add(newElement)
     }
 
 

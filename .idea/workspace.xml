@@ -10,10 +10,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Lab5Prog_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Generator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/TextColor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/InvalidArgumentsForCommandException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/EventMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Reader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ValueException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/HelpCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/HelpCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/PrintUniquePostalAddressCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/PrintUniquePostalAddressCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveByIdCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveByIdCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/InvalidFieldValueException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/InvalidFieldValueException.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +72,7 @@
       <list>
         <option value="Kotlin Interface" />
         <option value="Class" />
+        <option value="Kotlin Enum" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -69,35 +97,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Ivan/IdeaProjects/Lab5ProgGradle",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.language.Kotlin.scripting"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Ivan/IdeaProjects/Lab5ProgGradle&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.language.Kotlin.scripting&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\src\main\kotlin\commands" />
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\src\main\kotlin" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="iostreamers" />
       <recent name="commands.exceptions" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Lab5Prog" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Lab5Prog" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -116,11 +145,6 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.Lab5Prog" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -143,7 +167,11 @@
       <workItem from="1676114394942" duration="5162000" />
       <workItem from="1676120203717" duration="5276000" />
       <workItem from="1676140605675" duration="5723000" />
-      <workItem from="1676198468385" duration="26094000" />
+      <workItem from="1676198468385" duration="28078000" />
+      <workItem from="1676231671324" duration="329000" />
+      <workItem from="1676235158933" duration="1446000" />
+      <workItem from="1676279925001" duration="2353000" />
+      <workItem from="1676292056478" duration="14297000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -173,7 +201,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676221084063</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Исправления в build.gradle для корректной сборки jar-файла">
+      <created>1676229202075</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1676229202075</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +219,8 @@
     <MESSAGE value="Частично реализованы команды help, show, add;&#10;Добавлены валидаторы для значений полей классов Organization, Coordinates, Address" />
     <MESSAGE value="Исправления в уже реализованных командах;&#10;Реализован механизм завершения программы;&#10;Реализован механизм обработки EOF;&#10;Мелкие исправления" />
     <MESSAGE value="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения" />
-    <option name="LAST_COMMIT_MESSAGE" value="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения" />
+    <MESSAGE value="Исправления в build.gradle для корректной сборки jar-файла" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправления в build.gradle для корректной сборки jar-файла" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
