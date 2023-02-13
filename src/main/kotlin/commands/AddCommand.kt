@@ -12,40 +12,40 @@ import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
 import java.util.*
 
-class AddCommand(private val collection: LinkedList<Organization>) : Command {
+class AddCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
     override fun execute(args: String?) {
         if (args != null)
             throw InvalidArgumentsForCommandException("Аргументы передаются на следующих строках")
 
-        val name: String? = Reader.readField("Имя организации",
-            {Reader.readOrganizationName()},)
+        val name: String? = reader.readField("Имя организации",
+            {reader.readOrganizationName()},)
 
 
         EventMessage.messageln("Координаты", TextColor.GREEN)
 
-        val x: Double? = Reader.readField("\tx",
-            {Reader.readCoordinateX()},
+        val x: Double? = reader.readField("\tx",
+            {reader.readCoordinateX()},
             "\tНевалидное значение поля. Повторите ввод")
 
-        val y: Int? = Reader.readField("\ty",
-            {Reader.readCoordinateY()},
+        val y: Int? = reader.readField("\ty",
+            {reader.readCoordinateY()},
             "\tНевалидное значение поля. Повторите ввод")
 
-        val annualTurnover: Int? = Reader.readField("Годовой оборот",
-            {Reader.readAnnualTurnover()})
+        val annualTurnover: Int? = reader.readField("Годовой оборот",
+            {reader.readAnnualTurnover()})
 
-        val fullName: String? = Reader.readField("Полное имя (при наличии)",
-            {Reader.readFullName(collection)})
+        val fullName: String? = reader.readField("Полное имя (при наличии)",
+            {reader.readFullName(collection)})
 
-        val employeesCount: Long? = Reader.readField("Количество сотрудников (при наличии)",
-            {Reader.readEmployeesCount()})
+        val employeesCount: Long? = reader.readField("Количество сотрудников (при наличии)",
+            {reader.readEmployeesCount()})
 
-        val type: OrganizationType? = Reader.readField("Тип " +
+        val type: OrganizationType? = reader.readField("Тип " +
                 "(COMMERCIAL/GOVERNMENT/TRUST/PRIVATE_LIMITED_COMPANY/OPEN_JOINT_STOCK_COMPANY)",
-            {Reader.readOrganizationType()})
+            {reader.readOrganizationType()})
 
-        val postalAddress: Address? = Reader.readField("Почтовый адрес (ZIP-код, при наличии)",
-            {Reader.readAddress()})
+        val postalAddress: Address? = reader.readField("Почтовый адрес (ZIP-код, при наличии)",
+            {reader.readAddress()})
 
 
         println()

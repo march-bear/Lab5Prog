@@ -3,6 +3,9 @@ import exceptions.CommandNotFountException
 import exceptions.ExitCommandCall
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
+import iostreamers.Reader
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
@@ -25,7 +28,9 @@ class CollectionController(private val collection: LinkedList<Organization>) {
     }
 
     private val commandMap: HashMap<String, Command> = HashMap()
-    private var inputStreamController: InputStreamController = InputStreamController()
+    private val scannerController: ScannerController = ScannerController(System.`in`)
+    private val reader: Reader = Reader(scannerController)
+
 
     private fun register(commandName: String, command: Command) {
         if (commandName.length > 40)
@@ -64,8 +69,10 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         val jsonCode: String = fileReader.readText()
         fileReader.close()
         EventMessage.messageln("Чтение завершено")
-        println(jsonCode)
         EventMessage.messageln("Загрузка данных файла $fileName в коллекцию")
+        val json = Json.decodeFromString<List<Organization>>(jsonCode)
+        for (elem in json)
+            collection.add(elem)
         EventMessage.messageln("Загрузка завершена")
     }
 
@@ -85,36 +92,37 @@ class CollectionController(private val collection: LinkedList<Organization>) {
 
     fun executeScript(script: String) {
         EventMessage.messageln("Запущено исполнение скрипта", TextColor.YELLOW)
-        val scanner = Scanner(script)
-        while (scanner.hasNext()) {
+        scannerController.scanner = Scanner(script)
+        while (scannerController.scanner.hasNext()) {
             try {
-                execute(scanner.nextLine().trim())
+                execute(scannerController.scanner.nextLine().trim())
             } catch (e: CommandNotFountException) {
                 EventMessage.messageln(e.message ?: "", TextColor.RED)
-            } catch (e: ExitCommandCall) {
-                EventMessage.messageln("Завершение работы программы...", TextColor.YELLOW)
-                EventMessage.messageln("Сохранение коллекции не происходит...", TextColor.YELLOW)
-                break
+            } catch (e: RuntimeException) {
+                EventMessage.messageln(e.message.toString())
             }
         }
         EventMessage.messageln("Скрипт выполнен", TextColor.YELLOW)
+        scannerController.scanner = Scanner(System.`in`)
     }
 
-    fun enableInteractiveMode(script: String? = null) {
-        EventMessage.interactiveMode()
+    fun enableInteractiveMode() {
+        EventMessage.interactiveModeMessage()
         EventMessage.messageln("Включен интерактивный режим. " +
                 "Для просмотра доступных команд введите \u001b[3m`help`\u001b[0m", TextColor.YELLOW)
-        val scanner = if (script != null) Scanner(script) else Scanner(System.`in`)
+        scannerController.scanner = Scanner(System.`in`)
         while (true) {
             try {
                 EventMessage.inputPrompt(delimiter = ">>> ")
-                execute(scanner.nextLine().trim())
+                execute(scannerController.scanner.nextLine().trim())
             } catch (e: CommandNotFountException) {
                 EventMessage.messageln(e.message ?: "", TextColor.RED)
             } catch (e: RuntimeException) {
                 EventMessage.messageln("Завершение работы программы...")
                 EventMessage.messageln("Сохранение коллекции не происходит...")
                 break
+            } catch (e: Throwable) {
+                EventMessage.oops()
             }
         }
     }
@@ -123,12 +131,12 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         register("help", HelpCommand(commandMap))
         register("info", InfoCommand(collection))
         register("show", ShowCommand(collection))
-        register("add", AddCommand(collection))
+        register("add", AddCommand(collection, reader))
         register("update", UpdateCommand())
         register("remove_by_id", RemoveByIdCommand())
         register("clear", ClearCommand(collection))
-        register("save", SaveCommand())
-        register("execute_script", ExecuteScriptCommand(inputStreamController, this))
+        register("save", SaveCommand(collection))
+        register("execute_script", ExecuteScriptCommand(this, scannerController.getInputStream()))
         register("exit", ExitCommand())
         register("remove_head", RemoveHeadCommand(collection))
         register("sum_of_employees_count", SumOfEmployeesCountCommand())

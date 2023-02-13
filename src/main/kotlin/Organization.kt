@@ -11,7 +11,7 @@ import java.util.Date
 import kotlin.math.max
 
 @Serializable
-class Organization : Comparator<Organization> {
+class Organization : Comparable<Organization> {
     companion object {
         fun idIsValid(id: Long?): Boolean = id != null && id > 0
         fun nameIsValid(name: String?): Boolean = name != "" && name != null
@@ -102,8 +102,8 @@ class Organization : Comparator<Organization> {
     }
 
     override fun toString(): String {
-        return "название организации: \u001B[34m$name\u001B[39m\n" +
-                "id: \u001B[34m$id\u001B[39m\n" +
+        return "id: \u001B[34m$id\u001B[39m\n" +
+                "название организации: \u001B[34m$name\u001B[39m\n" +
                 "координаты: \u001B[34m${coordinates.toString()}\u001B[39m\n" +
                 "дата создания: \u001B[34m$creationDate\u001B[39m\n" +
                 "годовой оборот: \u001B[34m$annualTurnover\u001B[39m\n" +
@@ -113,26 +113,21 @@ class Organization : Comparator<Organization> {
                 "почтовый адрес: \u001B[34m$postalAddress\u001B[39m"
     }
 
-    override fun compare(o1: Organization?, o2: Organization?): Int {
-        if (o1 == null)
-            return if (o2 == null) 0 else -1
-        if (o2 == null)
-            return 1
-
-        if (o1.annualTurnover != o2.annualTurnover) {
-            if (o1.annualTurnover == null)
+    override fun compareTo(other: Organization): Int {
+        if (this.annualTurnover != other.annualTurnover) {
+            if (this.annualTurnover == null)
                 return 1
-            if (o2.annualTurnover == null)
+            if (other.annualTurnover == null)
                 return -1
-            return if (o1.annualTurnover!! < o2.annualTurnover!!) 1 else -1
+            return if (other.annualTurnover!! < this.annualTurnover!!) 1 else -1
         }
 
-        if (o1.employeesCount != o2.employeesCount) {
-            if (o1.employeesCount == null)
+        if (this.employeesCount != other.employeesCount) {
+            if (this.employeesCount == null)
                 return 1
-            if (o2.employeesCount == null)
+            if (other.employeesCount == null)
                 return -1
-            return if (o2.employeesCount!! < o1.employeesCount!!) 1 else -1
+            return if (other.employeesCount!! < this.employeesCount!!) 1 else -1
         }
 
         return 0
