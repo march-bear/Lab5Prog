@@ -6,6 +6,12 @@ fun main(args: Array<String>) {
     EventMessage.messageln("Коллекция создана")
 
     EventMessage.messageln("Загрузка данных из поданных на вход файлов...")
-    collection.loadDataFromFiles(args)
+    try {
+        collection.loadDataFromFiles(args.toSet())
+    } catch (e: RuntimeException) {
+        println(e.message)
+        EventMessage.messageln("Произошла ошибка во время загрузки содержимого файла. " +
+                "Возможно, предоставленные данные некорректны", TextColor.RED)
+    }
     collection.enableInteractiveMode()
 }

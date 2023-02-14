@@ -89,6 +89,9 @@ class Organization : Comparable<Organization> {
 
     fun getId(): Long? = this.id
     fun getFullName(): String? = this.fullName
+    fun getPostalAddress(): Address? = this.postalAddress
+    fun getEmployeesCount(): Long? = this.employeesCount
+
     constructor(name: String?, coordinates: Coordinates, annualTurnover: Int?, fullName: String?,
                 employeesCount: Long?, type: OrganizationType?, postalAddress: Address?) {
         this.name = name
@@ -180,6 +183,8 @@ class Address {
                 throw Exception()
             field = zipCode
         }
+
+    fun getZipCode(): String? = this.zipCode
 
     override fun toString(): String {
         return zipCode.toString()

@@ -6,6 +6,7 @@ import iostreamers.EventMessage
 import iostreamers.Reader
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.internal.decodeStringToJsonTree
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
@@ -76,7 +77,7 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         EventMessage.messageln("Загрузка завершена")
     }
 
-    fun loadDataFromFiles(files: Array<String>) {
+    fun loadDataFromFiles(files: Set<String>) {
         if (files.isEmpty()) {
             EventMessage.messageln("ВНИМАНИЕ! На вход программы не передан ни один файл. " +
                     "Загрузка данных из файла по умолчанию...", TextColor.YELLOW)
@@ -85,7 +86,11 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         }
 
         for (file in files) {
-            loadDataFromFile(file)
+            try {
+                loadDataFromFile(file)
+            } catch (e: Exception) {
+                println(e.message)
+            }
             println()
         }
     }
@@ -118,6 +123,7 @@ class CollectionController(private val collection: LinkedList<Organization>) {
             } catch (e: CommandNotFountException) {
                 EventMessage.messageln(e.message ?: "", TextColor.RED)
             } catch (e: RuntimeException) {
+                println(e.message)
                 EventMessage.messageln("Завершение работы программы...")
                 EventMessage.messageln("Сохранение коллекции не происходит...")
                 break
@@ -132,15 +138,17 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         register("info", InfoCommand(collection))
         register("show", ShowCommand(collection))
         register("add", AddCommand(collection, reader))
-        register("update", UpdateCommand())
-        register("remove_by_id", RemoveByIdCommand())
+        register("update", UpdateCommand(collection, reader))
+        register("remove_by_id", RemoveByIdCommand(collection))
         register("clear", ClearCommand(collection))
         register("save", SaveCommand(collection))
         register("execute_script", ExecuteScriptCommand(this, scannerController.getInputStream()))
         register("exit", ExitCommand())
         register("remove_head", RemoveHeadCommand(collection))
-        register("sum_of_employees_count", SumOfEmployeesCountCommand())
-        register("group_counting_by_employees_count", GroupCountingByEmployeesCountCommand())
-        register("print_unique_postal_address", PrintUniquePostalAddressCommand())
+        register("add_if_max", AddIfMaxCommand(collection, reader))
+        register("remove_lower", RemoveLowerCommand(collection, reader))
+        register("sum_of_employees_count", SumOfEmployeesCountCommand(collection))
+        register("group_counting_by_employees_count", GroupCountingByEmployeesCountCommand(collection))
+        register("print_unique_postal_address", PrintUniquePostalAddressCommand(collection))
     }
 }

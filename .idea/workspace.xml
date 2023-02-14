@@ -10,17 +10,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ScannerController.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/examples/data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/InputStreamController.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/PrintUniquePostalAddressCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/PrintUniquePostalAddressCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveByIdCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveByIdCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,6 +104,7 @@
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\build\libs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\examples" />
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog" />
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\src" />
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\src\main\kotlin\commands" />
@@ -158,6 +162,10 @@
       <workItem from="1676235158933" duration="1446000" />
       <workItem from="1676279925001" duration="2353000" />
       <workItem from="1676292056478" duration="31253000" />
+      <workItem from="1676324968085" duration="329000" />
+      <workItem from="1676373945426" duration="2316000" />
+      <workItem from="1676376679629" duration="3378000" />
+      <workItem from="1676389924660" duration="6123000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -201,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676306789540</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Добавлена возможность смены потока входных данных с System.`in` на переданную строку&#10;Исправление: Organization - теперь имплементирует Comparable вместо Comparator&#10;Добавлен вывод сообщения о критической ошибке&#10;Другие улучшения и исправления">
+      <created>1676325286370</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1676325286370</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -214,7 +229,8 @@
     <MESSAGE value="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения" />
     <MESSAGE value="Исправления в build.gradle для корректной сборки jar-файла" />
     <MESSAGE value="Окончательно сформирован класс Organization&#10;В классе Reader добавлен метод для считывания значения любого поля с консоли&#10;Команда add теперь считывает поля с помощью метода из класса Reader&#10;В некоторых классах добавлена обработка строки аргументов&#10;Частично реализована команда чтения json-файлов&#10;Добавлена проверка на уникальность fullName и id&#10;Другие улучшения" />
-    <option name="LAST_COMMIT_MESSAGE" value="Окончательно сформирован класс Organization&#10;В классе Reader добавлен метод для считывания значения любого поля с консоли&#10;Команда add теперь считывает поля с помощью метода из класса Reader&#10;В некоторых классах добавлена обработка строки аргументов&#10;Частично реализована команда чтения json-файлов&#10;Добавлена проверка на уникальность fullName и id&#10;Другие улучшения" />
+    <MESSAGE value="Добавлена возможность смены потока входных данных с System.`in` на переданную строку&#10;Исправление: Organization - теперь имплементирует Comparable вместо Comparator&#10;Добавлен вывод сообщения о критической ошибке&#10;Другие улучшения и исправления" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавлена возможность смены потока входных данных с System.`in` на переданную строку&#10;Исправление: Organization - теперь имплементирует Comparable вместо Comparator&#10;Добавлен вывод сообщения о критической ошибке&#10;Другие улучшения и исправления" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

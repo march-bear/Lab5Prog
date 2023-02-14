@@ -1,0 +1,81 @@
+[
+  {
+    "id": 812129830289767471,
+    "name": "Карапулька",
+    "coordinates": {
+      "x": 78.8,
+      "y": 12
+    },
+    "creationDate": 880846021153,
+    "annualTurnover": 300,
+    "fullName": "Карапуленька",
+    "employeesCount": 1,
+    "type": "PRIVATE_LIMITED_COMPANY",
+    "postalAddress": {
+      "zipCode": "356790"
+    }
+  },
+  {
+    "id": 7705843011614677712,
+    "name": "Чебурек",
+    "coordinates": {
+      "x": 1.01,
+      "y": -5
+    },
+    "creationDate": 846911050807,
+    "annualTurnover": 1,
+    "fullName": "ЛолКекЧебурек",
+    "employeesCount": 1000000,
+    "type": "COMMERCIAL",
+    "postalAddress": {
+      "zipCode": "456789"
+    }
+  },
+  {
+    "id": 8516621917755754861,
+    "name": "Ваня",
+    "coordinates": {
+      "x": 78.0,
+      "y": -91283
+    },
+    "creationDate": 1272371003345,
+    "annualTurnover": 300,
+    "fullName": "Дядя Ваня Хрен Столовый",
+    "employeesCount": null,
+    "type": "TRUST",
+    "postalAddress": {
+      "zipCode": "101"
+    }
+  },
+  {
+    "id": 5462020851890405329,
+    "name": "Артемий Лебедев",
+    "coordinates": {
+      "x": 0.0,
+      "y": 0},
+    "creationDate": 928268053650,
+    "annualTurnover": 999991,
+    "fullName": "Студия Артемия Лебедева",
+    "employeesCount": 327,
+    "type": "COMMERCIAL",
+    "postalAddress": {
+      "zipCode": "rus1"
+    }
+  },
+  {
+    "id": 4429434855481377326,
+    "name": "Артемий Лебедев",
+    "coordinates": {
+      "x": 0.0,
+      "y": 0
+    },
+    "creationDate": 115305836166,
+    "annualTurnover": 1,
+    "fullName": "Лебедев Артемий Ростиславович: Мебель на заказ",
+    "employeesCount": 4,
+    "type":"PRIVATE_LIMITED_COMPANY",
+    "postalAddress": {
+      "zipCode":"magadan"
+    }
+  }
+]

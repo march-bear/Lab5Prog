@@ -96,4 +96,41 @@ class Reader(private val sc: ScannerController = ScannerController(System.`in`))
             }
         }
     }
+
+    fun readElementForCollection(collection: LinkedList<Organization>): Organization {
+        val name: String? = readField("Имя организации",
+            {readOrganizationName()},)
+
+
+        EventMessage.messageln("Координаты", TextColor.GREEN)
+
+        val x: Double? = readField("\tx",
+            {readCoordinateX()},
+            "\tНевалидное значение поля. Повторите ввод")
+
+        val y: Int? = readField("\ty",
+            {readCoordinateY()},
+            "\tНевалидное значение поля. Повторите ввод")
+
+        val annualTurnover: Int? = readField("Годовой оборот",
+            {readAnnualTurnover()})
+
+        val fullName: String? = readField("Полное имя (при наличии)",
+            {readFullName(collection)})
+
+        val employeesCount: Long? = readField("Количество сотрудников (при наличии)",
+            {readEmployeesCount()})
+
+        val type: OrganizationType? = readField("Тип " +
+                "(COMMERCIAL/GOVERNMENT/TRUST/PRIVATE_LIMITED_COMPANY/OPEN_JOINT_STOCK_COMPANY)",
+            {readOrganizationType()})
+
+        val postalAddress: Address? = readField("Почтовый адрес (ZIP-код, при наличии)",
+            {readAddress()})
+
+        println()
+
+        return Organization(name, Coordinates(x, y), annualTurnover,
+            fullName, employeesCount, type, postalAddress)
+    }
 }

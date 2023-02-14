@@ -1,8 +1,28 @@
 package commands
 
-class RemoveLowerCommand : Command {
+import Organization
+import exceptions.InvalidArgumentsForCommandException
+import iostreamers.EventMessage
+import iostreamers.Reader
+import java.util.LinkedList
+
+class RemoveLowerCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
     override fun execute(args: String?) {
-        TODO("Not yet implemented")
+        if (args != null)
+            throw InvalidArgumentsForCommandException("Аргументы вводятся на следующих строках")
+
+        val testElement = reader.readElementForCollection(LinkedList())
+
+        var counter = 0
+        while (counter < collection.size) {
+            if (collection[counter] < testElement) {
+                val elemId = collection[counter].getId()
+                collection.removeAt(counter)
+                EventMessage.messageln("Удален элемент с id $elemId", TextColor.BLUE)
+                continue
+            }
+            counter++
+        }
     }
 
     override fun getInfo(): String = "удалить из коллекции все элементы, меньшие, чем заданный"
