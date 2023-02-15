@@ -27,12 +27,12 @@ class SaveCommand(private val collection: LinkedList<Organization>) : Command {
         }
         try {
             file.write(Json.encodeToString(collection.toList()))
-        } catch (e: Exception) {
+            EventMessage.messageln("Коллекция успешно сохранена", TextColor.BLUE)
+            file.close()
+        } catch (e: Throwable) {
             EventMessage.messageln("Возникла ошибка во время записи в файл", TextColor.RED)
             EventMessage.messageln("Сообщение ошибки: $e ${e.message}")
         }
-        EventMessage.messageln("Коллекция успешно сохранена", TextColor.BLUE)
-        file.close()
     }
 
     override fun getInfo(): String = "сохранить коллекцию в файл"
