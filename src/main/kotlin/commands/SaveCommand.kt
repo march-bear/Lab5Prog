@@ -6,6 +6,7 @@ import iostreamers.EventMessage
 import iostreamers.TextColor
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.util.LinkedList
@@ -23,9 +24,9 @@ class SaveCommand(private val collection: LinkedList<Organization>) : Command {
             1 -> {
                 try {
                     file = OutputStreamWriter(FileOutputStream(fileNames[0]))
-                } catch (e: Throwable) {
-                    EventMessage.messageln("Возникла ошибка во время записи в файл", TextColor.RED)
-                    EventMessage.messageln("Сообщение ошибки: $e ${e.message}")
+                } catch (e: FileNotFoundException) {
+                    EventMessage.messageln("Возникла ошибка во время открытия файла", TextColor.RED)
+                    EventMessage.messageln("Сообщение ошибки: $e", TextColor.RED)
                     return
                 }
             }

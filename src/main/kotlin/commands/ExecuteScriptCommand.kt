@@ -29,15 +29,12 @@ class ExecuteScriptCommand(private var collection: CollectionController, private
             script = inputStreamReader.readText()
             inputStreamReader.close()
         } catch (e: FileNotFoundException) {
-            EventMessage.messageln("${listOfArgs[0]}: файл не найден", TextColor.RED)
+            EventMessage.messageln("${listOfArgs[0]}: ошибка во время открытия файл", TextColor.RED)
+            EventMessage.messageln("Сообщение ошибки: $e", TextColor.RED)
             return
         }
 
-        try {
-            collection.executeScript(script)
-        } catch (e: RuntimeException) {
-            EventMessage.messageln(e.message.toString(), TextColor.RED)
-        }
+        collection.executeScript(script)
     }
 
     override fun getInfo(): String =

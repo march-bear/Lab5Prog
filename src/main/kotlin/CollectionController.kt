@@ -89,8 +89,8 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         try {
             fileStream = FileInputStream(fileName)
         } catch (e: FileNotFoundException) {
-            EventMessage.messageln("${fileName}: не удается открыть файл. " +
-                    "Возможно, его не существует или пользователь не имеет прав доступа к нему", TextColor.RED)
+            EventMessage.messageln("${fileName}: ошибка во время открытия файла", TextColor.RED)
+            EventMessage.messageln("Сообщение ошибки: $e", TextColor.RED)
             return
         }
 

@@ -10,6 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -152,7 +155,7 @@
       <workItem from="1676373945426" duration="2316000" />
       <workItem from="1676376679629" duration="3378000" />
       <workItem from="1676389924660" duration="11347000" />
-      <workItem from="1676426767631" duration="5819000" />
+      <workItem from="1676426767631" duration="6519000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -224,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676432763045</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="SaveCommand.execute - изменения в работе механизма ловли исключений">
+      <created>1676432892861</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1676432892861</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,7 +252,8 @@
     <MESSAGE value="В класс Reader добавлен метод для считывания всего объекта Organization&#10;Команда add сокращена вследствие передачи механизма считывания объекта классу Reader&#10;Реализованы все команды&#10;Добавлен пример json-файла&#10;Мелкие исправления" />
     <MESSAGE value="Частично добавлена документация&#10;Мелкие исправления" />
     <MESSAGE value="SaveCommand.execute - добавлен временный механизм для ловли всех исключений" />
-    <option name="LAST_COMMIT_MESSAGE" value="SaveCommand.execute - добавлен временный механизм для ловли всех исключений" />
+    <MESSAGE value="SaveCommand.execute - изменения в работе механизма ловли исключений" />
+    <option name="LAST_COMMIT_MESSAGE" value="SaveCommand.execute - изменения в работе механизма ловли исключений" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
