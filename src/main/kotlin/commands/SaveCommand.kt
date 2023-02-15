@@ -21,18 +21,20 @@ class SaveCommand(private val collection: LinkedList<Organization>) : Command {
         when (fileNames?.size) {
             0, null -> throw InvalidArgumentsForCommandException("Имя файла для сохранения не указано")
             1 -> {
-                file = OutputStreamWriter(FileOutputStream(fileNames[0]))
+                try {
+                    file = OutputStreamWriter(FileOutputStream(fileNames[0]))
+                } catch (e: Throwable) {
+                    EventMessage.messageln("Возникла ошибка во время записи в файл", TextColor.RED)
+                    EventMessage.messageln("Сообщение ошибки: $e ${e.message}")
+                    return
+                }
             }
             else -> throw InvalidArgumentsForCommandException("Нужно указать путь к одному файлу")
         }
-        try {
             file.write(Json.encodeToString(collection.toList()))
             EventMessage.messageln("Коллекция успешно сохранена", TextColor.BLUE)
             file.close()
-        } catch (e: Throwable) {
-            EventMessage.messageln("Возникла ошибка во время записи в файл", TextColor.RED)
-            EventMessage.messageln("Сообщение ошибки: $e ${e.message}")
-        }
+
     }
 
     override fun getInfo(): String = "сохранить коллекцию в файл"
