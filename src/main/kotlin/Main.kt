@@ -10,7 +10,6 @@ fun main(args: Array<String>) {
     try {
         collection.loadDataFromFiles(args.toSet())
     } catch (e: RuntimeException) {
-        println(e.message)
         EventMessage.messageln("Произошла ошибка во время загрузки содержимого файла. " +
                 "Возможно, предоставленные данные некорректны", TextColor.RED)
     }

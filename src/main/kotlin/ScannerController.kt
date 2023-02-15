@@ -19,7 +19,6 @@ class ScannerController {
         setInputString(inputString)
     }
 
-    fun getScanner(): Scanner = scanner
     fun setInputStream(inputStream: InputStream) {
         this.inputStream = inputStream
         this.inputString = null

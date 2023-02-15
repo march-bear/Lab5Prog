@@ -144,9 +144,9 @@ class CollectionController(private val collection: LinkedList<Organization>) {
             try {
                 execute(scannerController.scanner.nextLine().trim())
             } catch (e: CommandNotFountException) {
-                EventMessage.messageln(e.toString(), TextColor.RED)
+                EventMessage.messageln(e.message.toString(), TextColor.RED)
             } catch (e: RuntimeException) {
-                EventMessage.messageln(e.toString(), TextColor.RED)
+                EventMessage.messageln(e.message.toString(), TextColor.RED)
             }
         }
         EventMessage.messageln("Скрипт выполнен", TextColor.YELLOW)
@@ -168,7 +168,6 @@ class CollectionController(private val collection: LinkedList<Organization>) {
             } catch (e: CommandNotFountException) {
                 EventMessage.messageln(e.message ?: "", TextColor.RED)
             } catch (e: RuntimeException) {
-                println(e.message)
                 EventMessage.messageln("Завершение работы программы...")
                 EventMessage.messageln("Сохранение коллекции не происходит...")
                 break
