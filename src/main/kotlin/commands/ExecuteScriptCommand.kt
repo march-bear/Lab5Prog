@@ -1,6 +1,7 @@
 package commands
 
 import CollectionController
+import ScannerController
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import java.io.FileInputStream
@@ -12,7 +13,8 @@ import java.util.regex.Pattern
 /**
  * Класс команды execute_script для исполнения скрипта из файла
  */
-class ExecuteScriptCommand(private var collection: CollectionController, private val inputStream: InputStream?) : Command {
+class ExecuteScriptCommand(private val collection: CollectionController,
+                           private val ScannerController: ScannerController) : Command {
     override fun execute(args: String?) {
         val listOfArgs = args?.split(Pattern.compile("\\s+"))
         if (listOfArgs?.size != 1) {
@@ -20,7 +22,7 @@ class ExecuteScriptCommand(private var collection: CollectionController, private
             return
         }
 
-        if (inputStream != System.`in`)
+        if (ScannerController.getInputStream() != System.`in`)
             throw java.lang.RuntimeException("Прервана попытка запуска скрипта во время исполнения другого скрипта")
 
         val script: String

@@ -139,18 +139,18 @@ class CollectionController(private val collection: LinkedList<Organization>) {
      */
     fun executeScript(script: String) {
         EventMessage.messageln("Запущено исполнение скрипта", TextColor.YELLOW)
-        scannerController.scanner = Scanner(script)
+        scannerController.setInputString(script)
         while (scannerController.scanner.hasNext()) {
             try {
                 execute(scannerController.scanner.nextLine().trim())
             } catch (e: CommandNotFountException) {
-                EventMessage.messageln(e.message ?: "", TextColor.RED)
+                EventMessage.messageln(e.toString(), TextColor.RED)
             } catch (e: RuntimeException) {
-                EventMessage.messageln(e.message.toString())
+                EventMessage.messageln(e.toString(), TextColor.RED)
             }
         }
         EventMessage.messageln("Скрипт выполнен", TextColor.YELLOW)
-        scannerController.scanner = Scanner(System.`in`)
+        scannerController.setInputStream(System.`in`)
     }
 
     /**
@@ -160,7 +160,7 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         EventMessage.interactiveModeMessage()
         EventMessage.messageln("Включен интерактивный режим. " +
                 "Для просмотра доступных команд введите \u001b[3m`help`\u001b[0m", TextColor.YELLOW)
-        scannerController.scanner = Scanner(System.`in`)
+        scannerController.setInputStream(System.`in`)
         while (true) {
             try {
                 EventMessage.inputPrompt(delimiter = ">>> ")
@@ -187,7 +187,7 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         register("remove_by_id", RemoveByIdCommand(collection))
         register("clear", ClearCommand(collection))
         register("save", SaveCommand(collection))
-        register("execute_script", ExecuteScriptCommand(this, scannerController.getInputStream()))
+        register("execute_script", ExecuteScriptCommand(this, scannerController))
         register("exit", ExitCommand())
         register("remove_head", RemoveHeadCommand(collection))
         register("add_if_max", AddIfMaxCommand(collection, reader))

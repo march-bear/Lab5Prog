@@ -16,7 +16,6 @@ import java.util.function.Supplier
  * Класс для считывания данных с входного потока
  */
 class Reader(private val sc: ScannerController = ScannerController(System.`in`)) {
-    fun getScanner() = sc.scanner
     private fun readStringOrNull(): String? {
         val input = readString()
         return if (input != "") input else null

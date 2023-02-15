@@ -12,8 +12,9 @@
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ScannerController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ScannerController.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +156,7 @@
       <workItem from="1676373945426" duration="2316000" />
       <workItem from="1676376679629" duration="3378000" />
       <workItem from="1676389924660" duration="11347000" />
-      <workItem from="1676426767631" duration="6519000" />
+      <workItem from="1676426767631" duration="7773000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -234,7 +235,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676432892861</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Обновлен механизм перехвата исключений в командах, открывающих файлы">
+      <created>1676433542582</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1676433542582</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +261,8 @@
     <MESSAGE value="Частично добавлена документация&#10;Мелкие исправления" />
     <MESSAGE value="SaveCommand.execute - добавлен временный механизм для ловли всех исключений" />
     <MESSAGE value="SaveCommand.execute - изменения в работе механизма ловли исключений" />
-    <option name="LAST_COMMIT_MESSAGE" value="SaveCommand.execute - изменения в работе механизма ловли исключений" />
+    <MESSAGE value="Обновлен механизм перехвата исключений в командах, открывающих файлы" />
+    <option name="LAST_COMMIT_MESSAGE" value="Обновлен механизм перехвата исключений в командах, открывающих файлы" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

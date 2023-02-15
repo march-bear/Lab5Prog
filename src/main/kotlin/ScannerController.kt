@@ -9,6 +9,7 @@ class ScannerController {
     private var inputStream: InputStream? = null
     private var inputString: String? = null
     var scanner: Scanner = Scanner(System.`in`)
+        private set
 
     constructor(inputStream: InputStream) {
         setInputStream(inputStream)
@@ -18,6 +19,7 @@ class ScannerController {
         setInputString(inputString)
     }
 
+    fun getScanner(): Scanner = scanner
     fun setInputStream(inputStream: InputStream) {
         this.inputStream = inputStream
         this.inputString = null
