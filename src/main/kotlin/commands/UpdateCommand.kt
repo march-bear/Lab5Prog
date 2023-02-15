@@ -4,10 +4,14 @@ import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.Reader
+import iostreamers.TextColor
 import java.lang.NumberFormatException
 import java.util.LinkedList
 import java.util.regex.Pattern
 
+/**
+ * Класс команды update для изменения значения элемента коллекции с указанным id
+ */
 class UpdateCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
     override fun execute(args: String?) {
         val argsList = args?.trim()?.split(Pattern.compile("\\s+"), 2)

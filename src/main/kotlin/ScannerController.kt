@@ -1,6 +1,10 @@
 import java.io.InputStream
 import java.util.*
 
+
+/**
+ * Класс для управления входным потоком для объекта класса Scanner
+ */
 class ScannerController {
     private var inputStream: InputStream? = null
     private var inputString: String? = null

@@ -4,8 +4,13 @@ import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.Reader
+import iostreamers.TextColor
 import java.util.LinkedList
 
+/**
+ * Класс команды add_if_max для считывания элемента с входного потока и добавления его в коллекцию, если он больше
+ * максимального элемента этой коллекции
+ */
 class AddIfMaxCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
     override fun execute(args: String?) {
         if (args != null)

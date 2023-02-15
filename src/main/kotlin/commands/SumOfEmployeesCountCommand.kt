@@ -3,8 +3,12 @@ package commands
 import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
+import iostreamers.TextColor
 import java.util.LinkedList
 
+/**
+ * Класс команды sum_of_employees_count для вывода суммы значений полей employeesCount всех элементов коллекции
+ */
 class SumOfEmployeesCountCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(args: String?) {
         if (args != null)

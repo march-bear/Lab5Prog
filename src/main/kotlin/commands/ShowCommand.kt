@@ -2,10 +2,13 @@ package commands
 
 import iostreamers.EventMessage
 import Organization
-import TextColor
+import iostreamers.TextColor
 import exceptions.InvalidArgumentsForCommandException
 import java.util.LinkedList
 
+/**
+ * Класс команды show для отображения всех элементов коллекции
+ */
 class ShowCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(args: String?) {
         if (args != null) {

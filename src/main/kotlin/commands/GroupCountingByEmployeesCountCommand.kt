@@ -3,9 +3,13 @@ package commands
 import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
-import java.util.LinkedList
+import iostreamers.TextColor
 
-class GroupCountingByEmployeesCountCommand(private val collection: LinkedList<Organization>) : Command {
+/**
+ * Класс команды group_counting_by_employees_count для объединения элементов в группы
+ * по значению полей employeesCount и вывод количества элементов в каждой из групп
+ */
+class GroupCountingByEmployeesCountCommand(private val collection: List<Organization>) : Command {
     override fun execute(args: String?) {
         if (args != null)
             throw InvalidArgumentsForCommandException("Команда не принимает аргументы")

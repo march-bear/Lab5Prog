@@ -7,12 +7,14 @@ import Organization
 import OrganizationType
 import ScannerController
 import exceptions.InvalidFieldValueException
-import java.io.InputStream
 import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
 import java.util.*
 import java.util.function.Supplier
 
+/**
+ * Класс для считывания данных с входного потока
+ */
 class Reader(private val sc: ScannerController = ScannerController(System.`in`)) {
     fun getScanner() = sc.scanner
     private fun readStringOrNull(): String? {

@@ -2,9 +2,12 @@ package commands
 
 import iostreamers.EventMessage
 import exceptions.InvalidArgumentsForCommandException
-import kotlin.collections.HashMap
+import iostreamers.TextColor
 
-class HelpCommand (private val commandMap: HashMap<String, Command>) : Command {
+/**
+ * Класс команды help для вывода информации о всех зарегистрированных командах
+ */
+class HelpCommand (private val commandMap: Map<String, Command>) : Command {
     override fun execute(args: String?) {
         if (args != null)
             throw InvalidArgumentsForCommandException("Команда не принимает на вход аргументы")

@@ -3,10 +3,11 @@ package commands
 import iostreamers.EventMessage
 import Organization
 import exceptions.InvalidArgumentsForCommandException
-import java.util.LinkedList
+import iostreamers.TextColor
+import java.util.*
 
 
-class InfoCommand(private val collection: LinkedList<Organization>) : Command {
+class InfoCommand(private val collection: List<Organization>, private val initializationDate: Date) : Command {
     override fun execute(args: String?) {
         if (args != null)
             throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
@@ -19,7 +20,7 @@ class InfoCommand(private val collection: LinkedList<Organization>) : Command {
         EventMessage.messageln("LinkedList", TextColor.BLUE)
 
         EventMessage.message("Дата инициализации: ")
-        EventMessage.messageln("неизвестна", TextColor.BLUE)
+        EventMessage.messageln("$initializationDate", TextColor.BLUE)
 
         EventMessage.message("Количество элементов: ")
         EventMessage.messageln(collection.size.toString(), TextColor.BLUE)

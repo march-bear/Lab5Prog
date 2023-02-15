@@ -1,7 +1,5 @@
 package iostreamers
 
-import TextColor
-
 class EventMessage {
     companion object {
         fun message(message: String, color: TextColor = TextColor.DEFAULT) {

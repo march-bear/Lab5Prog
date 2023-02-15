@@ -2,14 +2,16 @@ package commands
 
 import CollectionController
 import iostreamers.EventMessage
-import iostreamers.Reader
+import iostreamers.TextColor
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.util.*
 import java.util.regex.Pattern
 
+/**
+ * Класс команды execute_script для исполнения скрипта из файла
+ */
 class ExecuteScriptCommand(private var collection: CollectionController, private val inputStream: InputStream?) : Command {
     override fun execute(args: String?) {
         val listOfArgs = args?.split(Pattern.compile("\\s+"))

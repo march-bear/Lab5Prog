@@ -1,12 +1,11 @@
 import commands.*
 import exceptions.CommandNotFountException
-import exceptions.ExitCommandCall
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.Reader
+import iostreamers.TextColor
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.internal.decodeStringToJsonTree
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
@@ -15,8 +14,14 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
+/**
+ * Класс, управляющий коллекцией и входным потоком и исполняющий вводимые пользователем команды
+ */
 class CollectionController(private val collection: LinkedList<Organization>) {
     companion object {
+        /**
+         * Проверяет переданное полное имя на уникальность в переданной коллекции
+         */
         fun checkUniquenessFullName(fullName: String?, collection: LinkedList<Organization>): Boolean {
             if (fullName == null)
                 return true
@@ -26,13 +31,28 @@ class CollectionController(private val collection: LinkedList<Organization>) {
                     return false
             return true
         }
+
+        /**
+         * Проверяет переданное id на уникальность в переданной коллекции
+         */
+        fun checkUniquenessId(id: Long?, collection: LinkedList<Organization>): Boolean {
+            if (!Organization.idIsValid(id))
+                return false
+
+            for (elem in collection)
+                if (elem.getId() == id)
+                    return false
+            return true
+        }
     }
 
     private val commandMap: HashMap<String, Command> = HashMap()
     private val scannerController: ScannerController = ScannerController(System.`in`)
     private val reader: Reader = Reader(scannerController)
 
-
+    /**
+     * Добавляет в commandMap пару Имя_команды: Объект_класса_команды
+     */
     private fun register(commandName: String, command: Command) {
         if (commandName.length > 40)
             throw Exception("Имя команды слишком длинное")
@@ -41,6 +61,10 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         commandMap[commandName] = command
     }
 
+    /**
+     * Исполняет переданную в виде строки команду
+     * @throws CommandNotFountException выбрасывается, если команда не зарегистрирована в commandMap
+     */
     fun execute(commandName: String) {
         val commandList = commandName.trim().split(Pattern.compile("\\s+"), limit = 2)
         if (commandList.isEmpty() || commandList[0] == "")
@@ -56,31 +80,44 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         }
     }
 
+    /**
+     * Загружает данные для коллекции из файла
+     * @param fileName имя файла
+     */
     private fun loadDataFromFile(fileName: String = "data.json") {
         val fileStream: FileInputStream
         try {
             fileStream = FileInputStream(fileName)
         } catch (e: FileNotFoundException) {
-            EventMessage.messageln("${fileName}: файл не найден", TextColor.RED)
+            EventMessage.messageln("${fileName}: не удается открыть файл. " +
+                    "Возможно, его не существует или пользователь не имеет прав доступа к нему", TextColor.RED)
             return
         }
 
-        EventMessage.messageln("Чтение файла $fileName")
+        EventMessage.messageln("Чтение файла $fileName...")
         val fileReader = InputStreamReader(fileStream)
         val jsonCode: String = fileReader.readText()
         fileReader.close()
         EventMessage.messageln("Чтение завершено")
-        EventMessage.messageln("Загрузка данных файла $fileName в коллекцию")
+        EventMessage.messageln("Загрузка данных из файла $fileName в коллекцию...")
         val json = Json.decodeFromString<List<Organization>>(jsonCode)
-        for (elem in json)
-            collection.add(elem)
+        for (elem in json) {
+            if (elem.objectIsValid() && checkUniquenessFullName(elem.getFullName(), collection) &&
+                checkUniquenessId(elem.getId(), collection))
+                collection.add(elem)
+            else
+                EventMessage.messageln("Элемент не подходит под требования коллекции", TextColor.RED)
+        }
         EventMessage.messageln("Загрузка завершена")
     }
 
+    /**
+     * Вызывает метод загрузки данных из каждого файла, содержащегося в поданном множестве
+     */
     fun loadDataFromFiles(files: Set<String>) {
         if (files.isEmpty()) {
-            EventMessage.messageln("ВНИМАНИЕ! На вход программы не передан ни один файл. " +
-                    "Загрузка данных из файла по умолчанию...", TextColor.YELLOW)
+            EventMessage.message("ВНИМАНИЕ! На вход программы не передан ни один файл. ", TextColor.YELLOW)
+            EventMessage.messageln("Загрузка данных из файла по умолчанию...")
             loadDataFromFile()
             return
         }
@@ -89,12 +126,17 @@ class CollectionController(private val collection: LinkedList<Organization>) {
             try {
                 loadDataFromFile(file)
             } catch (e: Exception) {
-                println(e.message)
+                EventMessage.messageln("$file: произошла ошибка во время загрузки файла", TextColor.RED)
+                EventMessage.messageln("Сообщение ошибки: ${e.message}", TextColor.RED)
             }
-            println()
+            println("\n")
         }
     }
 
+    /**
+     * Исполняет переданный в качестве параметра скрипт
+     * @param script строка, содержащая скрипт
+     */
     fun executeScript(script: String) {
         EventMessage.messageln("Запущено исполнение скрипта", TextColor.YELLOW)
         scannerController.scanner = Scanner(script)
@@ -111,6 +153,9 @@ class CollectionController(private val collection: LinkedList<Organization>) {
         scannerController.scanner = Scanner(System.`in`)
     }
 
+    /**
+     * Запускает интерактивный режим работы с коллекцией
+     */
     fun enableInteractiveMode() {
         EventMessage.interactiveModeMessage()
         EventMessage.messageln("Включен интерактивный режим. " +
@@ -135,7 +180,7 @@ class CollectionController(private val collection: LinkedList<Organization>) {
 
     init {
         register("help", HelpCommand(commandMap))
-        register("info", InfoCommand(collection))
+        register("info", InfoCommand(collection, Date(System.currentTimeMillis())))
         register("show", ShowCommand(collection))
         register("add", AddCommand(collection, reader))
         register("update", UpdateCommand(collection, reader))

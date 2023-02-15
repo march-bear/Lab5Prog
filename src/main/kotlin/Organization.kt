@@ -36,51 +36,85 @@ class Organization : Comparable<Organization> {
         }
     }
 
-    private var id: Long? = -1 // Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private var name: String? // Поле не может быть null, Строка не может быть пустой
+    /**
+     * Уникальный id организации. Не может быть null. Значение поля должно быть больше 0
+     */
+    private var id: Long? = -1
+
+    /**
+     * Имя организации. Не может быть null. Строка не может быть пустой
+     */
+    private var name: String?
         set(name) {
             if (nameIsValid(name))
                 field = name
             else
                 throw Exception()
         }
-    private var coordinates: Coordinates? // Поле не может быть null
-        set(coordinates: Coordinates?) {
+
+    /**
+     * Координаты организации. Не может быть null
+     */
+    private var coordinates: Coordinates?
+        set(coordinates) {
             when (coordinates) {
                 null -> throw Exception()
                 else -> field = coordinates
             }
         }
 
+    /**
+     * Дата создания организации (генерируется автоматически). Не может быть null
+     */
     @Serializable(with = DateAsLongSerializer::class)
-    private var creationDate: Date? // Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private var annualTurnover: Int? // Поле не может быть null, Значение поля должно быть больше 0
-        set(annualTurnover: Int?) {
+    private var creationDate: Date?
+
+    /**
+     * Годовой оборот организации. Не может быть null. Значение поля должно быть больше 0
+     */
+    private var annualTurnover: Int?
+        set(annualTurnover) {
             if (annualTurnover == null || annualTurnover <= 0)
                 throw Exception()
             field = annualTurnover
         }
-    private var fullName: String? // Длина строки не должна быть больше 925, Значение этого поля должно быть уникальным, Поле может быть null
-        set(fullName: String?) {
+
+    /**
+     * Полное имя организации. Длина строки не должна быть больше 925. Не может быть null
+     */
+    private var fullName: String?
+        set(fullName) {
             if (fullName == null || fullName.length in 0..925)
                 field = fullName
             else
                 throw Exception()
         }
-    private var employeesCount: Long? // Поле может быть null, Значение поля должно быть больше 0
-        set(employeesCount: Long?) {
+
+    /**
+     * Количество работников в организации. Не может быть null. Значение поля должно быть больше 0
+     */
+    private var employeesCount: Long?
+        set(employeesCount) {
             if (employeesCount == null || employeesCount > 0)
                 field = employeesCount
             else
                 throw Exception()
         }
-    private var type: OrganizationType? // Поле не может быть null
-        set(type: OrganizationType?) {
+
+    /**
+     * Тип организации. Не может быть null
+     */
+    private var type: OrganizationType?
+        set(type) {
             when (type) {
                 null -> throw Exception()
                 else -> field = type
             }
         }
+
+    /**
+     * Почтовый адрес организации. Не может быть null
+     */
     private var postalAddress: Address? // Поле может быть null
 
     fun setId(id: Long?) {
@@ -91,6 +125,14 @@ class Organization : Comparable<Organization> {
     fun getFullName(): String? = this.fullName
     fun getPostalAddress(): Address? = this.postalAddress
     fun getEmployeesCount(): Long? = this.employeesCount
+
+    /**
+     * Проверяет объект на соответствие объекта класса требованиям.
+     */
+    fun objectIsValid(): Boolean = idIsValid(id) && nameIsValid(name) && coordinatesIsValid(coordinates) &&
+            annualTurnoverIsValid(annualTurnover) && fullNameIsValid(fullName) &&
+            employeesCountIsValid(employeesCount) && typeIsValid(type) &&
+            (postalAddress == null || Address.zipCodeIsValid(postalAddress?.getZipCode()))
 
     constructor(name: String?, coordinates: Coordinates, annualTurnover: Int?, fullName: String?,
                 employeesCount: Long?, type: OrganizationType?, postalAddress: Address?) {

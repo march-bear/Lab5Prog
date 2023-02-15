@@ -12,6 +12,9 @@ import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
 import java.util.*
 
+/**
+ * Класс команды add для считывания элемента с входного потока и добавления его в коллекцию
+ */
 class AddCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
     override fun execute(args: String?) {
         if (args != null)

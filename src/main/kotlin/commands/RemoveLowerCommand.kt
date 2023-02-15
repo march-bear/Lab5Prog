@@ -4,8 +4,12 @@ import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.Reader
+import iostreamers.TextColor
 import java.util.LinkedList
 
+/**
+ * Класс команды remove_lower для удаления всех элементов коллекции, меньших, чем введенный
+ */
 class RemoveLowerCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
     override fun execute(args: String?) {
         if (args != null)

@@ -3,8 +3,13 @@ package commands
 import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
+import iostreamers.TextColor
 import java.util.LinkedList
 
+/**
+ * Класс команды print_unique_postal_address для вывода уникальных значений
+ * среди полей postalAddress элементов коллекции
+ */
 class PrintUniquePostalAddressCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(args: String?) {
         if (args != null)

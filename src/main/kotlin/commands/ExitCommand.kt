@@ -2,6 +2,9 @@ package commands
 
 import exceptions.ExitCommandCall
 
+/**
+ * Класс команды exit для выхода из программы
+ */
 class ExitCommand : Command {
     override fun execute(args: String?) {
         throw ExitCommandCall()

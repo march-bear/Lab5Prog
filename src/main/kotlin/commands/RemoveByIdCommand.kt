@@ -3,10 +3,14 @@ package commands
 import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
+import iostreamers.TextColor
 import java.lang.NumberFormatException
 import java.util.LinkedList
 import java.util.regex.Pattern
 
+/**
+ * Класс команды remove_by_id для удаления элемента из коллекции по его id
+ */
 class RemoveByIdCommand(private val collection: LinkedList<Organization>) : Command {
     override fun execute(args: String?) {
         val argsList = args?.trim()?.split(Pattern.compile("\\s+"), 2)
