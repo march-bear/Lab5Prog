@@ -5,6 +5,9 @@ package commands
  */
 interface Command {
     val info: String
+    val argumentTypes: List<ArgumentType>
+        get() = listOf()
+
     /**
      * Исполняет команду
      * @param args аргументы, поданные с командой

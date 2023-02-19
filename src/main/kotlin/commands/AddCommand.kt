@@ -1,31 +1,29 @@
 package commands
 
-import Address
-import Coordinates
-import iostreamers.EventMessage
-import Organization
-import OrganizationType
 import exceptions.InvalidArgumentsForCommandException
-import exceptions.InvalidFieldValueException
+import iostreamers.EventMessage
 import iostreamers.Reader
-import java.lang.IllegalArgumentException
-import java.lang.NumberFormatException
+import iostreamers.TextColor
+import requests.AddRequest
 import java.util.*
 
 /**
  * Класс команды add для считывания элемента с входного потока и добавления его в коллекцию
  */
-class AddCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Аргументы передаются на следующих строках")
+class AddCommand(
+    private val reader: Reader,
+) : Command {
+    override val info: String
+        get() = "добавить новый элемент в коллекцию (поля элемента указываются на отдельных строках)"
 
-        val newElement = reader.readElementForCollection(collection)
-        newElement.setId(Generator.generateUniqueId(collection))
-        collection.add(newElement)
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes, "Поля нового элемента передаются на следующих строках")
+
+        val newElement = reader.readElementForCollection(collection) //todo add smth like Factory
+        return CommandResult(
+            true,
+            AddRequest(newElement),
+            EventMessage.message("Запрос на добавление элемента в коллекцию отправлен", TextColor.BLUE)
+        )
     }
-
-
-    override fun getInfo(): String =
-        "добавить новый элемент в коллекцию (поля элемента указываются на отдельных строках)"
 }

@@ -4,25 +4,23 @@ import iostreamers.EventMessage
 import Organization
 import iostreamers.TextColor
 import exceptions.InvalidArgumentsForCommandException
+import requests.RemoveHeadRequest
 import java.util.LinkedList
 
 /**
  * Класс команды remove_head вывода первого элемента коллекции и его последующего удаления
  */
 class RemoveHeadCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
+    override val info: String
+        get() = "вывести первый элемент коллекции и удалить его"
 
-        if (collection.isEmpty()) {
-            EventMessage.messageln("Команда не может быть выполнена - коллекция пуста", TextColor.RED)
-            return
-        }
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
 
-        EventMessage.messageln("${collection.first}")
-        collection.removeFirst()
-        EventMessage.messageln("Элемент удален\n", TextColor.BLUE)
+        return CommandResult(
+            true,
+            RemoveHeadRequest(),
+            message = "Запрос на удаление первого элемента коллекции отправлен",
+        )
     }
-
-    override fun getInfo(): String = "вывести первый элемент коллекции и удалить его"
 }

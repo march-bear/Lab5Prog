@@ -13,21 +13,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/commands/CommandArgument.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/commands/CommandResult.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ClearRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ArgumentType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/commands/CommandData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandRegistrationException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/CyclicScriptCallException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/IdException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Generator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Generator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Generator.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ScannerController.kt" beforeDir="false" />
@@ -35,6 +31,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandArgument.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/CommandArgument.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/CommandResult.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" afterDir="false" />
@@ -84,11 +82,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
-        <option value="Kotlin Enum" />
         <option value="Kotlin File" />
         <option value="Kotlin Interface" />
+        <option value="Kotlin Data Class" />
+        <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Enum" />
       </list>
     </option>
   </component>
@@ -142,6 +141,7 @@
       <recent name="C:\Users\Ivan\IdeaProjects\Lab5Prog\src\main\kotlin" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="commands" />
       <recent name="iostreamers" />
       <recent name="commands.exceptions" />
     </key>
@@ -233,7 +233,10 @@
       <workItem from="1676715518821" duration="86000" />
       <workItem from="1676725036240" duration="3161000" />
       <workItem from="1676728526820" duration="61000" />
-      <workItem from="1676729151091" duration="17729000" />
+      <workItem from="1676729151091" duration="18174000" />
+      <workItem from="1676752103805" duration="4373000" />
+      <workItem from="1676797486784" duration="18495000" />
+      <workItem from="1676837372959" duration="5171000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -333,7 +336,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676436184492</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="(версия не предназначена для запуска)&#10;Добавлены классы для реализации запросов к контроллеру&#10;Добавлены классы для аргументов и результатов команд">
+      <created>1676750775157</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1676750775157</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,7 +366,8 @@
     <MESSAGE value="Исправлена работа ExecuteScriptCommand.execute и логика работы ScannerController" />
     <MESSAGE value="Исправлена логика работа ExecuteScriptCommand.execute и ScannerController" />
     <MESSAGE value="small fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="small fixes" />
+    <MESSAGE value="(версия не предназначена для запуска)&#10;Добавлены классы для реализации запросов к контроллеру&#10;Добавлены классы для аргументов и результатов команд" />
+    <option name="LAST_COMMIT_MESSAGE" value="(версия не предназначена для запуска)&#10;Добавлены классы для реализации запросов к контроллеру&#10;Добавлены классы для аргументов и результатов команд" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

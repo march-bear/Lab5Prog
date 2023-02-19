@@ -1,18 +1,18 @@
 package commands
 
-import iostreamers.EventMessage
-import Organization
-import iostreamers.TextColor
-import java.util.LinkedList
+import requests.ClearRequest
 
-/**
- * Класс команды clear для удаления всех элементов из коллекции
- */
-class ClearCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(args: String?) {
-        collection.clear()
-        EventMessage.messageln("Коллекция очищена", TextColor.BLUE)
+class ClearCommand : Command {
+    override val argumentTypes: List<ArgumentType>
+        get() = listOf()
+    override val info: String
+        get() = "очистить коллекцию"
+
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
+        return CommandResult(
+            true,
+            ClearRequest(),
+            message = "Запрос на очистку коллекции отправлен...")
     }
-
-    override fun getInfo(): String = "очистить коллекцию"
 }

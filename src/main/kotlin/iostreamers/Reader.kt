@@ -5,7 +5,6 @@ import CollectionController
 import Coordinates
 import Organization
 import OrganizationType
-import ScannerController
 import exceptions.InvalidFieldValueException
 import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
@@ -15,7 +14,7 @@ import java.util.function.Supplier
 /**
  * Класс для считывания данных с входного потока
  */
-class Reader(private val sc: ScannerController = ScannerController(System.`in`)) {
+class Reader() {
     private fun readStringOrNull(): String? {
         val input = readString()
         return if (input != "") input else null
@@ -23,22 +22,16 @@ class Reader(private val sc: ScannerController = ScannerController(System.`in`))
     private fun readString(): String {
         return sc.scanner.nextLine().trim()
     }
-    fun readOrganizationName(): String? {
+    private fun readOrganizationName(): String? {
         val name: String? = readStringOrNull()
-        if (Organization.nameIsValid(name))
-            return name
         throw InvalidFieldValueException()
     }
     fun readCoordinateX(): Double? {
         val x: Double? = readStringOrNull()?.toDoubleOrNull()
-        if (Coordinates.xIsValid(x))
-            return x
         throw InvalidFieldValueException()
     }
     fun readCoordinateY(): Int? {
         val y: Int? = readStringOrNull()?.toIntOrNull()
-        if (Coordinates.yIsValid(y))
-            return y
         throw InvalidFieldValueException()
     }
     fun readAnnualTurnover(): Int? {
@@ -71,16 +64,10 @@ class Reader(private val sc: ScannerController = ScannerController(System.`in`))
         } catch (e: IllegalArgumentException) {
             null
         }
-        if (Organization.typeIsValid(type))
-            return type
         throw InvalidFieldValueException()
     }
     fun readAddress(): Address? {
         val zipCode = readStringOrNull()
-        if (Address.zipCodeIsValid(zipCode))
-            return Address(zipCode)
-        if (zipCode == null)
-            return null
         throw InvalidFieldValueException()
     }
     fun <T> readField(inputPromptMessage: String, readFunction: Supplier<T>,
@@ -91,9 +78,9 @@ class Reader(private val sc: ScannerController = ScannerController(System.`in`))
                 return readFunction.get()
             } catch (e: InvalidFieldValueException) {
                 if (e.message == null)
-                    EventMessage.messageln(errorMessage, TextColor.RED)
+                    EventMessage.printMessageln(errorMessage, TextColor.RED)
                 else
-                    EventMessage.messageln(e.message, TextColor.RED)
+                    EventMessage.printMessageln(e.message, TextColor.RED)
             }
         }
     }
@@ -103,7 +90,7 @@ class Reader(private val sc: ScannerController = ScannerController(System.`in`))
             {readOrganizationName()},)
 
 
-        EventMessage.messageln("Координаты", TextColor.GREEN)
+        EventMessage.printMessageln("Координаты", TextColor.GREEN)
 
         val x: Double? = readField("\tx",
             {readCoordinateX()},

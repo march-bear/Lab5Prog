@@ -13,7 +13,10 @@ import java.util.regex.Pattern
  * Класс команды update для изменения значения элемента коллекции с указанным id
  */
 class UpdateCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
-    override fun execute(args: String?) {
+    override val argumentTypes: List<ArgumentType>
+        get() = TODO("Not yet implemented")
+
+    override fun execute(args: CommandArgument): CommandResult {
         val argsList = args?.trim()?.split(Pattern.compile("\\s+"), 2)
         when (argsList?.size) {
             null -> throw InvalidArgumentsForCommandException("id не указан")
@@ -28,10 +31,10 @@ class UpdateCommand(private val collection: LinkedList<Organization>, private va
                             val newElement = reader.readElementForCollection(collection)
                             newElement.setId(id)
                             collection[i] = newElement
-                            EventMessage.messageln("Элемент обновлен", TextColor.BLUE)
+                            EventMessage.printMessageln("Элемент обновлен", TextColor.BLUE)
                             return
                         }
-                    EventMessage.messageln("Элемент с id $id не найден", TextColor.RED)
+                    EventMessage.printMessageln("Элемент с id $id не найден", TextColor.RED)
                 } catch (e: NumberFormatException) {
                     throw InvalidArgumentsForCommandException("Переданный аргумент не является id")
                 }

@@ -3,14 +3,14 @@ import iostreamers.TextColor
 import java.util.LinkedList
 
 fun main(args: Array<String>) {
-    val collection = CollectionController(LinkedList<Organization>())
-    EventMessage.messageln("Коллекция создана")
+        val collection = CollectionController(LinkedList<Organization>())
+    EventMessage.printMessageln("Коллекция создана")
 
-    EventMessage.messageln("Загрузка данных из поданных на вход файлов...")
+    EventMessage.printMessageln("Загрузка данных из поданных на вход файлов...")
     try {
         collection.loadDataFromFiles(args.toSet())
     } catch (e: RuntimeException) {
-        EventMessage.messageln("Произошла ошибка во время загрузки содержимого файла. " +
+        EventMessage.printMessageln("Произошла ошибка во время загрузки содержимого файла. " +
                 "Возможно, предоставленные данные некорректны", TextColor.RED)
     }
     collection.enableInteractiveMode()

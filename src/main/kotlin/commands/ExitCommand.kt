@@ -6,9 +6,13 @@ import exceptions.ExitCommandCall
  * Класс команды exit для выхода из программы
  */
 class ExitCommand : Command {
-    override fun execute(args: String?) {
+    override val info: String
+        get() = "завершить программу (без сохранения в файл)"
+
+    override fun execute(args: CommandArgument): CommandResult {
         throw ExitCommandCall()
     }
 
-    override fun getInfo(): String = "завершить программу (без сохранения в файл)"
+    override val argumentTypes: List<ArgumentType>
+        get() = TODO("Not yet implemented")
 }

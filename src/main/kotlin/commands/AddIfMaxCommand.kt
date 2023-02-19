@@ -12,7 +12,11 @@ import java.util.LinkedList
  * максимального элемента этой коллекции
  */
 class AddIfMaxCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
-    override fun execute(args: String?) {
+    override val info: String
+        get() = "добавить новый элемент в коллекцию, если его значение " +
+                "превышает значение наибольшего элемента этой коллекции"
+
+    override fun execute(args: CommandArgument): CommandResult {
         if (args != null)
             throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
 
@@ -20,12 +24,12 @@ class AddIfMaxCommand(private val collection: LinkedList<Organization>, private 
         if (newElement >= collection.max()) {
             newElement.setId(Generator.generateUniqueId(collection))
             collection.add(newElement)
-            EventMessage.messageln("Элемент добавлен в коллекцию", TextColor.BLUE)
+            EventMessage.printMessageln("Элемент добавлен в коллекцию", TextColor.BLUE)
         } else
-            EventMessage.messageln("Элемент не является максимальным", TextColor.BLUE)
+            EventMessage.printMessageln("Элемент не является максимальным", TextColor.BLUE)
         println()
     }
 
-    override fun getInfo(): String =
-        "добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции"
+    override val argumentTypes: List<ArgumentType>
+        get() = TODO("Not yet implemented")
 }

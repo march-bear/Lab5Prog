@@ -1,31 +1,20 @@
 package commands
 
-import Organization
-import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.TextColor
-import java.util.LinkedList
 
-/**
- * Класс команды sum_of_employees_count для вывода суммы значений полей employeesCount всех элементов коллекции
- */
-class SumOfEmployeesCountCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
+class SumOfEmployeesCountCommand(private val sum: Long) : Command {
+    override val info: String
+        get() = "вывести сумму значений поля employeesCount для всех элементов коллекции"
 
-        if (collection.isEmpty()) {
-            EventMessage.messageln("Коллекция пуста", TextColor.BLUE)
-            return
-        }
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
 
-        var sum: Long = 0
-        for (elem in collection)
-            sum += elem.getEmployeesCount() ?: 0
+        val output = if (sum == 0L)
+            EventMessage.message("Коллекция пуста\n", TextColor.BLUE)
+        else
+            EventMessage.message("Общее количество работников во всех организациях: $sum\n", TextColor.BLUE)
 
-        EventMessage.messageln("Общее количество работников во всех организациях: $sum\n", TextColor.BLUE)
+        return CommandResult(true, message = output)
     }
-
-    override fun getInfo(): String =
-        "вывести сумму значений поля employeesCount для всех элементов коллекции"
 }

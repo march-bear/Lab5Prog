@@ -1,32 +1,34 @@
 package commands
 
 import iostreamers.EventMessage
-import Organization
 import iostreamers.TextColor
 import exceptions.InvalidArgumentsForCommandException
-import java.util.LinkedList
 
-/**
- * Класс команды show для отображения всех элементов коллекции
- */
-class ShowCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(args: String?) {
-        if (args != null) {
-            throw InvalidArgumentsForCommandException("Команда не принимает на вход аргументы")
+class ShowCommand(private val listOfOrganization: List<String>) : Command {
+    override val info: String
+        get() = "вывести в стандартный поток вывода все элементы коллекции в строковом представлении"
+
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
+
+        if (listOfOrganization.isEmpty()) {
+            return CommandResult(
+                true,
+                message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
+            )
         }
-        if (collection.size == 0) {
-            EventMessage.messageln("Коллекция пуста", TextColor.BLUE)
-            return
+
+        var output = "Элементы коллекции:\n"
+        output += "Элементы коллекции:\n"
+        listOfOrganization.forEach {
+            output += "------------------------\n"
+            output += it
+            output += "------------------------\n"
         }
-        EventMessage.messageln("Элементы коллекции:")
-        for (element in collection) {
-            EventMessage.messageln("----------------------")
-            println("$element")
-            EventMessage.messageln("----------------------")
-        }
-        println()
+
+        return CommandResult(
+            true,
+            message = output
+        )
     }
-
-    override fun getInfo(): String =
-        "вывести в стандартный поток вывода все элементы коллекции в строковом представлении"
 }

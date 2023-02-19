@@ -7,34 +7,42 @@ import iostreamers.TextColor
 import java.util.*
 
 
-class InfoCommand(private val collection: List<Organization>, private val initializationDate: Date) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
+class InfoCommand(
+    private val collectionSize: Int,
+    private val maxElementId: Long,
+    private val minElementId: Long,
+    private val initializationDate: Date,
+) : Command {
+    override val info: String
+        get() = "вывести в стандартный поток вывода информацию о коллекции"
 
-        EventMessage.messageln("Информация о коллекции:")
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
 
-        EventMessage.messageln("-------------------------")
+        var output = ""
 
-        EventMessage.message("Тип коллекции: ")
-        EventMessage.messageln("LinkedList", TextColor.BLUE)
+        output += EventMessage.message("Информация о коллекции:\n")
 
-        EventMessage.message("Дата инициализации: ")
-        EventMessage.messageln("$initializationDate", TextColor.BLUE)
+        output += EventMessage.message("-------------------------\n")
 
-        EventMessage.message("Количество элементов: ")
-        EventMessage.messageln(collection.size.toString(), TextColor.BLUE)
+        output += EventMessage.message("Тип коллекции: ")
+        output += EventMessage.message("LinkedList\n", TextColor.BLUE)
 
-        EventMessage.message("id максимального элемента: ")
-        EventMessage.messageln(collection.maxOrNull()?.getId().toString(), TextColor.BLUE)
+        output += EventMessage.message("Дата инициализации: ")
+        output += EventMessage.message("$initializationDate\n", TextColor.BLUE)
 
-        EventMessage.message("id минимального элемента: ")
-        EventMessage.messageln(collection.minOrNull()?.getId().toString(), TextColor.BLUE)
-        EventMessage.messageln("-------------------------")
+        output += EventMessage.message("Количество элементов: ")
+        output += EventMessage.message("$collectionSize\n", TextColor.BLUE)
 
-        EventMessage.messageln("\n\u00a9 ООО \"Мартовский Мишка\". Все права защищены\n")
+        output += EventMessage.message("id максимального элемента: ")
+        output += EventMessage.message("$maxElementId\n", TextColor.BLUE)
+
+        output += EventMessage.message("id минимального элемента: ")
+        output += EventMessage.message("$minElementId\n", TextColor.BLUE)
+        output += EventMessage.message("-------------------------\n")
+
+        output += EventMessage.message("\n\u00a9 ООО \"Мартовский Мишка\". Все права защищены\n")
+
+        return CommandResult(true, message = output)
     }
-
-    override fun getInfo(): String =
-        "вывести в стандартный поток вывода информацию о коллекции"
 }

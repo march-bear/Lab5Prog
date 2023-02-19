@@ -1,37 +1,34 @@
 package commands
 
-import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.TextColor
-import java.util.LinkedList
 
-/**
- * Класс команды print_unique_postal_address для вывода уникальных значений
- * среди полей postalAddress элементов коллекции
- */
-class PrintUniquePostalAddressCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
 
-        if (collection.isEmpty()) {
-            EventMessage.messageln("Коллекция пуста", TextColor.BLUE)
-            return
+class PrintUniquePostalAddressCommand(private val setOfAddresses: Set<String>) : Command {
+    override val info: String
+        get() = "вывести уникальные значения поля postalAddress всех элементов в коллекции"
+
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
+
+        if (setOfAddresses.isEmpty()) {
+            return CommandResult(
+                true,
+                message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
+            )
         }
 
-        val postalAddresses: HashSet<String> = HashSet()
-        for (elem in collection) {
-            val postalAddress = elem.getPostalAddress()
-            if (postalAddress != null) {
-                postalAddresses.add(postalAddress.getZipCode().toString())
-            }
+        var output = EventMessage.message("Уникальные ZIP-коды элементов:\n")
+        var counter = 0
+        setOfAddresses.forEach {
+            counter++
+            output += EventMessage.message("$it\n", TextColor.BLUE)
         }
 
-        for (elem in postalAddresses)
-            EventMessage.messageln(elem, TextColor.BLUE)
-        println()
+        return CommandResult(
+            true,
+            message = output
+        )
     }
-
-    override fun getInfo(): String = "вывести уникальные значения поля postalAddress всех элементов в коллекции"
 }

@@ -9,27 +9,30 @@ import iostreamers.TextColor
  * Класс команды group_counting_by_employees_count для объединения элементов в группы
  * по значению полей employeesCount и вывод количества элементов в каждой из групп
  */
-class GroupCountingByEmployeesCountCommand(private val collection: List<Organization>) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
+class GroupCountingByEmployeesCountCommand(private val map: Map<Long?, List<Organization>>) : Command {
+    override val info: String
+        get() = "сгруппировать элементы коллекции по значению поля employeesCount, " +
+                "вывести количество элементов в каждой группе"
 
-        if (collection.isEmpty()) {
-            EventMessage.messageln("Коллекция пуста", TextColor.BLUE)
-            return
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
+
+        if (map.isEmpty()) {
+            return CommandResult(
+                true,
+                message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
+            )
         }
 
-        val employeesCountGroups = HashMap<Long?, Long>()
-        for (elem in collection)
-            employeesCountGroups[elem.getEmployeesCount()] =
-                employeesCountGroups[elem.getEmployeesCount()]?.plus(1) ?: 1
-
-        for (elem in employeesCountGroups) {
-            EventMessage.message("employeesCount=${elem.key}: ")
-            EventMessage.messageln("${elem.value}", TextColor.BLUE)
+        var output = ""
+        map.forEach {
+            output += EventMessage.message("employeesCount=${it.key}: ")
+            output += EventMessage.message("${it.value}\n", TextColor.BLUE)
         }
+
+        return CommandResult(
+            true,
+            message = output
+        )
     }
-
-    override fun getInfo(): String =
-        "сгруппировать элементы коллекции по значению поля employeesCount, вывести количество элементов в каждой группе"
 }

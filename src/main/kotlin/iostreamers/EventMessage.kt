@@ -2,16 +2,16 @@ package iostreamers
 
 class EventMessage {
     companion object {
-        fun message(message: String, color: TextColor = TextColor.DEFAULT) {
-            print("${color.code}${message}${TextColor.DEFAULT.code}")
+        fun message(text: String, color: TextColor = TextColor.DEFAULT): String {
+            return "${color.code}${text}${TextColor.DEFAULT.code}"
         }
 
-        fun messageln(message: String, color: TextColor = TextColor.DEFAULT) {
-            println("${color.code}${message}${TextColor.DEFAULT.code}")
+        fun printMessage(message: String?) {
+            println(message ?: "")
         }
 
-        fun inputPrompt(message: String = "", delimiter: String = ": ") {
-            print("${TextColor.GREEN.code}$message$delimiter${TextColor.DEFAULT.code}")
+        fun inputPrompt(text: String = "", delimiter: String = ": ") {
+            print("${TextColor.GREEN.code}$text$delimiter${TextColor.DEFAULT.code}")
         }
 
         fun interactiveModeMessage() {
@@ -65,7 +65,7 @@ class EventMessage {
                     "                   ...............,~~¡¡¡└¡┌┌┌┌~,......,,,.,,.................\n" +
                     "┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌]▓▓▒▒▓▓▌▌▒ß▒▓▒▒Ñ▒╫▌▒▓▒▓▓▓∩\n")
 
-            messageln("Oops, что-то конкретно пошло нет. Скоро мы это пофиксим!\n" +
+            printMessageln("Oops, что-то конкретно пошло нет. Скоро мы это пофиксим!\n" +
                     "До тех пор не делайте то, что вы сейчас сделали.\n" +
                     "Спасибо, если доверяете нам!")
         }

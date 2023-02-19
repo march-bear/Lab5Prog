@@ -4,35 +4,30 @@ import Organization
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.TextColor
+import kotlinx.serialization.descriptors.PrimitiveKind
+import requests.RemoveByIdRequest
 import java.lang.NumberFormatException
 import java.util.LinkedList
 import java.util.regex.Pattern
 
-/**
- * Класс команды remove_by_id для удаления элемента из коллекции по его id
- */
-class RemoveByIdCommand(private val collection: LinkedList<Organization>) : Command {
-    override fun execute(args: String?) {
-        val argsList = args?.trim()?.split(Pattern.compile("\\s+"), 2)
-        when (argsList?.size) {
-            null -> throw InvalidArgumentsForCommandException("id не указан")
-            1 -> {
-                try {
-                    val id = argsList[0].toLong()
-                    for (elem in collection)
-                        if (elem.getId() == id) {
-                            collection.remove(elem)
-                            EventMessage.messageln("Элемент удален", TextColor.BLUE)
-                            return
-                        }
-                    EventMessage.messageln("Элемент с id $id не найден", TextColor.RED)
-                } catch (e: NumberFormatException) {
-                    throw InvalidArgumentsForCommandException("Переданный аргумент не является id")
-                }
-            }
-            2 -> throw InvalidArgumentsForCommandException("Команда принимает один аргумент - id элемента")
-        }
-    }
 
-    override fun getInfo(): String = "удалить элемент из коллекции по его id (id указывается после имени команды)"
+class RemoveByIdCommand : Command {
+    override val info: String
+        get() = "удалить элемент из коллекции по его id (id указывается после имени команды)"
+    override val argumentTypes: List<ArgumentType>
+        get() = listOf(
+            ArgumentType(PrimitiveKind.LONG, false, 1)
+        )
+
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
+        val id: Long = args.args?.get(0)?.toLong() ?: -1
+        if (Organization.idIsValid(id))
+            return CommandResult(
+                true,
+                RemoveByIdRequest(id),
+                message = "Запрос на удаление элемента отправлен"
+            )
+        return CommandResult(false, message = "Введенное значение не является id")
+    }
 }

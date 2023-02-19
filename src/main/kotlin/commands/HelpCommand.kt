@@ -7,16 +7,20 @@ import iostreamers.TextColor
 /**
  * Класс команды help для вывода информации о всех зарегистрированных командах
  */
-class HelpCommand (private val commandMap: Map<String, Command>) : Command {
-    override fun execute(args: String?) {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает на вход аргументы")
-        for (command in commandMap) {
-            EventMessage.message(String.format("%-40s", "${command.key}:"))
-            EventMessage.messageln(command.value.getInfo(), TextColor.BLUE)
-        }
-        println()
-    }
+class HelpCommand (private val commandMap: Map<String, String>) : Command {
+    override val info: String
+        get() = "вывести справку по доступным командам"
 
-    override fun getInfo(): String = "вывести справку по доступным командам"
+    override fun execute(args: CommandArgument): CommandResult {
+        args.checkArguments(argumentTypes)
+
+        var output = ""
+
+        commandMap.forEach {
+            output += String.format("%-40s", "${it.key}:")
+            output += EventMessage.message("$it.value\n", TextColor.BLUE)
+        }
+
+        return CommandResult(true, message = output)
+    }
 }

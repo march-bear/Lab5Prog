@@ -5,21 +5,25 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import org.valiktor.functions.hasSize
+import org.valiktor.functions.isNotEmpty
+import org.valiktor.functions.isNotNull
+import org.valiktor.functions.isPositive
+import org.valiktor.validate
 import java.lang.Exception
 import java.lang.System.currentTimeMillis
 import java.util.Date
 import kotlin.math.max
 
+
 @Serializable
 class Organization : Comparable<Organization> {
     companion object {
-        fun idIsValid(id: Long?): Boolean = id != null && id > 0
-        fun nameIsValid(name: String?): Boolean = name != "" && name != null
-        fun coordinatesIsValid(coordinates: Coordinates?): Boolean = coordinates != null
-        fun annualTurnoverIsValid(annualTurnover: Int?): Boolean = annualTurnover != null && annualTurnover > 0
+        fun idIsValid(id: Long): Boolean = id > 0
+        fun nameIsValid(name: String): Boolean = name != ""
+        fun annualTurnoverIsValid(annualTurnover: Int): Boolean = annualTurnover > 0
         fun fullNameIsValid(fullName: String?): Boolean = fullName == null || fullName.length in 0..925
         fun employeesCountIsValid(employeesCount: Long?): Boolean = employeesCount == null || employeesCount > 0
-        fun typeIsValid(type: OrganizationType?): Boolean = type != null
         class DateAsLongSerializer : KSerializer<Date> {
             override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.LONG)
 
@@ -35,107 +39,45 @@ class Organization : Comparable<Organization> {
 
         }
     }
+    // valiktor
+    private var id: Long = -1
+    private var name: String
+    private var coordinates: Coordinates
 
-    /**
-     * Уникальный id организации. Не может быть null. Значение поля должно быть больше 0
-     */
-    private var id: Long? = -1
-
-    /**
-     * Имя организации. Не может быть null. Строка не может быть пустой
-     */
-    private var name: String?
-        set(name) {
-            if (nameIsValid(name))
-                field = name
-            else
-                throw Exception()
-        }
-
-    /**
-     * Координаты организации. Не может быть null
-     */
-    private var coordinates: Coordinates?
-        set(coordinates) {
-            when (coordinates) {
-                null -> throw Exception()
-                else -> field = coordinates
-            }
-        }
-
-    /**
-     * Дата создания организации (генерируется автоматически). Не может быть null
-     */
     @Serializable(with = DateAsLongSerializer::class)
-    private var creationDate: Date?
+    private var creationDate: Date
 
-    /**
-     * Годовой оборот организации. Не может быть null. Значение поля должно быть больше 0
-     */
-    private var annualTurnover: Int?
+    private var annualTurnover: Int
         set(annualTurnover) {
-            if (annualTurnover == null || annualTurnover <= 0)
+            if (annualTurnover <= 0)
                 throw Exception()
             field = annualTurnover
         }
 
-    /**
-     * Полное имя организации. Длина строки не должна быть больше 925. Не может быть null
-     */
     private var fullName: String?
         set(fullName) {
             if (fullName == null || fullName.length in 0..925)
                 field = fullName
-            else
-                throw Exception()
         }
 
-    /**
-     * Количество работников в организации. Не может быть null. Значение поля должно быть больше 0
-     */
     private var employeesCount: Long?
-        set(employeesCount) {
-            if (employeesCount == null || employeesCount > 0)
-                field = employeesCount
-            else
-                throw Exception()
-        }
+    private var type: OrganizationType
+    private var postalAddress: Address?
 
-    /**
-     * Тип организации. Не может быть null
-     */
-    private var type: OrganizationType?
-        set(type) {
-            when (type) {
-                null -> throw Exception()
-                else -> field = type
-            }
-        }
-
-    /**
-     * Почтовый адрес организации. Не может быть null
-     */
-    private var postalAddress: Address? // Поле может быть null
-
-    fun setId(id: Long?) {
+    fun setId(id: Long) {
         this.id = id
     }
-
-    fun getId(): Long? = this.id
+    fun getId(): Long = this.id
     fun getFullName(): String? = this.fullName
     fun getPostalAddress(): Address? = this.postalAddress
     fun getEmployeesCount(): Long? = this.employeesCount
 
-    /**
-     * Проверяет объект на соответствие объекта класса требованиям.
-     */
-    fun objectIsValid(): Boolean = idIsValid(id) && nameIsValid(name) && coordinatesIsValid(coordinates) &&
+    fun objectIsValid(): Boolean = idIsValid(id ?: -1) && nameIsValid(name) &&
             annualTurnoverIsValid(annualTurnover) && fullNameIsValid(fullName) &&
-            employeesCountIsValid(employeesCount) && typeIsValid(type) &&
-            (postalAddress == null || Address.zipCodeIsValid(postalAddress?.getZipCode()))
+            employeesCountIsValid(employeesCount)
 
-    constructor(name: String?, coordinates: Coordinates, annualTurnover: Int?, fullName: String?,
-                employeesCount: Long?, type: OrganizationType?, postalAddress: Address?) {
+    constructor(name: String, coordinates: Coordinates, annualTurnover: Int, fullName: String?,
+                employeesCount: Long?, type: OrganizationType, postalAddress: Address?) {
         this.name = name
         this.coordinates = coordinates
         this.creationDate = Date((Math.random() * currentTimeMillis()).toLong())
@@ -144,6 +86,14 @@ class Organization : Comparable<Organization> {
         this.employeesCount = employeesCount
         this.type = type
         this.postalAddress = postalAddress
+    }
+
+    init {
+        validate(this) {
+            validate(Organization::id).isPositive()
+            validate(Organization::name).isNotEmpty()
+            validate(Organization::fullName).hasSize(0, 925)
+        }
     }
 
     override fun toString(): String {
@@ -159,13 +109,8 @@ class Organization : Comparable<Organization> {
     }
 
     override fun compareTo(other: Organization): Int {
-        if (this.annualTurnover != other.annualTurnover) {
-            if (this.annualTurnover == null)
-                return 1
-            if (other.annualTurnover == null)
-                return -1
-            return if (other.annualTurnover!! < this.annualTurnover!!) 1 else -1
-        }
+        if (this.annualTurnover != other.annualTurnover)
+            return if (other.annualTurnover < this.annualTurnover) 1 else -1
 
         if (this.employeesCount != other.employeesCount) {
             if (this.employeesCount == null)
@@ -174,66 +119,28 @@ class Organization : Comparable<Organization> {
                 return -1
             return if (other.employeesCount!! < this.employeesCount!!) 1 else -1
         }
-
         return 0
     }
 }
 
 @Serializable
-class Coordinates {
-
-    constructor(x: Double?, y: Int?) {
-        this.x = x
-        this.y = y
-    }
-
-    companion object {
-        fun xIsValid(x: Double?): Boolean = x != null
-        fun yIsValid(y: Int?): Boolean = y != null
-    }
-    private var x: Double? = null // Поле не может быть null
-        set(x: Double?) {
-            if (x == null)
-                throw Exception()
-            field = x
-        }
-    private var y: Int? = null // Поле не может быть null
-        set(y: Int?) {
-            if (y == null)
-                throw Exception()
-            field = y
-        }
-
+class Coordinates(
+    private val x: Double,
+    private val y: Int,
+) {
     override fun toString(): String {
         return "$x $y"
     }
 }
 
 @Serializable
-class Address {
-    constructor(zipCode: String?) {
-        this.zipCode = zipCode
-    }
-
-    companion object {
-        fun zipCodeIsValid(zipCode: String?): Boolean = zipCode != null
-    }
-
-    private var zipCode: String? = null //Поле не может быть null
-        set(zipCode: String?) {
-            if (zipCode == null)
-                throw Exception()
-            field = zipCode
-        }
-
-    fun getZipCode(): String? = this.zipCode
-
+class Address(val zipCode: String) {
     override fun toString(): String {
-        return zipCode.toString()
+        return zipCode
     }
 }
 
 @Serializable
 enum class OrganizationType {
-    COMMERCIAL, GOVERNMENT, TRUST, PRIVATE_LIMITED_COMPANY, OPEN_JOINT_STOCK_COMPANY
+    COMMERCIAL, GOVERNMENT, TRUST, PRIVATE_LIMITED_COMPANY, OPEN_JOINT_STOCK_COMPANY,
 }
