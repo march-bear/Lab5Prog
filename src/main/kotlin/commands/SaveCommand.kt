@@ -1,18 +1,15 @@
 package commands
 
-import Organization
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import requests.SaveRequest
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
-import java.util.LinkedList
 
 
-class SaveCommand(private val collection: LinkedList<Organization>) : Command {
+class SaveCommand : Command {
      override val argumentTypes: List<ArgumentType> = listOf(
         ArgumentType(PrimitiveKind.STRING, false, 0)
     )
@@ -33,11 +30,12 @@ class SaveCommand(private val collection: LinkedList<Organization>) : Command {
             )
         }
 
-        file.write(Json.encodeToString(collection.toList()))
+        // file.write(Json.encodeToString(collection.toList()))
         file.close()
 
         return CommandResult(
             true,
+            SaveRequest(fileName ?: ""),
             message = EventMessage.message("Коллекция успешно сохранена", TextColor.BLUE)
         )
     }

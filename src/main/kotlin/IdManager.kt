@@ -66,6 +66,12 @@ class IdManager(private val collection: LinkedList<Organization>) {
             }
     }
 
+    fun checkIdInCollection(): Boolean {
+        val uniqueId = mutableSetOf<Long>()
+        collection.forEach { uniqueId.add(it.getId()) }
+        return uniqueId.size != collection.size
+    }
+
     companion object {
         private const val MAX_SIZE_FREE_ID_LESS_COUNTER = 1000
     }

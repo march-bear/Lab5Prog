@@ -14,6 +14,7 @@ import java.util.function.Supplier
 /**
  * Класс для считывания данных с входного потока
  */
+/*
 class Reader() {
     private fun readStringOrNull(): String? {
         val input = readString()
@@ -122,3 +123,4 @@ class Reader() {
             fullName, employeesCount, type, postalAddress)
     }
 }
+*/

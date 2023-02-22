@@ -1,35 +1,29 @@
 package commands
 
-import Organization
-import exceptions.InvalidArgumentsForCommandException
-import iostreamers.EventMessage
-import iostreamers.Reader
-import iostreamers.TextColor
-import java.util.LinkedList
+import OrganizationFactory
+import requests.AddIfMaxRequest
 
 /**
  * Класс команды add_if_max для считывания элемента с входного потока и добавления его в коллекцию, если он больше
  * максимального элемента этой коллекции
  */
-class AddIfMaxCommand(private val collection: LinkedList<Organization>, private val reader: Reader) : Command {
+class AddIfMaxCommand(
+    private val factory: OrganizationFactory
+) : Command {
     override val info: String
         get() = "добавить новый элемент в коллекцию, если его значение " +
                 "превышает значение наибольшего элемента этой коллекции"
 
     override fun execute(args: CommandArgument): CommandResult {
-        if (args != null)
-            throw InvalidArgumentsForCommandException("Команда не принимает аргументы")
+        args.checkArguments(argumentTypes, "Аргументы передаются на следующих строках")
 
-        val newElement = reader.readElementForCollection(collection)
-        if (newElement >= collection.max()) {
-            newElement.setId(Generator.generateUniqueId(collection))
-            collection.add(newElement)
-            EventMessage.printMessageln("Элемент добавлен в коллекцию", TextColor.BLUE)
-        } else
-            EventMessage.printMessageln("Элемент не является максимальным", TextColor.BLUE)
-        println()
+        val newElement = factory.newOrganization()
+
+        return CommandResult(
+            true,
+            AddIfMaxRequest(newElement),
+            message = "Запрос на добавление элемента отправлен"
+        )
+
     }
-
-    override val argumentTypes: List<ArgumentType>
-        get() = TODO("Not yet implemented")
 }

@@ -13,6 +13,7 @@ class ClearCommand : Command {
         return CommandResult(
             true,
             ClearRequest(),
-            message = "Запрос на очистку коллекции отправлен...")
+            message = "Запрос на очистку коллекции отправлен..."
+        )
     }
 }

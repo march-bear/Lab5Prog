@@ -3,7 +3,9 @@ package commands
 import iostreamers.EventMessage
 import iostreamers.TextColor
 
-class SumOfEmployeesCountCommand(private val sum: Long) : Command {
+class SumOfEmployeesCountCommand(
+    private val sum: Long,
+) : Command {
     override val info: String
         get() = "вывести сумму значений поля employeesCount для всех элементов коллекции"
 

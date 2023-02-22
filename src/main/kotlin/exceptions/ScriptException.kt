@@ -1,5 +1,5 @@
 package exceptions
 
-class CyclicScriptCallException(
+class ScriptException(
     override val message: String? = "Обнаружен циклический вызов скрипта"
 ) : Exception(message)

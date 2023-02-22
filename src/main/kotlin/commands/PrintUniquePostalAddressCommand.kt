@@ -1,6 +1,5 @@
 package commands
 
-import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.TextColor
 

@@ -2,10 +2,17 @@ import commands.*
 import exceptions.CommandNotFountException
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
-import iostreamers.Reader
+import iostreamers.FileContentLoader
+
 import iostreamers.TextColor
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.json.Json
+import org.koin.core.KoinApplication
+import org.koin.core.component.getScopeName
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import requests.Request
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -15,7 +22,9 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
-class CollectionController(private val collection: LinkedList<Organization>) { //todo solid
+class CollectionController(
+    dataFiles: Set<String>,
+) {
     companion object {
         fun checkUniquenessFullName(fullName: String?, collection: LinkedList<Organization>): Boolean {
             if (fullName == null)
@@ -26,120 +35,100 @@ class CollectionController(private val collection: LinkedList<Organization>) { /
                     return false
             return true
         }
-
-        fun checkUniquenessId(id: Long, collection: LinkedList<Organization>): Boolean {
-            if (!Organization.idIsValid(id))
-                throw IllegalArgumentException("Невозможный id")
-
-            for (elem in collection)
-                if (elem.getId() == id)
-                    return false
-            return true
-        }
     }
 
-    private val commandMap = mutableMapOf<String, Command>()
+    private val collection: LinkedList<Organization> = LinkedList()
     private val requests: Queue<Request> = LinkedList()
-
-    private fun register(commandName: String, command: Command) {
-        if (commandName.length > 40)
-            throw Exception("Имя команды слишком длинное") //todo custom exceptions
-        if (commandMap[commandName] != null)
-            throw Exception("Имя команды уже зарезервировано")
-        commandMap[commandName] = command
-    }
+    private val app: KoinApplication
 
     fun execute(commandData: CommandData) {
         if (commandData.commandName == null)
             return
 
-        val command: Command = commandMap[commandData.commandName]
-            ?: throw CommandNotFountException("${commandData.commandName}: команда не найдена")
+        val command: Command = app.koin.get<Command>(named(commandData.commandName))
 
         try {
             val (commandCompleted, request, message) = command.execute(commandData.args)
             if (commandCompleted) {
                 requests.add(request)
-                EventMessage.printMessage(message)
             }
             EventMessage.printMessage(message)
         } catch (e: InvalidArgumentsForCommandException) {
+            println("КАКОГО")
             EventMessage.printMessage(
                 EventMessage.message(e.message.toString(), TextColor.RED)
             )
         }
     }
 
-    private fun loadDataFromFile(fileName: String = "data.json") {
-        val fileStream: FileInputStream
-        try {
-            fileStream = FileInputStream(fileName)
-        } catch (e: FileNotFoundException) {
-            EventMessage.printMessageln("${fileName}: ошибка во время открытия файла", TextColor.RED)
-            EventMessage.printMessageln("Сообщение ошибки: $e", TextColor.RED)
-            return
-        }
-
-        EventMessage.printMessageln("Чтение файла $fileName...")
-        val fileReader = InputStreamReader(fileStream)
-        val jsonCode: String = fileReader.readText()
-        fileReader.close()
-        EventMessage.printMessageln("Чтение завершено")
-        EventMessage.printMessageln("Загрузка данных из файла $fileName в коллекцию...")
-        val json = Json.decodeFromString<List<Organization>>(jsonCode)
-        for (elem in json) {
-            if (elem.objectIsValid() && checkUniquenessFullName(elem.getFullName(), collection) &&
-                checkUniquenessId(elem.getId(), collection))
-                collection.add(elem)
-            else
-                EventMessage.printMessageln("Элемент не подходит под требования коллекции", TextColor.RED)
-        }
-        EventMessage.printMessageln("Загрузка завершена")
-    }
-
-    fun loadDataFromFiles(files: Set<String>) {
-        if (files.isEmpty()) {
-            EventMessage.printMessage("ВНИМАНИЕ! На вход программы не передан ни один файл. ", TextColor.YELLOW)
-            EventMessage.printMessageln("Загрузка данных из файла по умолчанию...")
-            loadDataFromFile()
-            return
-        }
-
-        for (file in files) {
-            try {
-                loadDataFromFile(file)
-            } catch (e: Exception) {
-                EventMessage.printMessageln("$file: произошла ошибка во время загрузки файла", TextColor.RED)
-                EventMessage.printMessageln("Сообщение ошибки: ${e.message}", TextColor.RED)
-            }
-            println("\n")
-        }
-    }
-
-    fun executeScript(script: String) {
-
-    }
-
-    fun enableInteractiveMode() {
-
-    }
-
     init {
-        register("help", HelpCommand(commandMap))
-        register("info", InfoCommand(collection, Date(System.currentTimeMillis())))
-        register("show", ShowCommand())
-        register("add", AddCommand())
-        register("update", UpdateCommand())
-        register("remove_by_id", RemoveByIdCommand(collection))
-        register("clear", ClearCommand())
-        register("save", SaveCommand(collection))
-        register("execute_script", ExecuteScriptCommand())
-        register("exit", ExitCommand())
-        register("remove_head", RemoveHeadCommand(collection))
-        register("add_if_max", AddIfMaxCommand(collection, reader))
-        register("remove_lower", RemoveLowerCommand(collection, reader))
-        register("sum_of_employees_count", SumOfEmployeesCountCommand(collection))
-        register("group_counting_by_employees_count", GroupCountingByEmployeesCountCommand(collection))
-        register("print_unique_postal_address", PrintUniquePostalAddressCommand(collection))
+        EventMessage.printMessage("Начало загрузки коллекции. Это может занять некоторое время...")
+
+        val output = FileContentLoader(collection).loadDataFromFiles(dataFiles)
+
+        EventMessage.printMessage("Загрузка коллекции завершена. Отчет о выполнении загрузки:")
+        EventMessage.printMessage("---------------------------------------------------------------------")
+        EventMessage.printMessage(output)
+        EventMessage.printMessage("---------------------------------------------------------------------")
+
+        val singleModule = module {
+            factory<Command>(named("help")) {
+                HelpCommand(
+                    this.getKoin().getAll<Command>().associate { it.info to it.info }
+                )
+            }
+
+            factory<Command>(named("info")) {
+                InfoCommand(
+                    collection.size,
+                    collection.max().getId(),
+                    collection.min().getId(),
+                    Date(),
+                )
+            }
+
+            factory<Command>(named("show")) {
+                ShowCommand(
+                    collection.map { it.toString() }
+                )
+            }
+
+            factory<Command>(named("add")) { AddCommand(OrganizationFactory()) }
+            factory<Command>(named("update")) { UpdateCommand(OrganizationFactory()) }
+            single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
+            single<Command>(named("clear")) { ClearCommand() }
+            factory<Command>(named("save")) { SaveCommand() }
+
+            factory<Command>(named("execute_script")) {
+                ExecuteScriptCommand(
+                    this@CollectionController
+                )
+            }
+
+            single<Command>(named("exit")) { ExitCommand() }
+            single<Command>(named("remove_head")) { RemoveHeadCommand() }
+            factory<Command>(named("add_if_max")) { AddIfMaxCommand(OrganizationFactory()) }
+            factory<Command>(named("remove_lower")) { RemoveLowerCommand(OrganizationFactory()) }
+
+            factory<Command>(named("sum_of_employees_count")) {
+                SumOfEmployeesCountCommand(collection.sumOf { it.getId() })
+            }
+
+            factory<Command>(named("group_counting_by_employees_count")) {
+                GroupCountingByEmployeesCountCommand(collection.groupBy { it.getEmployeesCount() })
+            }
+
+            factory<Command>(named("print_unique_postal_address")) {
+                PrintUniquePostalAddressCommand(
+                    collection.map { it.getPostalAddress()!!.zipCode }.toSet()
+                )
+            }
+
+            single<Command>(named("oops")) { HackSystemCommand() }
+
+        }
+        app = startKoin {
+            modules(singleModule)
+        }
     }
 }

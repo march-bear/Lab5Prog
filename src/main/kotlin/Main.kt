@@ -1,9 +1,14 @@
+import commands.CommandArgument
+import commands.CommandData
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import java.util.LinkedList
 
 fun main(args: Array<String>) {
-        val collection = CollectionController(LinkedList<Organization>())
+    val collection = CollectionController(args.toSet())
+
+    collection.execute(CommandData("remove_head", CommandArgument("")))
+    /*
     EventMessage.printMessageln("Коллекция создана")
 
     EventMessage.printMessageln("Загрузка данных из поданных на вход файлов...")
@@ -14,4 +19,5 @@ fun main(args: Array<String>) {
                 "Возможно, предоставленные данные некорректны", TextColor.RED)
     }
     collection.enableInteractiveMode()
+     */
 }

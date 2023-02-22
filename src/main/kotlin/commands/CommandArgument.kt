@@ -31,11 +31,9 @@ class CommandArgument(argumentString: String?) {
         messageIfLess: String = messageIfMore,
         messageIfOther: String = messageIfMore,
     ): Boolean {
-
-        if (countArgs > correctCounts.max())
-            throw InvalidArgumentsForCommandException(messageIfMore)
-        else if (countArgs < correctCounts.min())
-            throw InvalidArgumentsForCommandException(messageIfLess)
-        throw InvalidArgumentsForCommandException(messageIfOther)
+        if (false) {
+            throw InvalidArgumentsForCommandException()
+        }
+        return true
     }
 }

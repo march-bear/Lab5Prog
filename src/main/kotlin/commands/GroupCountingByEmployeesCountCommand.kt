@@ -1,7 +1,6 @@
 package commands
 
 import Organization
-import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.TextColor
 
@@ -27,7 +26,7 @@ class GroupCountingByEmployeesCountCommand(private val map: Map<Long?, List<Orga
         var output = ""
         map.forEach {
             output += EventMessage.message("employeesCount=${it.key}: ")
-            output += EventMessage.message("${it.value}\n", TextColor.BLUE)
+            output += EventMessage.message("${it.value.size}\n", TextColor.BLUE)
         }
 
         return CommandResult(

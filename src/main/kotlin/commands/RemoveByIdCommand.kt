@@ -1,15 +1,8 @@
 package commands
 
 import Organization
-import exceptions.InvalidArgumentsForCommandException
-import iostreamers.EventMessage
-import iostreamers.TextColor
 import kotlinx.serialization.descriptors.PrimitiveKind
 import requests.RemoveByIdRequest
-import java.lang.NumberFormatException
-import java.util.LinkedList
-import java.util.regex.Pattern
-
 
 class RemoveByIdCommand : Command {
     override val info: String

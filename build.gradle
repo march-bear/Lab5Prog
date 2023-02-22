@@ -25,7 +25,6 @@ test {
 }
 
 compileKotlin {
-    compilerOptions.freeCompilerArgs.add("-Xexport-kdoc")
     kotlinOptions.jvmTarget = '1.8'
 }
 
