@@ -1,7 +1,5 @@
 package iostreamers
 
-import commands.CommandResult
-
 /**
  * Перечисление, содержащее возможные цвета текста с их кодами
  */

@@ -1,6 +1,9 @@
-package commands
+package command.implementations
 
 import OrganizationFactory
+import command.Command
+import command.CommandArgument
+import command.CommandResult
 import requests.RemoveLowerRequest
 
 /**
@@ -13,7 +16,7 @@ class RemoveLowerCommand(private val factory: OrganizationFactory) : Command {
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes)
 
-        val testElement = factory.newOrganization()
+        val testElement = factory.newOrganizationFromInput()
 
         return CommandResult(
             true,

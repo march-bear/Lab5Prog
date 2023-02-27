@@ -1,10 +1,11 @@
-package commands
+package command.implementations
 
 import CollectionController
+import Organization
+import command.*
 import exceptions.ScriptException
 import iostreamers.EventMessage
 import iostreamers.TextColor
-import kotlinx.serialization.descriptors.PrimitiveKind
 import requests.ExecuteCommandsRequest
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -14,21 +15,24 @@ import java.util.regex.Pattern
 
 
 class ExecuteScriptCommand(
-    private val controller: CollectionController,
+    private val collection: LinkedList<Organization>,
+    private val controller: CollectionController?,
     private val executeScriptCommandString: String = "execute_script",
 ) : Command {
     override val info: String
         get() =
             "считать и исполнить скрипт из указанного файла (название файла указывается на после команды)"
 
-    override val argumentTypes: List<ArgumentType>
+    override val argumentTypes: List<ArgumentTypeData>
         get() = listOf(
-            ArgumentType(PrimitiveKind.STRING, false, 1)
+            ArgumentTypeData(ArgumentType.STRING, false)
         )
 
     private val scriptFiles = Stack<String>()
 
     override fun execute(args: CommandArgument): CommandResult {
+        if (controller == null)
+            return CommandResult(false, message = "Объект команды не предназначен для исполнения")
         args.checkArguments(argumentTypes)
 
         val commandList: LinkedList<CommandData> = LinkedList()

@@ -12,35 +12,56 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="Скорректированы некоторые классы команд&#10;Изменен механизм генерации id&#10;Начата реализация механизма исполнения скрипта&#10;Мелкие исправления">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/commands/HackSystemCommand.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/FileContentLoader.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" afterDir="false" />
+    <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/ArgumentTypeData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/CommandArgument.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/CommandData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExitCommand.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/SaveCommand.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ShowFieldRequirementsCommand.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/modules.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandArgument.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/CommandArgument.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/HelpCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/HelpCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/CyclicScriptCallException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/ScriptException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddIfMaxCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ArgumentType.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ClearCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ClearCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/Command.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandArgument.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandData.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/CommandResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/CommandResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExecuteScriptCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ExitCommand.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/GroupCountingByEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/GroupCountingByEmployeesCountCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/HackSystemCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/HackSystemCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/HelpCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/HelpCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/InfoCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/InfoCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/PrintUniquePostalAddressCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/PrintUniquePostalAddressCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveByIdCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RemoveByIdCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveHeadCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RemoveHeadCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/RemoveLowerCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RemoveLowerCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SaveCommand.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/ShowCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ShowCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/SumOfEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/SumOfEmployeesCountCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commands/UpdateCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/UpdateCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/ExitCommandCall.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/TextColor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/TextColor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/AddRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/ClearRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ClearRequest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,11 +91,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin File" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Data Class" />
         <option value="Class" />
         <option value="Kotlin Enum" />
+        <option value="Kotlin File" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -130,11 +151,12 @@
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="commands" />
+      <recent name="commands.implementations" />
       <recent name="iostreamers" />
       <recent name="commands.exceptions" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Lab5Prog">
+  <component name="RunManager">
     <configuration name="Lab5Prog [dokkaHtml]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -236,7 +258,21 @@
       <workItem from="1677014995284" duration="2233000" />
       <workItem from="1677049538410" duration="6392000" />
       <workItem from="1677058851748" duration="2527000" />
-      <workItem from="1677062259372" duration="544000" />
+      <workItem from="1677062259372" duration="1087000" />
+      <workItem from="1677065664667" duration="4909000" />
+      <workItem from="1677070620362" duration="305000" />
+      <workItem from="1677071336702" duration="2602000" />
+      <workItem from="1677167800611" duration="1783000" />
+      <workItem from="1677235922048" duration="1050000" />
+      <workItem from="1677257036650" duration="1966000" />
+      <workItem from="1677267154940" duration="4474000" />
+      <workItem from="1677316737792" duration="16440000" />
+      <workItem from="1677352942009" duration="437000" />
+      <workItem from="1677400709194" duration="171000" />
+      <workItem from="1677435982828" duration="91000" />
+      <workItem from="1677440416278" duration="2678000" />
+      <workItem from="1677483231911" duration="10541000" />
+      <workItem from="1677506219081" duration="6604000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -350,11 +386,29 @@
       <option name="project" value="LOCAL" />
       <updated>1676842872775</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Реализация большинства команд исправлена под новую архитектуру приложения&#10;Реализован id-менеджер&#10;Словарь команд заменен на модуль koin">
+      <created>1677063145478</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1677063145478</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init commit" />
@@ -375,7 +429,8 @@
     <MESSAGE value="small fixes" />
     <MESSAGE value="(версия не предназначена для запуска)&#10;Добавлены классы для реализации запросов к контроллеру&#10;Добавлены классы для аргументов и результатов команд" />
     <MESSAGE value="Скорректированы некоторые классы команд&#10;Изменен механизм генерации id&#10;Начата реализация механизма исполнения скрипта&#10;Мелкие исправления" />
-    <option name="LAST_COMMIT_MESSAGE" value="Скорректированы некоторые классы команд&#10;Изменен механизм генерации id&#10;Начата реализация механизма исполнения скрипта&#10;Мелкие исправления" />
+    <MESSAGE value="Реализация большинства команд исправлена под новую архитектуру приложения&#10;Реализован id-менеджер&#10;Словарь команд заменен на модуль koin" />
+    <option name="LAST_COMMIT_MESSAGE" value="Реализация большинства команд исправлена под новую архитектуру приложения&#10;Реализован id-менеджер&#10;Словарь команд заменен на модуль koin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

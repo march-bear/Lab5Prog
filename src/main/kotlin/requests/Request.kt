@@ -4,5 +4,5 @@ import Organization
 import java.util.*
 
 interface Request {
-    fun process(collection: LinkedList<Organization>): Boolean
+    fun process(collection: LinkedList<Organization>): String
 }

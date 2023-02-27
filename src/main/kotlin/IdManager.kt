@@ -33,7 +33,7 @@ class IdManager(private val collection: LinkedList<Organization>) {
         if (!Organization.idIsValid(id))
             throw IllegalArgumentException("Невозможный id")
 
-        if(collection.find { it.getId() == id} == null)
+        if(collection.find { it.id == id} == null)
             throw IllegalArgumentException("Id свободен")
 
         if (counter - id == 1L) {
@@ -48,17 +48,20 @@ class IdManager(private val collection: LinkedList<Organization>) {
 
     fun updateAllId() {
         counter = 1
-        collection.forEach { it.setId(counter++) }
+        collection.forEach { it.id = counter++ }
         freeIdLessCounter.clear()
     }
 
     private fun updateGenerator() {
-        counter = collection.maxBy { it.getId() }.getId() + 1
-        collection.sortBy { it.getId() }
+        println(1)
+        counter = collection.maxBy { it.id }.id + 1
+        println(2)
+        collection.sortBy { it.id }
+        println(3)
         var currId: Long = 1
         var collectionCounter = 0
         while (collectionCounter < Int.MAX_VALUE && freeIdLessCounter.size < MAX_SIZE_FREE_ID_LESS_COUNTER)
-            if (collection[collectionCounter].getId() != currId) {
+            if (collection[collectionCounter].id != currId) {
                 freeIdLessCounter.add(currId++)
             } else {
                 collectionCounter++
@@ -68,7 +71,7 @@ class IdManager(private val collection: LinkedList<Organization>) {
 
     fun checkIdInCollection(): Boolean {
         val uniqueId = mutableSetOf<Long>()
-        collection.forEach { uniqueId.add(it.getId()) }
+        collection.forEach { uniqueId.add(it.id) }
         return uniqueId.size != collection.size
     }
 

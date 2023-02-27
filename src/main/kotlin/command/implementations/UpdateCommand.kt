@@ -1,18 +1,18 @@
-package commands
+package command.implementations
 
 import Organization
 import OrganizationFactory
+import command.*
 import iostreamers.EventMessage
 import iostreamers.TextColor
-import kotlinx.serialization.descriptors.PrimitiveKind
 import requests.UpdateRequest
 
 class UpdateCommand(private val factory: OrganizationFactory) : Command {
     override val info: String
         get() = "обновить значение элемента коллекции, id которого равен заданному"
-    override val argumentTypes: List<ArgumentType>
+    override val argumentTypes: List<ArgumentTypeData>
         get() = listOf(
-            ArgumentType(PrimitiveKind.LONG, false, 1)
+            ArgumentTypeData(ArgumentType.LONG, false)
         )
 
     override fun execute(args: CommandArgument): CommandResult {
@@ -23,7 +23,7 @@ class UpdateCommand(private val factory: OrganizationFactory) : Command {
         if (!Organization.idIsValid(id))
             return CommandResult(false, message = "Введенное значение не является id")
 
-        val newValueOfElement = factory.newOrganization()
+        val newValueOfElement = factory.newOrganizationFromInput()
 
         return CommandResult(
             true,

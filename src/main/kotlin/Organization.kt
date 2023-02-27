@@ -5,25 +5,22 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import org.valiktor.functions.hasSize
-import org.valiktor.functions.isNotEmpty
-import org.valiktor.functions.isNotNull
-import org.valiktor.functions.isPositive
+import org.valiktor.ConstraintViolationException
+import org.valiktor.Validator
+import org.valiktor.constraints.Between
+import org.valiktor.functions.*
 import org.valiktor.validate
 import java.lang.Exception
 import java.lang.System.currentTimeMillis
 import java.util.Date
-import kotlin.math.max
 
 
 @Serializable
-class Organization : Comparable<Organization> {
+class Organization() : Comparable<Organization> {
     companion object {
-        fun idIsValid(id: Long): Boolean = id > 0
-        fun nameIsValid(name: String): Boolean = name != ""
-        fun annualTurnoverIsValid(annualTurnover: Int): Boolean = annualTurnover > 0
-        fun fullNameIsValid(fullName: String?): Boolean = fullName == null || fullName.length in 0..925
-        fun employeesCountIsValid(employeesCount: Long?): Boolean = employeesCount == null || employeesCount > 0
+        fun idIsValid(id: Long): Boolean {
+            return id > 0
+        }
         class DateAsLongSerializer : KSerializer<Date> {
             override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.LONG)
 
@@ -36,51 +33,69 @@ class Organization : Comparable<Organization> {
                 val string = value.time
                 encoder.encodeLong(string)
             }
-
         }
+
+        val fieldRequirements =
+            "${String.format("%-25s", "Название организации")}\u001B[34m- непустая строка\u001B[39m\n" +
+                    "${String.format("%-25s", "Координата x")}\u001B[34m- число с плавающей точкой\u001B[39m\n" +
+                    "${String.format("%-25s", "Координата y")}\u001B[34m- целое число\u001B[39m\n" +
+                    "${String.format("%-25s", "Годовой оборот")}\u001B[34m- положительное целое число\u001B[39m\n" +
+                    "${String.format("%-25s", "Полное имя")}\u001B[34m- непустая строка длины не больше 925 или null\u001B[39m\n" +
+                    "${String.format("%-25s", "Количество сотрудников")}\u001B[34m- положительное целое число или null\u001B[39m\n" +
+                    "${String.format("%-25s", "Тип")}\u001B[34m- COMMERCIAL, GOVERNMENT, TRUST, PRIVATE_LIMITED_COMPANY или OPEN_JOINT_STOCK_COMPANY,\u001B[39m\n" +
+                    "${String.format("%-25s", "Почтовый адрес")}\u001B[34m- непустая строка или null\u001B[39m"
     }
-    // valiktor
-    private var id: Long = -1
-    private var name: String
-    private var coordinates: Coordinates
+
+    var id: Long = -1
+        set(value) {
+            field = value
+            validate(this) { validate(Organization::id).isPositive() }
+        }
+    var name: String = ""
+        set(value) {
+            field = value
+            validate(this) { validate(Organization::name).isNotEmpty() }
+        }
+    var coordinates: Coordinates = Coordinates()
 
     @Serializable(with = DateAsLongSerializer::class)
-    private var creationDate: Date
+    private val creationDate: Date = Date()
 
-    private var annualTurnover: Int
-        set(annualTurnover) {
-            if (annualTurnover <= 0)
-                throw Exception()
-            field = annualTurnover
+    var annualTurnover: Int = 0
+        set(value) {
+            field = value
+            validate(this) { validate(Organization::annualTurnover).isPositive() }
         }
 
-    private var fullName: String?
-        set(fullName) {
-            if (fullName == null || fullName.length in 0..925)
-                field = fullName
+    var fullName: String? = null
+        set(value) {
+            field = value
+            validate(this) { validate(Organization::fullName).isValid { it.length in 0..925 } }
         }
 
-    private var employeesCount: Long?
-    private var type: OrganizationType
-    private var postalAddress: Address?
+    var employeesCount: Long? = null
+        set(value) {
+            field = value
+            if (field != null)
+                validate(this) { validate(Organization::employeesCount).isPositive() }
+        }
+    var type: OrganizationType = OrganizationType.COMMERCIAL
+    var postalAddress: Address? = null
 
-    fun setId(id: Long) {
-        this.id = id
-    }
-    fun getId(): Long = this.id
-    fun getFullName(): String? = this.fullName
-    fun getPostalAddress(): Address? = this.postalAddress
-    fun getEmployeesCount(): Long? = this.employeesCount
-
-    fun objectIsValid(): Boolean = idIsValid(id ?: -1) && nameIsValid(name) &&
-            annualTurnoverIsValid(annualTurnover) && fullNameIsValid(fullName) &&
-            employeesCountIsValid(employeesCount)
+    fun objectIsValid(): Boolean = try {
+        validate(this) {
+            validate(Organization::id).isPositive()
+            validate(Organization::name).isNotEmpty()
+            validate(Organization::annualTurnover).isPositive()
+            validate(Organization::fullName).isValid { it.length in 0..925 }
+        }
+        true
+    } catch (ex: ConstraintViolationException) { false }
 
     constructor(name: String, coordinates: Coordinates, annualTurnover: Int, fullName: String?,
-                employeesCount: Long?, type: OrganizationType, postalAddress: Address?) {
+                employeesCount: Long?, type: OrganizationType, postalAddress: Address?) : this() {
         this.name = name
         this.coordinates = coordinates
-        this.creationDate = Date((Math.random() * currentTimeMillis()).toLong())
         this.annualTurnover = annualTurnover
         this.fullName = fullName
         this.employeesCount = employeesCount
@@ -88,24 +103,16 @@ class Organization : Comparable<Organization> {
         this.postalAddress = postalAddress
     }
 
-    init {
-        validate(this) {
-            validate(Organization::id).isPositive()
-            validate(Organization::name).isNotEmpty()
-            validate(Organization::fullName).hasSize(0, 925)
-        }
-    }
-
     override fun toString(): String {
-        return "id: \u001B[34m$id\u001B[39m\n" +
-                "название организации: \u001B[34m$name\u001B[39m\n" +
-                "координаты: \u001B[34m${coordinates.toString()}\u001B[39m\n" +
-                "дата создания: \u001B[34m$creationDate\u001B[39m\n" +
-                "годовой оборот: \u001B[34m$annualTurnover\u001B[39m\n" +
-                "полное имя: \u001B[34m$fullName\u001B[39m\n" +
-                "количество сотрудников: \u001B[34m$employeesCount\u001B[39m\n" +
-                "тип: \u001B[34m$type\u001B[39m\n" +
-                "почтовый адрес: \u001B[34m$postalAddress\u001B[39m"
+        return "${String.format("%-25s", "ID:")}\u001B[34m$id\u001B[39m\n" +
+                "${String.format("%-25s", "Название организации:")}\u001B[34m$name\u001B[39m\n" +
+                "${String.format("%-25s", "Координаты:")}\u001B[34m$coordinates\u001B[39m\n" +
+                "${String.format("%-25s","Дата создания:")}\u001B[34m$creationDate\u001B[39m\n" +
+                "${String.format("%-25s","Годовой оборот:")}\u001B[34m$annualTurnover\u001B[39m\n" +
+                "${String.format("%-25s","Полное имя:")}\u001B[34m$fullName\u001B[39m\n" +
+                "${String.format("%-25s","Количество сотрудников:")}\u001B[34m$employeesCount\u001B[39m\n" +
+                "${String.format("%-25s","Тип:")}\u001B[34m$type\u001B[39m\n" +
+                "${String.format("%-25s","Почтовый адрес:")}\u001B[34m$postalAddress\u001B[39m"
     }
 
     override fun compareTo(other: Organization): Int {
@@ -125,8 +132,8 @@ class Organization : Comparable<Organization> {
 
 @Serializable
 class Coordinates(
-    private val x: Double,
-    private val y: Int,
+    var x: Double = 0.0,
+    var y: Int = 0,
 ) {
     override fun toString(): String {
         return "$x $y"
@@ -134,7 +141,7 @@ class Coordinates(
 }
 
 @Serializable
-class Address(val zipCode: String) {
+class Address(var zipCode: String) {
     override fun toString(): String {
         return zipCode
     }
@@ -142,5 +149,9 @@ class Address(val zipCode: String) {
 
 @Serializable
 enum class OrganizationType {
-    COMMERCIAL, GOVERNMENT, TRUST, PRIVATE_LIMITED_COMPANY, OPEN_JOINT_STOCK_COMPANY,
+    COMMERCIAL,
+    GOVERNMENT,
+    TRUST,
+    PRIVATE_LIMITED_COMPANY,
+    OPEN_JOINT_STOCK_COMPANY,
 }

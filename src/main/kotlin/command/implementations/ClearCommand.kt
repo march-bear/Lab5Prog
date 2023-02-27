@@ -1,10 +1,11 @@
-package commands
+package command.implementations
 
+import command.Command
+import command.CommandArgument
+import command.CommandResult
 import requests.ClearRequest
 
 class ClearCommand : Command {
-    override val argumentTypes: List<ArgumentType>
-        get() = listOf()
     override val info: String
         get() = "очистить коллекцию"
 

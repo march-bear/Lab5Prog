@@ -1,23 +1,23 @@
-import commands.CommandArgument
-import commands.CommandData
+import command.CommandData
 import iostreamers.EventMessage
-import iostreamers.TextColor
-import java.util.LinkedList
+import iostreamers.Reader
+import java.util.*
 
 fun main(args: Array<String>) {
     val collection = CollectionController(args.toSet())
-
-    collection.execute(CommandData("remove_head", CommandArgument("")))
-    /*
-    EventMessage.printMessageln("Коллекция создана")
-
-    EventMessage.printMessageln("Загрузка данных из поданных на вход файлов...")
-    try {
-        collection.loadDataFromFiles(args.toSet())
-    } catch (e: RuntimeException) {
-        EventMessage.printMessageln("Произошла ошибка во время загрузки содержимого файла. " +
-                "Возможно, предоставленные данные некорректны", TextColor.RED)
-    }
-    collection.enableInteractiveMode()
-     */
+    EventMessage.interactiveModeMessage()
+    val reader = Reader(Scanner(System.`in`))
+    var command: CommandData?
+    do {
+        EventMessage.inputPrompt(">>>", " ")
+        command = reader.readCommand()
+        if (command?.name == "")
+            continue
+        try {
+            val message = collection.execute(command)
+            if (message != null) EventMessage.printMessage(message)
+        } catch (e: Exception) {
+            EventMessage.oops()
+        }
+    } while (command != null && !(command.name == "exit" && command.args.args == null))
 }

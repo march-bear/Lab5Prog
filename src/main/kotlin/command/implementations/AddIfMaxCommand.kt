@@ -1,6 +1,9 @@
-package commands
+package command.implementations
 
 import OrganizationFactory
+import command.Command
+import command.CommandArgument
+import command.CommandResult
 import requests.AddIfMaxRequest
 
 /**
@@ -17,7 +20,7 @@ class AddIfMaxCommand(
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes, "Аргументы передаются на следующих строках")
 
-        val newElement = factory.newOrganization()
+        val newElement = factory.newOrganizationFromInput()
 
         return CommandResult(
             true,

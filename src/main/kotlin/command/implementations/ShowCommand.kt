@@ -1,5 +1,8 @@
-package commands
+package command.implementations
 
+import command.Command
+import command.CommandArgument
+import command.CommandResult
 import iostreamers.EventMessage
 import iostreamers.TextColor
 
@@ -20,10 +23,9 @@ class ShowCommand(
         }
 
         var output = "Элементы коллекции:\n"
-        output += "Элементы коллекции:\n"
         listOfOrganization.forEach {
             output += "------------------------\n"
-            output += it
+            output += it + "\n"
             output += "------------------------\n"
         }
 

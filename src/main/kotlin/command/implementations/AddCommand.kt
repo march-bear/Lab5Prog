@@ -1,6 +1,9 @@
-package commands
+package command.implementations
 
 import OrganizationFactory
+import command.Command
+import command.CommandArgument
+import command.CommandResult
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import requests.AddRequest
@@ -14,7 +17,7 @@ class AddCommand(
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes, "Поля нового элемента передаются на следующих строках")
 
-        val newElement = factory.newOrganization()
+        val newElement = factory.newOrganizationFromInput()
         return CommandResult(
             true,
             AddRequest(newElement),

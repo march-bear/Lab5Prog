@@ -1,15 +1,15 @@
-package commands
+package command.implementations
 
 import Organization
-import kotlinx.serialization.descriptors.PrimitiveKind
+import command.*
 import requests.RemoveByIdRequest
 
 class RemoveByIdCommand : Command {
     override val info: String
         get() = "удалить элемент из коллекции по его id (id указывается после имени команды)"
-    override val argumentTypes: List<ArgumentType>
+    override val argumentTypes: List<ArgumentTypeData>
         get() = listOf(
-            ArgumentType(PrimitiveKind.LONG, false, 1)
+            ArgumentTypeData(ArgumentType.LONG, false)
         )
 
     override fun execute(args: CommandArgument): CommandResult {
