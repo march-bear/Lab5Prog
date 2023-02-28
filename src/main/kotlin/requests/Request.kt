@@ -5,4 +5,5 @@ import java.util.*
 
 interface Request {
     fun process(collection: LinkedList<Organization>): String
+    fun cancel(): String
 }

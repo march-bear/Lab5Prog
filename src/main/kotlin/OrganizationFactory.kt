@@ -6,7 +6,29 @@ import java.util.function.Consumer
 
 class OrganizationFactory(private val reader: Reader? = null) {
     private fun newOrganizationFromScript(): Organization {
-        return Organization()
+        val newOrganization = Organization()
+        newOrganization.name = reader!!.readString()
+
+        newOrganization.coordinates.x = reader.readString().toDoubleOrNull()
+            ?: throw NumberFormatException("Ожидалось дробное числовое значение для поля: x")
+
+        newOrganization.coordinates.y = reader.readString().toIntOrNull()
+            ?: throw NumberFormatException("Ожидалось целочисленное значение для поля: y")
+
+        newOrganization.annualTurnover = reader.readString().toIntOrNull()
+            ?: throw NumberFormatException("Ожидалось целочисленное значение для поля: годовой оборот")
+
+        newOrganization.fullName = reader.readStringOrNull()
+
+        newOrganization.employeesCount = reader.readStringOrNull()?.toLong()
+        newOrganization.type = OrganizationType.valueOf(reader.readString())
+        val input = reader.readStringOrNull()
+        if (input == null)
+            newOrganization.postalAddress = null
+        else
+            newOrganization.postalAddress = Address(input)
+
+        return newOrganization
     }
 
     fun newOrganizationFromInput(): Organization {

@@ -25,12 +25,22 @@ class CollectionController(
                     return false
             return true
         }
+
+        fun checkUniquenessId(id: Long, collection: LinkedList<Organization>): Boolean {
+            if (!Organization.idIsValid(id))
+                return false
+
+            for (elem in collection)
+                if (elem.id == id)
+                    return false
+            return true
+        }
     }
 
     private val collection: LinkedList<Organization> = LinkedList()
     private val requests: Queue<Request> = LinkedList()
     val commandsApp: KoinApplication
-    // val idManager: IdManager = IdManager(collection)
+    val idManager: IdManager
     val initializationDate = Date()
 
     fun execute(commandData: CommandData?) : String? {
@@ -88,5 +98,7 @@ class CollectionController(
         commandsApp = startKoin {
             modules(commandsModule)
         }
+
+        idManager = IdManager(collection)
     }
 }

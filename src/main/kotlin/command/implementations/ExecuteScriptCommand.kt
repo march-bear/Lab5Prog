@@ -8,6 +8,8 @@ import exceptions.ScriptException
 import iostreamers.EventMessage
 import iostreamers.Reader
 import iostreamers.TextColor
+import org.koin.core.error.NoBeanDefFoundException
+import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import requests.ExecuteCommandsRequest
 import java.io.FileInputStream
@@ -33,7 +35,6 @@ class ExecuteScriptCommand(
     override fun execute(args: CommandArgument): CommandResult {
         if (controller == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
-
         args.checkArguments(argumentTypes)
 
         val commandList: LinkedList<Pair<Command, CommandArgument>> = LinkedList()
@@ -41,7 +42,7 @@ class ExecuteScriptCommand(
 
         try {
             addCommandsFromFile(fileName, commandList)
-        }  catch (e: FileNotFoundException) {
+        } catch (e: FileNotFoundException) {
             var output = "$fileName: ошибка во время открытия файла\n" +
                     "Сообщение ошибки: $e\n" +
                     "Сводка о вложенных вызовах скриптов:"
@@ -53,11 +54,17 @@ class ExecuteScriptCommand(
                 false,
                 message = EventMessage.message(output, TextColor.RED)
             )
+        } catch (ex: NoBeanDefFoundException) {
+            return CommandResult(false, message = "Команда не найдена, пардоньти")
+        } catch (ex: ScriptException) {
+            return CommandResult(false, message = "КАК ТЫ ЭТО СДЕЛАЛ, СУКА $ex")
+        } catch (ex: Exception) {
+            return CommandResult(false, message = "КАК, СУКА $ex")
         }
 
         return CommandResult(
             true,
-            request = ExecuteCommandsRequest(commandList, controller, collection),
+            request = ExecuteCommandsRequest(commandList, controller),
             message = EventMessage.message("Запрос на исполнение скрипта отправлен", TextColor.BLUE),
         )
     }
@@ -70,27 +77,26 @@ class ExecuteScriptCommand(
                 message += "\n ${scriptFiles[i]} ->"
             throw ScriptException("$message $fileName")
         }
-
         scriptFiles.add(fileName)
 
         val script: String
         val inputStreamReader = InputStreamReader(FileInputStream(fileName))
         script = inputStreamReader.readText()
         inputStreamReader.close()
-
         val reader = Reader(Scanner(script))
         var currLine: ULong = 1UL
-
         var commandData = reader.readCommand()
         while (commandData != null) {
             val (commandName, commandArguments) = commandData
-            val command = controller!!.commandsApp.koin.get<Command>(named(commandName ?: ""))
-
+            println(commandName)
+            val command = controller!!.commandsApp.koin.get<Command>(named(commandName ?: "")) {
+                parametersOf(collection, controller)
+            }
             for (i in 1..commandArguments.checkArguments(command.argumentTypes)) {
+                println("Аргумент")
                 commandArguments.organizations.add(OrganizationFactory(reader).newOrganizationFromInput())
                 currLine += 8UL
             }
-
             if (command::class == this::class) {
                 if (this.scriptFiles.size > MAXIMUM_NESTED_SCRIPTS_CALLS)
                     throw ScriptException(

@@ -1,5 +1,6 @@
 package iostreamers
 
+import CollectionController
 import Organization
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
@@ -36,7 +37,12 @@ class FileContentLoader(private val collection: LinkedList<Organization>) {
 
         try {
             output += "Загрузка данных в коллекцию...\n"
-            collection.addAll(Json.decodeFromString<List<Organization>>(content))
+            for (elem in Json.decodeFromString<List<Organization>>(content))
+                if (CollectionController.checkUniquenessFullName(elem.fullName, collection) &&
+                        CollectionController.checkUniquenessId(elem.id, collection))
+                    collection.add(elem)
+                else
+                    output += EventMessage.message("Ошибка во время добавления элемента\n", TextColor.RED)
             output += "Загрузка завершена\n"
 
         } catch (e: SerializationException) {

@@ -26,4 +26,8 @@ class SaveRequest(private val fileToSave: String) : Request {
         return EventMessage.message("Коллекция успешно сохранена в файл $fileToSave", TextColor.BLUE)
     }
 
+    override fun cancel(): String {
+        return "Запрос на сохранение коллекции не может быть отменен"
+    }
+
 }
