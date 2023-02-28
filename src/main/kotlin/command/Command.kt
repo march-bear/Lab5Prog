@@ -12,7 +12,7 @@ interface Command {
     /**
      * Список типов аргументов (объектов data-класса ArgumentType)
      */
-    val argumentTypes: List<ArgumentTypeData>
+    val argumentTypes: List<ArgumentType>
         get() = listOf()
 
     /**

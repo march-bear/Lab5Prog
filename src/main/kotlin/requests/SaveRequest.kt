@@ -20,7 +20,7 @@ class SaveRequest(private val fileToSave: String) : Request {
                         "Сообщение ошибки: $e", TextColor.RED)
         }
 
-        file.write(Json.encodeToString(collection))
+        file.write(Json.encodeToString(collection.toList()))
         file.close()
 
         return EventMessage.message("Коллекция успешно сохранена в файл $fileToSave", TextColor.BLUE)

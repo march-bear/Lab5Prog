@@ -7,14 +7,12 @@ import requests.RemoveByIdRequest
 class RemoveByIdCommand : Command {
     override val info: String
         get() = "удалить элемент из коллекции по его id (id указывается после имени команды)"
-    override val argumentTypes: List<ArgumentTypeData>
-        get() = listOf(
-            ArgumentTypeData(ArgumentType.LONG, false)
-        )
+    override val argumentTypes: List<ArgumentType>
+        get() = listOf(ArgumentType.LONG)
 
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes)
-        val id: Long = args.args?.get(0)?.toLong() ?: -1
+        val id: Long = args.primitiveTypeArguments?.get(0)?.toLong() ?: -1
         if (Organization.idIsValid(id))
             return CommandResult(
                 true,

@@ -53,7 +53,6 @@ class IdManager(private val collection: LinkedList<Organization>) {
     }
 
     private fun updateGenerator() {
-        println(1)
         counter = collection.maxBy { it.id }.id + 1
         println(2)
         collection.sortBy { it.id }

@@ -2,10 +2,13 @@ package command.implementations
 
 import CollectionController
 import Organization
+import OrganizationFactory
 import command.*
 import exceptions.ScriptException
 import iostreamers.EventMessage
+import iostreamers.Reader
 import iostreamers.TextColor
+import org.koin.core.qualifier.named
 import requests.ExecuteCommandsRequest
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -17,26 +20,24 @@ import java.util.regex.Pattern
 class ExecuteScriptCommand(
     private val collection: LinkedList<Organization>,
     private val controller: CollectionController?,
-    private val executeScriptCommandString: String = "execute_script",
 ) : Command {
     override val info: String
         get() =
             "считать и исполнить скрипт из указанного файла (название файла указывается на после команды)"
 
-    override val argumentTypes: List<ArgumentTypeData>
-        get() = listOf(
-            ArgumentTypeData(ArgumentType.STRING, false)
-        )
+    override val argumentTypes: List<ArgumentType>
+        get() = listOf(ArgumentType.STRING)
 
     private val scriptFiles = Stack<String>()
 
     override fun execute(args: CommandArgument): CommandResult {
         if (controller == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
+
         args.checkArguments(argumentTypes)
 
-        val commandList: LinkedList<CommandData> = LinkedList()
-        val fileName: String = args.args?.get(0) ?: ""
+        val commandList: LinkedList<Pair<Command, CommandArgument>> = LinkedList()
+        val fileName: String = args.primitiveTypeArguments?.get(0)!!
 
         try {
             addCommandsFromFile(fileName, commandList)
@@ -56,12 +57,12 @@ class ExecuteScriptCommand(
 
         return CommandResult(
             true,
-            request = ExecuteCommandsRequest(commandList, controller),
+            request = ExecuteCommandsRequest(commandList, controller, collection),
             message = EventMessage.message("Запрос на исполнение скрипта отправлен", TextColor.BLUE),
         )
     }
 
-    private fun addCommandsFromFile(fileName: String, commandList: LinkedList<CommandData>) {
+    private fun addCommandsFromFile(fileName: String, commandList: LinkedList<Pair<Command, CommandArgument>>) {
         if (fileName in this.scriptFiles) {
             var message = "Обнаружен циклический вызов скрипта:"
 
@@ -77,24 +78,31 @@ class ExecuteScriptCommand(
         script = inputStreamReader.readText()
         inputStreamReader.close()
 
-        for (commandLine in script.split("\n")) {
-            val (commandName, argumentsLine) =
-                (commandLine.trim() + " ").split(Pattern.compile("\\s+"), 2)
-            val arguments = CommandArgument(if (argumentsLine.trim() == "") null else argumentsLine.trim())
-            if (commandName == executeScriptCommandString) {
+        val reader = Reader(Scanner(script))
+        var currLine: ULong = 1UL
+
+        var commandData = reader.readCommand()
+        while (commandData != null) {
+            val (commandName, commandArguments) = commandData
+            val command = controller!!.commandsApp.koin.get<Command>(named(commandName ?: ""))
+
+            for (i in 1..commandArguments.checkArguments(command.argumentTypes)) {
+                commandArguments.organizations.add(OrganizationFactory(reader).newOrganizationFromInput())
+                currLine += 8UL
+            }
+
+            if (command::class == this::class) {
                 if (this.scriptFiles.size > MAXIMUM_NESTED_SCRIPTS_CALLS)
                     throw ScriptException(
                         "Превышено максимальное количество вложенных вызовов скриптов: $MAXIMUM_NESTED_SCRIPTS_CALLS"
                     )
-                arguments.checkArguments(argumentTypes)
-                addCommandsFromFile(arguments.args?.get(0) ?: "", commandList)
-            } else
-                commandList.add(
-                    CommandData(
-                        commandName,
-                        arguments,
-                    )
-                )
+
+                addCommandsFromFile(commandArguments.primitiveTypeArguments?.get(0) ?: "", commandList)
+            } else {
+                commandList.add(Pair(command, commandArguments))
+            }
+            commandData = reader.readCommand()
+            currLine++
         }
 
         scriptFiles.pop()

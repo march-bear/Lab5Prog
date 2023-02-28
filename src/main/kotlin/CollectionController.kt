@@ -29,7 +29,7 @@ class CollectionController(
 
     private val collection: LinkedList<Organization> = LinkedList()
     private val requests: Queue<Request> = LinkedList()
-    private val commandsApp: KoinApplication
+    val commandsApp: KoinApplication
     // val idManager: IdManager = IdManager(collection)
     val initializationDate = Date()
 
@@ -44,6 +44,17 @@ class CollectionController(
             return EventMessage.message("${commandData.name}: команда не найдена", TextColor.RED)
         }
 
+        val orgCount: Int
+        try {
+            orgCount = commandData.args.checkArguments(command.argumentTypes)
+        } catch (ex: InvalidArgumentsForCommandException) {
+            return EventMessage.message(ex.message.toString(), TextColor.RED)
+        }
+
+        val factory = OrganizationFactory()
+        for (_i in 1..orgCount) {
+            commandData.args.addOrganization(factory.newOrganizationFromInput())
+        }
         try {
             val (commandCompleted, request, message) = command.execute(commandData.args)
             if (commandCompleted) {

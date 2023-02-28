@@ -19,5 +19,5 @@ fun main(args: Array<String>) {
         } catch (e: Exception) {
             EventMessage.oops()
         }
-    } while (command != null && !(command.name == "exit" && command.args.args == null))
+    } while (command != null && !(command.name == "exit" && command.args.primitiveTypeArguments == null))
 }

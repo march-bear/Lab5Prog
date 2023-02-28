@@ -4,13 +4,13 @@ import iostreamers.TextColor
 import org.valiktor.ConstraintViolationException
 import java.util.function.Consumer
 
-class OrganizationFactory(private val script: String? = null) {
+class OrganizationFactory(private val reader: Reader? = null) {
     private fun newOrganizationFromScript(): Organization {
         return Organization()
     }
 
     fun newOrganizationFromInput(): Organization {
-        if (script != null)
+        if (reader != null)
             return newOrganizationFromScript()
 
         val r = Reader()

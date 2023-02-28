@@ -7,7 +7,7 @@ import java.util.*
 
 class AddIfMaxRequest(private val element: Organization) : Request {
     override fun process(collection: LinkedList<Organization>): String {
-        if (element > collection.max()) {
+        if (collection.isEmpty() || element > collection.max()) {
             collection.add(element)
             return EventMessage.message("Элемент добавлен в коллекцию", TextColor.BLUE)
         }

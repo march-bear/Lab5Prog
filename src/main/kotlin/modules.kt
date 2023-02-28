@@ -48,8 +48,8 @@ val commandsModule = module {
         )
     }
 
-    factory<Command>(named("add")) { AddCommand(OrganizationFactory()) }
-    factory<Command>(named("update")) { UpdateCommand(OrganizationFactory()) }
+    factory<Command>(named("add")) { AddCommand() }
+    factory<Command>(named("update")) { UpdateCommand() }
     single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
     single<Command>(named("clear")) { ClearCommand() }
     factory<Command>(named("save")) { SaveCommand() }
@@ -64,8 +64,8 @@ val commandsModule = module {
 
     single<Command>(named("exit")) { ExitCommand() }
     single<Command>(named("remove_head")) { RemoveHeadCommand() }
-    factory<Command>(named("add_if_max")) { AddIfMaxCommand(OrganizationFactory()) }
-    factory<Command>(named("remove_lower")) { RemoveLowerCommand(OrganizationFactory()) }
+    factory<Command>(named("add_if_max")) { AddIfMaxCommand() }
+    factory<Command>(named("remove_lower")) { RemoveLowerCommand() }
 
     factory<Command>(named("sum_of_employees_count")) {
             (collection: LinkedList<Organization>) ->
