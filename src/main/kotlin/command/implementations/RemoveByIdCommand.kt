@@ -12,6 +12,7 @@ class RemoveByIdCommand : Command {
 
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes)
+
         val id: Long = args.primitiveTypeArguments?.get(0)?.toLong() ?: -1
         if (Organization.idIsValid(id))
             return CommandResult(

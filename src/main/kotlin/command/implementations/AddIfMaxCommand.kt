@@ -9,10 +9,6 @@ import iostreamers.EventMessage
 import iostreamers.TextColor
 import requests.AddIfMaxRequest
 
-/**
- * Класс команды add_if_max для считывания элемента с входного потока и добавления его в коллекцию, если он больше
- * максимального элемента этой коллекции
- */
 class AddIfMaxCommand(
     private val idManager: IdManager?,
 ) : Command {
@@ -26,6 +22,8 @@ class AddIfMaxCommand(
     override fun execute(args: CommandArgument): CommandResult {
         if (idManager == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
+
+        args.checkArguments(argumentTypes)
 
         return CommandResult(
             true,

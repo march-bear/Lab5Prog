@@ -9,6 +9,9 @@ import iostreamers.TextColor
 import java.lang.Exception
 import java.util.*
 
+/**
+ * Запрос на добавление нового элемента в коллекцию
+ */
 class AddRequest(
     private val element: Organization,
     private val idManager: IdManager,
@@ -17,7 +20,9 @@ class AddRequest(
     private var collection: LinkedList<Organization>? = null
     override fun process(collection: LinkedList<Organization>): String {
         element.id = idManager.generateId() ?: throw IdException("Коллекция полностью заполнена")
-        collection.add(element)
+        collection.add(element.clone())
+        newElement = element.clone()
+        this.collection = collection
         return EventMessage.message("Элемент добавлен в коллекцию", TextColor.BLUE)
     }
 

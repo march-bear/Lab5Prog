@@ -5,6 +5,8 @@ import command.ArgumentType
 import command.Command
 import command.CommandArgument
 import command.CommandResult
+import iostreamers.EventMessage
+import iostreamers.TextColor
 import requests.RemoveLowerRequest
 
 /**
@@ -23,7 +25,10 @@ class RemoveLowerCommand : Command {
         return CommandResult(
             true,
             RemoveLowerRequest(args.organizations[0]),
-            message = "Запрос на удаление всех элементов, меньших заданного, отправлен"
+            message = EventMessage.message(
+                "Запрос на удаление всех элементов, меньших заданного, отправлен",
+                TextColor.BLUE
+            )
         )
     }
 }

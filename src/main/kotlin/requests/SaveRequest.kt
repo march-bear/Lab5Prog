@@ -10,6 +10,9 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.util.*
 
+/**
+ * Запрос на сохранение коллекции в файл
+ */
 class SaveRequest(private val fileToSave: String) : Request {
     override fun process(collection: LinkedList<Organization>): String {
         val file: OutputStreamWriter

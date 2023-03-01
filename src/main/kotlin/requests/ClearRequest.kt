@@ -6,6 +6,9 @@ import iostreamers.EventMessage
 import iostreamers.TextColor
 import java.util.*
 
+/**
+ * Запрос на очистку коллекции
+ */
 class ClearRequest : Request {
     private var oldCollection: LinkedList<Organization>? = null
     private var newCollection: LinkedList<Organization>? = null
@@ -26,6 +29,7 @@ class ClearRequest : Request {
         newCollection!!.addAll(oldCollection!!)
         oldCollection = null
         newCollection = null
+
         return "Запрос на очистку коллекции отменен"
     }
 }

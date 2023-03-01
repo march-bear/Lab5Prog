@@ -17,7 +17,6 @@ class UpdateCommand : Command {
         args.checkArguments(argumentTypes)
 
         val id: Long = args.primitiveTypeArguments?.get(0)?.toLong() ?: -1
-
         if (!Organization.idIsValid(id))
             return CommandResult(false, message = "Введенное значение не является id")
 

@@ -17,8 +17,7 @@ class HelpCommand (private val commandMap: Map<String, String>) : Command {
 
         commandMap.forEach {
             output += EventMessage.message(String.format("%-40s", "${it.key}:"))
-            output += EventMessage.message("${it.value}", TextColor.BLUE)
-            output += "\n"
+            output += EventMessage.message(it.value + '\n', TextColor.BLUE)
         }
 
         return CommandResult(true, message = output)

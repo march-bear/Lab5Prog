@@ -5,6 +5,7 @@ import Organization
 import OrganizationFactory
 import command.*
 import exceptions.CommandNotFountException
+import exceptions.InvalidFieldValueException
 import exceptions.ScriptException
 import iostreamers.EventMessage
 import iostreamers.Reader
@@ -56,12 +57,10 @@ class ExecuteScriptCommand(
             )
         } catch (ex: CommandNotFountException) {
             return CommandResult(false,
-                message = EventMessage.message(ex.message + "\n" + "${ex.commandName}: команда не найдена",
-                    TextColor.RED))
+                message = EventMessage.message(ex.message ?: ex.toString(), TextColor.RED))
         } catch (ex: ScriptException) {
-            return CommandResult(
-                false,
-                message = EventMessage.message("${ex.message}", TextColor.RED)
+            return CommandResult(false,
+                message = EventMessage.message(ex.message ?: ex.toString(), TextColor.RED)
             )
         } catch (ex: Exception) {
             return CommandResult(false, message = "Ой-оооой, какие-то траблы $ex")
@@ -84,9 +83,11 @@ class ExecuteScriptCommand(
         }
         scriptFiles.add(fileName)
         val script: String
+
         val inputStreamReader = InputStreamReader(FileInputStream(fileName))
         script = inputStreamReader.readText()
         inputStreamReader.close()
+
         val reader = Reader(Scanner(script))
         var currLine: ULong = 1UL
         var commandData = reader.readCommand()
@@ -99,11 +100,17 @@ class ExecuteScriptCommand(
                 }
             } catch (ex: NoBeanDefFoundException) {
                 throw CommandNotFountException(
-                    commandName ?: "",
-                    "Ошибка во время проверки скрипта $fileName, строка $currLine:")
+                    "$commandName: команда не найдена <-\n" +
+                    "<- Ошибка во время проверки скрипта $fileName, строка $currLine")
             }
             for (i in 1..commandArguments.checkArguments(command.argumentTypes)) {
-                commandArguments.organizations.add(OrganizationFactory(reader).newOrganizationFromInput())
+                try {
+                    commandArguments.organizations.add(OrganizationFactory(reader).newOrganizationFromInput())
+                } catch (ex: InvalidFieldValueException) {
+                    throw ScriptException(
+                        "Ошибка во время считывания аргумента для команды в $fileName, строка $currLine"
+                    )
+                }
                 currLine += 8UL
             }
             if (command::class == this::class) {
@@ -114,8 +121,11 @@ class ExecuteScriptCommand(
                 try {
                     addCommandsFromFile(commandArguments.primitiveTypeArguments?.get(0) ?: "", commandList)
                 } catch (ex: CommandNotFountException) {
-                    throw CommandNotFountException(ex.commandName, ex.message + "\n" +
-                            "Ошибка во время проверки скрипта $fileName, строка $currLine:")
+                    throw CommandNotFountException(ex.message + " <-\n" +
+                            "<- Ошибка во время проверки скрипта $fileName, строка $currLine")
+                } catch (ex: ScriptException) {
+                    throw ScriptException(ex.message + " <-\n" +
+                            "<- Ошибка во время проверки скрипта $fileName, строка $currLine")
                 }
             } else {
                 commandList.add(Pair(command, commandArguments))

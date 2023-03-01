@@ -6,6 +6,9 @@ import iostreamers.EventMessage
 import iostreamers.TextColor
 import java.util.*
 
+/**
+ * Запрос на удаление из коллекции всех элементов, меньших, чем данный
+ */
 class RemoveLowerRequest(private val element: Organization) : Request {
     private val removedElements: LinkedList<Organization> = LinkedList()
     private var collection: LinkedList<Organization>? = null
@@ -23,6 +26,7 @@ class RemoveLowerRequest(private val element: Organization) : Request {
             i++
         }
 
+        this.collection = collection
         if (output != "")
             return output
 
@@ -30,7 +34,7 @@ class RemoveLowerRequest(private val element: Organization) : Request {
     }
 
     override fun cancel(): String {
-        if (removedElements.isEmpty() || collection == null)
+        if (collection == null)
             throw CancellationException("Отмена запроса невозможна, так как он ещё не был выполнен или уже был отменен")
 
         for (removedElement in removedElements) {

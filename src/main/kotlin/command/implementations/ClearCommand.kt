@@ -13,10 +13,11 @@ class ClearCommand : Command {
 
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes)
+
         return CommandResult(
             true,
             ClearRequest(),
-            message = EventMessage.message("Запрос на очистку коллекции отправлен...", TextColor.BLUE)
+            message = EventMessage.message("Запрос на очистку коллекции отправлен", TextColor.BLUE)
         )
     }
 }

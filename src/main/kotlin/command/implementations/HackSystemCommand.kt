@@ -16,7 +16,7 @@ class HackSystemCommand : Command {
             args.checkArguments(argumentTypes)
         } catch (ex: InvalidArgumentsForCommandException) {
             return CommandResult(
-                false, message = EventMessage.message(
+                true, message = EventMessage.message(
                     "Не усложняйте работу команде - она прекрасно взломает систему и без доп. аргументов",
                     TextColor.RED,
                 )

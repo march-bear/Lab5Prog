@@ -9,6 +9,9 @@ import iostreamers.TextColor
 import java.lang.Exception
 import java.util.*
 
+/**
+ * Запрос на добавление нового элемента в коллекцию, если он является максимальным
+ */
 class AddIfMaxRequest(
     private val element: Organization,
     private val idManager: IdManager,
@@ -19,8 +22,8 @@ class AddIfMaxRequest(
     override fun process(collection: LinkedList<Organization>): String {
         if (collection.isEmpty() || element > collection.max()) {
             element.id = idManager.generateId() ?: throw IdException("Коллекция полностью заполнена")
-            collection.add(element)
-            newElement = element
+            collection.add(element.clone())
+            newElement = element.clone()
             this.collection = collection
             return EventMessage.message("Элемент добавлен в коллекцию", TextColor.BLUE)
         }

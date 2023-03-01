@@ -23,6 +23,8 @@ class AddCommand(
         if (idManager == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
 
+        args.checkArguments(argumentTypes)
+
         return CommandResult(
             true,
             AddRequest(args.organizations[0], idManager),

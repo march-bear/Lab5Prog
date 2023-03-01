@@ -18,6 +18,17 @@ val qualifiers = listOf(
 )
 
 val commandsModule = module {
+    single<Command>(named("")) {
+        object : Command {
+            override val info: String
+                get() = "пустая команда"
+
+            override fun execute(args: CommandArgument): CommandResult {
+                return CommandResult(true)
+            }
+
+        }
+    }
     factory<Command>(named("help")) {
         val commandsMap = HashMap<String, String>()
         commandsMap["help"] = HelpCommand(mapOf()).info

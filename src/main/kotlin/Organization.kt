@@ -6,12 +6,8 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.valiktor.ConstraintViolationException
-import org.valiktor.Validator
-import org.valiktor.constraints.Between
 import org.valiktor.functions.*
 import org.valiktor.validate
-import java.lang.Exception
-import java.lang.System.currentTimeMillis
 import java.util.Date
 
 
@@ -59,7 +55,7 @@ class Organization() : Comparable<Organization> {
     var coordinates: Coordinates = Coordinates()
 
     @Serializable(with = DateAsLongSerializer::class)
-    private val creationDate: Date = Date()
+    private var creationDate: Date = Date()
 
     var annualTurnover: Int = 0
         set(value) {
@@ -128,6 +124,33 @@ class Organization() : Comparable<Organization> {
         }
         return 0
     }
+
+    fun clone(): Organization {
+        val newOrganization = Organization(name, coordinates.clone(), annualTurnover, fullName,
+            employeesCount?.toLong(), type, postalAddress?.clone())
+        newOrganization.id = id
+        newOrganization.creationDate = creationDate
+        return newOrganization
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Organization
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (coordinates != other.coordinates) return false
+        if (creationDate != other.creationDate) return false
+        if (annualTurnover != other.annualTurnover) return false
+        if (fullName != other.fullName) return false
+        if (employeesCount != other.employeesCount) return false
+        if (type != other.type) return false
+        if (postalAddress != other.postalAddress) return false
+
+        return true
+    }
 }
 
 @Serializable
@@ -138,12 +161,42 @@ class Coordinates(
     override fun toString(): String {
         return "$x $y"
     }
+    fun clone(): Coordinates {
+        return Coordinates(x, y)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Coordinates
+
+        if (x != other.x) return false
+        if (y != other.y) return false
+
+        return true
+    }
 }
 
 @Serializable
 class Address(var zipCode: String) {
     override fun toString(): String {
         return zipCode
+    }
+
+    fun clone(): Address {
+        return Address(zipCode)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Address
+
+        if (zipCode != other.zipCode) return false
+
+        return true
     }
 }
 

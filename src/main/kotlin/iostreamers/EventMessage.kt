@@ -6,8 +6,8 @@ class EventMessage {
             return "${color.code}${text}${TextColor.DEFAULT.code}"
         }
 
-        fun printMessage(message: String? = null, color: TextColor = TextColor.DEFAULT) {
-            println("${color.code}${message ?: ""}${TextColor.DEFAULT.code}")
+        fun printMessage(message: String? = null, color: TextColor = TextColor.DEFAULT, newLine: Boolean = true) {
+            print("${color.code}${message ?: ""}${TextColor.DEFAULT.code}" + if (newLine) "\n" else "")
         }
 
         fun inputPrompt(text: String = "", delimiter: String = ": ") {

@@ -92,7 +92,7 @@ class CollectionController(
 
         EventMessage.printMessage("Загрузка коллекции завершена. Отчет о выполнении загрузки:")
         EventMessage.printMessage("---------------------------------------------------------------------")
-        EventMessage.printMessage(output)
+        EventMessage.printMessage(output, newLine = false)
         EventMessage.printMessage("---------------------------------------------------------------------")
 
         commandsApp = startKoin {

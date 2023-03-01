@@ -16,9 +16,9 @@ class SumOfEmployeesCountCommand(
         args.checkArguments(argumentTypes)
 
         val output = if (sum == 0L)
-            EventMessage.message("Коллекция пуста\n", TextColor.BLUE)
+            EventMessage.message("Коллекция пуста", TextColor.BLUE)
         else
-            EventMessage.message("Общее количество работников во всех организациях: $sum\n", TextColor.BLUE)
+            "Общее количество работников во всех организациях: " + EventMessage.message("$sum", TextColor.BLUE)
 
         return CommandResult(true, message = output)
     }

@@ -20,9 +20,9 @@ class InfoCommand(
     override fun execute(args: CommandArgument): CommandResult {
         args.checkArguments(argumentTypes)
 
-        var output = ""
 
-        output += EventMessage.message("Информация о коллекции:\n")
+
+        var output = EventMessage.message("Информация о коллекции:\n")
 
         output += EventMessage.message("-------------------------\n")
 
