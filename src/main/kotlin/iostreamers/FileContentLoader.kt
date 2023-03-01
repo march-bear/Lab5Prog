@@ -38,17 +38,31 @@ class FileContentLoader(private val collection: LinkedList<Organization>) {
         try {
             output += "Загрузка данных в коллекцию...\n"
             for (elem in Json.decodeFromString<List<Organization>>(content))
-                if (CollectionController.checkUniquenessFullName(elem.fullName, collection) &&
-                        CollectionController.checkUniquenessId(elem.id, collection))
-                    collection.add(elem)
+                if (CollectionController.checkUniquenessFullName(elem.fullName, collection))
+                    if (CollectionController.checkUniquenessId(elem.id, collection))
+                        collection.add(elem)
+                    else
+                        output += EventMessage.message(
+                            "Ошибка во время добавления элемента в коллекцию: id не уникален\n",
+                            TextColor.RED
+                        )
                 else
-                    output += EventMessage.message("Ошибка во время добавления элемента\n", TextColor.RED)
+                    output += EventMessage.message(
+                        "Ошибка во время добавления элемента в коллекцию: полное имя не уникально\n",
+                        TextColor.RED
+                    )
             output += "Загрузка завершена\n"
 
         } catch (e: SerializationException) {
-
+            output += EventMessage.message(
+                "$fileName: загрузка прервана вследствие обнаруженной синтаксической ошибки\n",
+                TextColor.RED,
+            )
         } catch (e: IllegalArgumentException) {
-
+            output += EventMessage.message(
+                "$fileName: загрузка прервана вследствие несоответствия формата данных в файле типу Organization\n",
+                TextColor.RED,
+            )
         }
 
         return output

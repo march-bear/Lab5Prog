@@ -4,6 +4,7 @@ import CollectionController
 import Organization
 import OrganizationFactory
 import command.*
+import exceptions.CommandNotFountException
 import exceptions.ScriptException
 import iostreamers.EventMessage
 import iostreamers.Reader
@@ -16,7 +17,6 @@ import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
 import java.util.*
-import java.util.regex.Pattern
 
 
 class ExecuteScriptCommand(
@@ -54,17 +54,22 @@ class ExecuteScriptCommand(
                 false,
                 message = EventMessage.message(output, TextColor.RED)
             )
-        } catch (ex: NoBeanDefFoundException) {
-            return CommandResult(false, message = "Команда не найдена, пардоньти")
+        } catch (ex: CommandNotFountException) {
+            return CommandResult(false,
+                message = EventMessage.message(ex.message + "\n" + "${ex.commandName}: команда не найдена",
+                    TextColor.RED))
         } catch (ex: ScriptException) {
-            return CommandResult(false, message = "КАК ТЫ ЭТО СДЕЛАЛ, СУКА $ex")
+            return CommandResult(
+                false,
+                message = EventMessage.message("${ex.message}", TextColor.RED)
+            )
         } catch (ex: Exception) {
-            return CommandResult(false, message = "КАК, СУКА $ex")
+            return CommandResult(false, message = "Ой-оооой, какие-то траблы $ex")
         }
 
         return CommandResult(
             true,
-            request = ExecuteCommandsRequest(commandList, controller),
+            request = ExecuteCommandsRequest(commandList),
             message = EventMessage.message("Запрос на исполнение скрипта отправлен", TextColor.BLUE),
         )
     }
@@ -78,7 +83,6 @@ class ExecuteScriptCommand(
             throw ScriptException("$message $fileName")
         }
         scriptFiles.add(fileName)
-
         val script: String
         val inputStreamReader = InputStreamReader(FileInputStream(fileName))
         script = inputStreamReader.readText()
@@ -88,12 +92,17 @@ class ExecuteScriptCommand(
         var commandData = reader.readCommand()
         while (commandData != null) {
             val (commandName, commandArguments) = commandData
-            println(commandName)
-            val command = controller!!.commandsApp.koin.get<Command>(named(commandName ?: "")) {
-                parametersOf(collection, controller)
+            val command: Command
+            try {
+                command = controller!!.commandsApp.koin.get(named(commandName ?: "")) {
+                    parametersOf(collection, controller)
+                }
+            } catch (ex: NoBeanDefFoundException) {
+                throw CommandNotFountException(
+                    commandName ?: "",
+                    "Ошибка во время проверки скрипта $fileName, строка $currLine:")
             }
             for (i in 1..commandArguments.checkArguments(command.argumentTypes)) {
-                println("Аргумент")
                 commandArguments.organizations.add(OrganizationFactory(reader).newOrganizationFromInput())
                 currLine += 8UL
             }
@@ -102,8 +111,12 @@ class ExecuteScriptCommand(
                     throw ScriptException(
                         "Превышено максимальное количество вложенных вызовов скриптов: $MAXIMUM_NESTED_SCRIPTS_CALLS"
                     )
-
-                addCommandsFromFile(commandArguments.primitiveTypeArguments?.get(0) ?: "", commandList)
+                try {
+                    addCommandsFromFile(commandArguments.primitiveTypeArguments?.get(0) ?: "", commandList)
+                } catch (ex: CommandNotFountException) {
+                    throw CommandNotFountException(ex.commandName, ex.message + "\n" +
+                            "Ошибка во время проверки скрипта $fileName, строка $currLine:")
+                }
             } else {
                 commandList.add(Pair(command, commandArguments))
             }

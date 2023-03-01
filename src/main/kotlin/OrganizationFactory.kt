@@ -1,3 +1,4 @@
+import exceptions.InvalidFieldValueException
 import iostreamers.EventMessage
 import iostreamers.Reader
 import iostreamers.TextColor
@@ -7,26 +8,30 @@ import java.util.function.Consumer
 class OrganizationFactory(private val reader: Reader? = null) {
     private fun newOrganizationFromScript(): Organization {
         val newOrganization = Organization()
-        newOrganization.name = reader!!.readString()
+        getValueForField { newOrganization.name = reader!!.readString() }
 
-        newOrganization.coordinates.x = reader.readString().toDoubleOrNull()
-            ?: throw NumberFormatException("Ожидалось дробное числовое значение для поля: x")
+        getValueForField { newOrganization.coordinates.x = reader!!.readString().toDoubleOrNull()
+            ?: throw NumberFormatException("Ожидалось дробное числовое значение для поля: x") }
 
-        newOrganization.coordinates.y = reader.readString().toIntOrNull()
-            ?: throw NumberFormatException("Ожидалось целочисленное значение для поля: y")
+        getValueForField { newOrganization.coordinates.y = reader!!.readString().toIntOrNull()
+            ?: throw NumberFormatException("Ожидалось целочисленное значение для поля: y") }
 
-        newOrganization.annualTurnover = reader.readString().toIntOrNull()
-            ?: throw NumberFormatException("Ожидалось целочисленное значение для поля: годовой оборот")
+        getValueForField { newOrganization.annualTurnover = reader!!.readString().toIntOrNull()
+            ?: throw NumberFormatException("Ожидалось целочисленное значение для поля: годовой оборот") }
 
-        newOrganization.fullName = reader.readStringOrNull()
+        getValueForField { newOrganization.fullName = reader!!.readStringOrNull() }
 
-        newOrganization.employeesCount = reader.readStringOrNull()?.toLong()
-        newOrganization.type = OrganizationType.valueOf(reader.readString())
-        val input = reader.readStringOrNull()
-        if (input == null)
-            newOrganization.postalAddress = null
-        else
-            newOrganization.postalAddress = Address(input)
+        getValueForField { newOrganization.employeesCount = reader!!.readStringOrNull()?.toLong() }
+
+        getValueForField { newOrganization.type = OrganizationType.valueOf(reader!!.readString()) }
+
+        getValueForField {
+            val input = reader!!.readStringOrNull()
+            if (input == null)
+                newOrganization.postalAddress = null
+            else
+                newOrganization.postalAddress = Address(input)
+        }
 
         return newOrganization
     }
@@ -65,7 +70,10 @@ class OrganizationFactory(private val reader: Reader? = null) {
             newOrganization.employeesCount = r.readStringOrNull()?.toLong()
         }
 
-        readValueForField("Тип организации") {
+        readValueForField(
+            "Тип организации " +
+                    "(COMMERCIAL, GOVERNMENT, TRUST, PRIVATE_LIMITED_COMPANY или OPEN_JOINT_STOCK_COMPANY)"
+        ) {
             newOrganization.type = OrganizationType.valueOf(r.readString())
         }
 
@@ -100,6 +108,22 @@ class OrganizationFactory(private val reader: Reader? = null) {
                     EventMessage.message(ex.message ?: "Введите числовое значение", TextColor.RED)
                 )
             }
+        }
+    }
+
+    private fun getValueForField(consumer: Consumer<Unit>) {
+        try {
+            consumer.accept(Unit)
+        } catch (ex: ConstraintViolationException) {
+            throw InvalidFieldValueException(
+                "Невалидное значение поля."
+            )
+        } catch (ex: IllegalArgumentException) {
+            throw InvalidFieldValueException(
+                "Невалидное значение поля. Скорее всего аргумент имеет другой тип."
+            )
+        } catch (ex: NumberFormatException) {
+            throw InvalidFieldValueException(ex.message)
         }
     }
 }

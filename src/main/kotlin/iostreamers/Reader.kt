@@ -8,10 +8,9 @@ import java.util.regex.Pattern
 /**
  * Класс для считывания данных с входного потока
  */
-
 class Reader(private val sc: Scanner = Scanner(System.`in`)) {
     fun readStringOrNull(): String? {
-        val input = readString()
+        val input = sc.nextLine().trim()
         return if (input != "") input else null
     }
     fun readString(): String {

@@ -13,29 +13,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/CancellationException.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddIfMaxCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ClearCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ClearCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExecuteScriptCommand.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandNotFountException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandNotFountException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandRegistrationException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandIsNotCompletedException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/FileContentLoader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/FileContentLoader.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/modules.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/modules.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/AddRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/ClearRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ClearRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,7 +236,8 @@
       <workItem from="1677506219081" duration="15342000" />
       <workItem from="1677584518173" duration="2531000" />
       <workItem from="1677594612161" duration="1821000" />
-      <workItem from="1677607504899" duration="15404000" />
+      <workItem from="1677607504899" duration="16117000" />
+      <workItem from="1677633467733" duration="9402000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -384,7 +372,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677611081276</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="В классы запросов добавлен метод отмены cancel()&#10;Частично реализован метод исполнения запроса выполнения скрипта&#10;Реализован механизм выдачи id элементам коллекции&#10;Мелкие исправления">
+      <created>1677624784210</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1677624784210</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,7 +418,8 @@
     <MESSAGE value="Реализация большинства команд исправлена под новую архитектуру приложения&#10;Реализован id-менеджер&#10;Словарь команд заменен на модуль koin" />
     <MESSAGE value="Изменена иерархия пакетов (реализации классы Command вынесены в отдельный подпакет)&#10;Исправления в модуле koin&#10;Создание класса-загрузчика и класса-фабрики для Organization&#10;Обновления в классе Reader&#10;Начало реализации механизма проверки аргументов&#10;Другие исправления" />
     <MESSAGE value="Изменения в работе команды execute_script&#10;Удален класс ArgumentTypeData, упрощен механизм проверки аргументов команд&#10;Объекты класса Organization теперь принимаются как аргументы (ранее считывались в самих командах)&#10;Мелкие исправления" />
-    <option name="LAST_COMMIT_MESSAGE" value="Изменения в работе команды execute_script&#10;Удален класс ArgumentTypeData, упрощен механизм проверки аргументов команд&#10;Объекты класса Organization теперь принимаются как аргументы (ранее считывались в самих командах)&#10;Мелкие исправления" />
+    <MESSAGE value="В классы запросов добавлен метод отмены cancel()&#10;Частично реализован метод исполнения запроса выполнения скрипта&#10;Реализован механизм выдачи id элементам коллекции&#10;Мелкие исправления" />
+    <option name="LAST_COMMIT_MESSAGE" value="В классы запросов добавлен метод отмены cancel()&#10;Частично реализован метод исполнения запроса выполнения скрипта&#10;Реализован механизм выдачи id элементам коллекции&#10;Мелкие исправления" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

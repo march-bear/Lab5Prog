@@ -8,6 +8,8 @@ fun main(args: Array<String>) {
     EventMessage.interactiveModeMessage()
     val reader = Reader(Scanner(System.`in`))
     var command: CommandData?
+
+    EventMessage.printMessage("\nВключен интерактивный режим. Для просмотра доступных команд введите `help`")
     do {
         EventMessage.inputPrompt(">>>", " ")
         command = reader.readCommand()
@@ -20,4 +22,6 @@ fun main(args: Array<String>) {
             EventMessage.oops()
         }
     } while (command != null && !(command.name == "exit" && command.args.primitiveTypeArguments == null))
+
+    EventMessage.printMessage("Завершение работы программы (сохранение коллекции не происходит)...")
 }

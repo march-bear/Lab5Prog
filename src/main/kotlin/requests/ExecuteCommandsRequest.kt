@@ -1,19 +1,19 @@
 package requests
 
-import CollectionController
 import Organization
 import command.Command
 import command.CommandArgument
 import exceptions.CancellationException
+import exceptions.CommandIsNotCompletedException
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import java.util.*
 
 class ExecuteCommandsRequest(
     private val commands: LinkedList<Pair<Command, CommandArgument>>,
-    private val controller: CollectionController,
 ) : Request {
     private val requests: Stack<Request> = Stack()
+    private var collection: LinkedList<Organization>? = null
     override fun process(collection: LinkedList<Organization>): String {
         try {
             for (i in commands.indices) {
@@ -26,26 +26,39 @@ class ExecuteCommandsRequest(
                     }
                     EventMessage.printMessage(message)
                 } else
-                    throw Exception(message)
+                    throw CommandIsNotCompletedException("Команда не была выполнена. Сообщение о выполнении:\n" +
+                            "$message")
             }
-        } catch (ex: Exception) {
+        } catch (ex: CommandIsNotCompletedException) {
             cancel()
             return EventMessage.message(
                 "Ошибка во время исполнения скрипта. Сообщение ошибки:\n$ex",
                 TextColor.RED)
         }
 
-        collection.clear()
         return EventMessage.message("Скрипт выполнен", TextColor.BLUE)
     }
 
     override fun cancel(): String {
-        try {
-            while (requests.isNotEmpty())
-                requests.pop().cancel()
-        } catch (ex: CancellationException) {
+        if (collection == null)
+            throw CancellationException("Отмена запроса невозможна, так как он ещё не был выполнен или уже был отменен")
 
+        val canceledRequests: Stack<Request> = Stack()
+        try {
+            while (requests.isNotEmpty()) {
+                canceledRequests.add(requests.pop())
+                canceledRequests.peek().cancel()
+            }
+        } catch (ex: CancellationException) {
+            canceledRequests.pop()
+            while(canceledRequests.isNotEmpty())
+                canceledRequests.pop().process(collection!!)
+            throw CancellationException("Отмена запроса невозможна. Коллекция уже была модифицирована")
         }
+
+        collection = null
+        requests.clear()
+
         return "Запрос на исполнение скрипта отменен"
     }
 }

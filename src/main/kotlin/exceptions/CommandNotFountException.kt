@@ -1,3 +1,6 @@
 package exceptions
 
-class CommandNotFountException(override val message: String? = "Команда не найдена") : Exception(message)
+class CommandNotFountException(
+    val commandName: String,
+    override val message: String? = "$commandName: команда не найдена",
+) : Exception(message)
