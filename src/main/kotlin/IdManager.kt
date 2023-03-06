@@ -1,7 +1,8 @@
+import collection.CollectionWrapper
 import java.util.*
 
 
-class IdManager(private val collection: LinkedList<Organization>) {
+class IdManager(private val collection: CollectionWrapper<Organization>) {
     private var counter: Long = 1
     private val freeIdLessCounter = LinkedList<Long>()
 
@@ -33,7 +34,7 @@ class IdManager(private val collection: LinkedList<Organization>) {
     private fun updateGenerator() {
         counter = if (collection.isEmpty()) 1 else collection.maxBy { it.id }.id + 1
         freeIdLessCounter.clear()
-        collection.sortBy { it.id }
+        val sortedCollection = collection.sortedBy { it.id }
         var currId: Long = 1
         var collectionCounter = 0
         while (
@@ -41,7 +42,7 @@ class IdManager(private val collection: LinkedList<Organization>) {
             && freeIdLessCounter.size < MAX_SIZE_FREE_ID_LESS_COUNTER
             && collectionCounter < collection.size
         )
-            if (collection[collectionCounter].id != currId) {
+            if (sortedCollection[collectionCounter].id != currId) {
                 freeIdLessCounter.add(currId++)
             } else {
                 collectionCounter++
@@ -59,22 +60,3 @@ class IdManager(private val collection: LinkedList<Organization>) {
         private const val MAX_SIZE_FREE_ID_LESS_COUNTER = 1000
     }
 }
-
-/*
-    fun makeIdFree(id: Long) {
-        if (!Organization.idIsValid(id))
-            throw IllegalArgumentException("Невозможный id")
-
-        if (collection.find { it.id == id } == null)
-            throw IllegalArgumentException("Id свободен")
-
-        if (counter - id == 1L) {
-            counter--
-        } else if (counter > id) {
-            if (freeIdLessCounter.size <= MAX_SIZE_FREE_ID_LESS_COUNTER)
-                freeIdLessCounter.add(id)
-        } else
-            throw IdException()
-
-    }
- */

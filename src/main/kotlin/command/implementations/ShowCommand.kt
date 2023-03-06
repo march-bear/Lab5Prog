@@ -1,5 +1,7 @@
 package command.implementations
 
+import Organization
+import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import command.CommandResult
@@ -7,26 +9,26 @@ import iostreamers.EventMessage
 import iostreamers.TextColor
 
 class ShowCommand(
-    private val listOfOrganization: List<String>,
+    private val collection: CollectionWrapper<Organization>,
 ) : Command {
     override val info: String
         get() = "вывести в стандартный поток вывода все элементы коллекции в строковом представлении"
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
-        if (listOfOrganization.isEmpty()) {
+        if (collection.isEmpty()) {
             return CommandResult(
                 true,
                 message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
             )
         }
 
-        var output = "Элементы коллекции:\n"
-        listOfOrganization.forEach {
-            output += "------------------------\n"
-            output += it + "\n"
-            output += "------------------------\n"
+        var output = "Элементы коллекции:"
+        collection.forEach {
+            output += "\n------------------------"
+            output += "\n" + it.toString()
+            output += "\n------------------------"
         }
 
         return CommandResult(

@@ -1,11 +1,7 @@
 package command.implementations
 
 import IdManager
-import command.ArgumentType
-import command.Command
-import command.CommandArgument
-import command.CommandResult
-import exceptions.InvalidArgumentsForCommandException
+import command.*
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import requests.AddRequest
@@ -16,14 +12,13 @@ class AddCommand(
     override val info: String
         get() = "добавить новый элемент в коллекцию (поля элемента указываются на отдельных строках)"
 
-    override val argumentTypes: List<ArgumentType>
-        get() = listOf(ArgumentType.ORGANIZATION)
+    override val argumentValidator = ArgumentValidator(listOf(ArgumentType.ORGANIZATION))
 
     override fun execute(args: CommandArgument): CommandResult {
         if (idManager == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
 
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(
             true,

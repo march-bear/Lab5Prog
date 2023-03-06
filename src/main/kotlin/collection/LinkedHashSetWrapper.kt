@@ -24,7 +24,7 @@ class LinkedHashSetWrapper<E>(private val set: LinkedHashSet<E> = LinkedHashSet(
         return first
     }
 
-    override fun getCollectionType(): String = set::class.simpleName.toString()
+    override fun getCollectionType(): String = "LinkedHashSet"
 
     override fun remove(element: E): Boolean = set.remove(element)
 

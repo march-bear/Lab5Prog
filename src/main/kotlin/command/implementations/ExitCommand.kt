@@ -9,7 +9,7 @@ class ExitCommand : Command {
         get() = "завершить программу (без сохранения в файл)"
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(true)
     }

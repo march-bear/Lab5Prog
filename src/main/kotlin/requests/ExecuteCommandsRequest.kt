@@ -1,6 +1,7 @@
 package requests
 
 import Organization
+import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import exceptions.CancellationException
@@ -19,8 +20,8 @@ class ExecuteCommandsRequest(
     private val commands: LinkedList<Pair<Command, CommandArgument>>,
 ) : Request {
     private val requests: Stack<Request> = Stack()
-    private var collection: LinkedList<Organization>? = null
-    override fun process(collection: LinkedList<Organization>): String {
+    private var collection: CollectionWrapper<Organization>? = null
+    override fun process(collection: CollectionWrapper<Organization>): String {
         this.collection = collection
         try {
             for (i in commands.indices) {

@@ -13,12 +13,12 @@ class HackSystemCommand : Command {
 
     override fun execute(args: CommandArgument): CommandResult {
         try {
-            args.checkArguments(argumentTypes)
+            argumentValidator.check(args)
         } catch (ex: InvalidArgumentsForCommandException) {
             return CommandResult(
                 true, message = EventMessage.message(
-                    "Не усложняйте работу команде - она прекрасно взломает систему и без доп. аргументов",
-                    TextColor.RED,
+                    "Не усложняйте работу команде - она прекрасно взломает систему и без доп. аргументов ;)",
+                    TextColor.BLUE,
                 )
             )
         }

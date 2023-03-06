@@ -1,3 +1,6 @@
+import collection.CollectionWrapper
+import collection.LinkedListWrapper
+import collection.QueueWrapper
 import command.*
 import command.implementations.*
 import org.koin.core.parameter.parametersOf
@@ -6,7 +9,7 @@ import org.koin.dsl.module
 import java.util.*
 import kotlin.collections.HashMap
 
-val qualifiers = listOf(
+val commandQualifiers = listOf(
     "info", "show", "add", "update",
     "remove_by_id", "clear", "save",
     "execute_script", "exit", "remove_head",
@@ -17,64 +20,38 @@ val qualifiers = listOf(
     "show_field_requirements",
 )
 
-val commandsModule = module {
-    single<Command>(named("")) {
-        object : Command {
-            override val info: String
-                get() = "пустая команда"
-
-            override fun execute(args: CommandArgument): CommandResult {
-                return CommandResult(true)
-            }
-
-        }
-    }
+val basicCommandModule = module {
     factory<Command>(named("help")) {
         val commandsMap = HashMap<String, String>()
         commandsMap["help"] = HelpCommand(mapOf()).info
-        for (qualifier in qualifiers)
+        for (qualifier in commandQualifiers)
             commandsMap[qualifier] = this.getKoin().get<Command>(named(qualifier)) {
-                parametersOf(LinkedList<Organization>(), null)
+                parametersOf(CollectionWrapper<Organization>(LinkedListWrapper()), null)
             }.info
 
         HelpCommand(commandsMap)
     }
 
-    factory<Command>(named("info")) {
-            (
-                collection: LinkedList<Organization>,
-                controller: CollectionController?
-            ) ->
-        InfoCommand(
-            collection.size,
-            collection.maxOrNull()?.id,
-            collection.minOrNull()?.id,
-            controller?.initializationDate
-        )
-    }
+    single<Command>(named("info")) { (collection: CollectionWrapper<Organization>) -> InfoCommand(collection) }
 
-    factory<Command>(named("show")) {(collection: LinkedList<Organization>) ->
-        ShowCommand(
-            collection.map { it.toString() }
-        )
-    }
+    single<Command>(named("show")) { (collection: CollectionWrapper<Organization>) -> ShowCommand(collection) }
 
     factory<Command>(named("add")) {
             (
-                _: LinkedList<Organization>,
+                _: CollectionWrapper<Organization>,
                 controller: CollectionController?
             ) ->
         AddCommand(controller?.idManager)
     }
 
-    factory<Command>(named("update")) { UpdateCommand() }
+    single<Command>(named("update")) { UpdateCommand() }
     single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
     single<Command>(named("clear")) { ClearCommand() }
-    factory<Command>(named("save")) { SaveCommand() }
+    single<Command>(named("save")) { SaveCommand() }
 
     factory<Command>(named("execute_script")) {
             (
-                collection: LinkedList<Organization>,
+                collection: CollectionWrapper<Organization>,
                 controller: CollectionController?
             ) ->
         ExecuteScriptCommand(collection, controller)
@@ -84,7 +61,7 @@ val commandsModule = module {
     single<Command>(named("remove_head")) { RemoveHeadCommand() }
     factory<Command>(named("add_if_max")) {
             (
-                _: LinkedList<Organization>,
+                _: CollectionWrapper<Organization>,
                 controller: CollectionController?
             ) ->
         AddIfMaxCommand(controller?.idManager)
@@ -93,21 +70,37 @@ val commandsModule = module {
     factory<Command>(named("remove_lower")) { RemoveLowerCommand() }
 
     factory<Command>(named("sum_of_employees_count")) {
-            (collection: LinkedList<Organization>) ->
-        SumOfEmployeesCountCommand(collection.sumOf { it.employeesCount ?: 0 })
+            (collection: CollectionWrapper<Organization>) ->
+        SumOfEmployeesCountCommand(collection)
     }
 
     factory<Command>(named("group_counting_by_employees_count")) {
-            (collection: LinkedList<Organization>) ->
-        GroupCountingByEmployeesCountCommand(collection.groupBy { it.employeesCount })
+            (collection: CollectionWrapper<Organization>) ->
+        GroupCountingByEmployeesCountCommand(collection)
     }
 
-    factory<Command>(named("print_unique_postal_address")) {(collection: LinkedList<Organization>) ->
-        PrintUniquePostalAddressCommand(
-            collection.map { it.postalAddress.toString() }.toSet()
-        )
+    factory<Command>(named("print_unique_postal_address")) {
+            (collection: CollectionWrapper<Organization>) -> PrintUniquePostalAddressCommand(collection)
     }
 
     single<Command>(named("oops")) { HackSystemCommand() }
     single<Command>(named("show_field_requirements")) { ShowFieldRequirementsCommand() }
+}
+
+val basicCommandManagerModule = module {
+    single {
+        CommandManager(basicCommandModule, get(), get())
+    }
+}
+
+val basicCollectionControllerModule = module {
+    single { (fileName: String) -> CollectionController(fileName) }
+
+    single<CollectionWrapper<Organization>> { CollectionWrapper(LinkedListWrapper()) }
+}
+
+val userCollectionControllerModule = module {
+    single { (fileName: String) -> CollectionController(fileName) }
+
+    single<CollectionWrapper<Organization>> { CollectionWrapper(QueueWrapper()) }
 }

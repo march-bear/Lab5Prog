@@ -15,7 +15,7 @@ class RemoveHeadCommand : Command {
         get() = "вывести первый элемент коллекции и удалить его"
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(
             true,

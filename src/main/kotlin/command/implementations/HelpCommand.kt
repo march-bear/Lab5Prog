@@ -11,13 +11,13 @@ class HelpCommand (private val commandMap: Map<String, String>) : Command {
         get() = "вывести справку по доступным командам"
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         var output = ""
 
         commandMap.forEach {
             output += EventMessage.message(String.format("%-40s", "${it.key}:"))
-            output += EventMessage.message(it.value + '\n', TextColor.BLUE)
+            output += EventMessage.message(it.value + "\n", TextColor.BLUE)
         }
 
         return CommandResult(true, message = output)

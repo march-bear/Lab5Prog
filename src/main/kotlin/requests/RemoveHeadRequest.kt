@@ -1,6 +1,7 @@
 package requests
 
 import Organization
+import collection.CollectionWrapper
 import exceptions.CancellationException
 import iostreamers.EventMessage
 import iostreamers.TextColor
@@ -11,15 +12,15 @@ import java.util.*
  */
 class RemoveHeadRequest : Request {
     private var removedElement: Organization? = null
-    private var collection: LinkedList<Organization>? = null
+    private var collection: CollectionWrapper<Organization>? = null
 
-    override fun process(collection: LinkedList<Organization>): String {
-        this.collection = collection
+    override fun process(collection: CollectionWrapper<Organization>): String {
+        //this.collection = collection
         if (collection.isEmpty())
             return EventMessage.message("Элемент не может быть удален - коллекция пуста", TextColor.RED)
 
-        removedElement = collection.first.clone()
-        return collection.removeFirst().toString() + EventMessage.message("\nЭлемент удален", TextColor.BLUE)
+        //removedElement = collection.first.clone()
+        return collection.remove().toString() + EventMessage.message("\nЭлемент удален", TextColor.BLUE)
     }
 
     override fun cancel(): String {

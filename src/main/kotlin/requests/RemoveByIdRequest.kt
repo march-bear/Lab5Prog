@@ -2,6 +2,7 @@ package requests
 
 import CollectionController
 import Organization
+import collection.CollectionWrapper
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.TextColor
@@ -13,11 +14,11 @@ import kotlin.coroutines.cancellation.CancellationException
  */
 class RemoveByIdRequest(private val id: Long) : Request {
     private var removedElement: Organization? = null
-    private var collection: LinkedList<Organization>? = null
-    override fun process(collection: LinkedList<Organization>): String {
+    private var collection: CollectionWrapper<Organization>? = null
+    override fun process(collection: CollectionWrapper<Organization>): String {
         removedElement = collection.find { it.id == id }
 
-        if (collection.remove(removedElement))
+        if (collection.remove(removedElement!!))
             return EventMessage.message("Элемент удален", TextColor.BLUE)
 
         throw InvalidArgumentsForCommandException("Элемент с id $id не найден")

@@ -2,11 +2,11 @@ package requests
 
 import IdManager
 import Organization
+import collection.CollectionWrapper
 import exceptions.CancellationException
 import exceptions.IdException
 import iostreamers.EventMessage
 import iostreamers.TextColor
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -17,8 +17,8 @@ class AddRequest(
     private val idManager: IdManager,
 ) : Request {
     private var newElement: Organization? = null
-    private var collection: LinkedList<Organization>? = null
-    override fun process(collection: LinkedList<Organization>): String {
+    private var collection: CollectionWrapper<Organization>? = null
+    override fun process(collection: CollectionWrapper<Organization>): String {
         element.id = idManager.generateId() ?: throw IdException("Коллекция полностью заполнена")
         collection.add(element.clone())
         newElement = element.clone()

@@ -1,7 +1,7 @@
 package requests
 
 import Organization
-import java.util.*
+import collection.CollectionWrapper
 
 
 /**
@@ -12,7 +12,7 @@ interface Request {
      * Обрабатывает запрос
      * @param collection коллекция, по отношению к которой обрабатывается запрос
      */
-    fun process(collection: LinkedList<Organization>): String
+    fun process(collection: CollectionWrapper<Organization>): String
 
     /**
      * Отменяет запрос

@@ -27,5 +27,5 @@ class QueueWrapper<E>(private val queue: Queue<E> = LinkedList()): CollectionWra
 
     override fun iterator(): Iterator<E> = queue.iterator()
 
-    override fun getCollectionType(): String = queue::class.simpleName.toString()
+    override fun getCollectionType(): String = "Queue"
 }

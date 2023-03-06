@@ -1,10 +1,6 @@
 package command.implementations
 
-import OrganizationFactory
-import command.ArgumentType
-import command.Command
-import command.CommandArgument
-import command.CommandResult
+import command.*
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import requests.RemoveLowerRequest
@@ -16,11 +12,10 @@ class RemoveLowerCommand : Command {
     override val info: String
         get() = "удалить из коллекции все элементы, меньшие, чем заданный"
 
-    override val argumentTypes: List<ArgumentType>
-        get() = listOf(ArgumentType.ORGANIZATION)
+    override val argumentValidator = ArgumentValidator(listOf(ArgumentType.ORGANIZATION))
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(
             true,

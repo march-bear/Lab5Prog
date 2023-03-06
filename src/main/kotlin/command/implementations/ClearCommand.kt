@@ -12,7 +12,7 @@ class ClearCommand : Command {
         get() = "очистить коллекцию"
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(
             true,

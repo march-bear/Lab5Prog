@@ -1,10 +1,7 @@
 package command.implementations
 
 import IdManager
-import command.ArgumentType
-import command.Command
-import command.CommandArgument
-import command.CommandResult
+import command.*
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import requests.AddIfMaxRequest
@@ -16,14 +13,13 @@ class AddIfMaxCommand(
         get() = "добавить новый элемент в коллекцию, если его значение " +
                 "превышает значение наибольшего элемента этой коллекции"
 
-    override val argumentTypes: List<ArgumentType>
-        get() = listOf(ArgumentType.ORGANIZATION)
+    override val argumentValidator: ArgumentValidator = ArgumentValidator(listOf(ArgumentType.ORGANIZATION))
 
     override fun execute(args: CommandArgument): CommandResult {
         if (idManager == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
 
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(
             true,

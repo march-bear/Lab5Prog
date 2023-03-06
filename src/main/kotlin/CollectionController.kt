@@ -1,22 +1,22 @@
-import command.*
+import collection.CollectionWrapper
 import command.CommandData
+import command.Command
 import exceptions.InvalidArgumentsForCommandException
 import iostreamers.EventMessage
 import iostreamers.FileContentLoader
 import iostreamers.TextColor
-import org.koin.core.KoinApplication
-import org.koin.core.context.GlobalContext.startKoin
-import org.koin.core.error.NoBeanDefFoundException
-import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.error.DefinitionParameterException
+import org.koin.core.error.InstanceCreationException
 import requests.Request
 import java.util.*
 
 class CollectionController(
-    dataFiles: Set<String>,
-) {
+    dataFile: String? = null,
+) : KoinComponent {
     companion object {
-        fun checkUniquenessFullName(fullName: String?, collection: LinkedList<Organization>): Boolean {
+        fun checkUniquenessFullName(fullName: String?, collection: CollectionWrapper<Organization>): Boolean {
             if (fullName == null)
                 return true
 
@@ -26,7 +26,7 @@ class CollectionController(
             return true
         }
 
-        fun checkUniquenessId(id: Long, collection: LinkedList<Organization>): Boolean {
+        fun checkUniquenessId(id: Long, collection: CollectionWrapper<Organization>): Boolean {
             if (!Organization.idIsValid(id))
                 return false
 
@@ -37,67 +37,59 @@ class CollectionController(
         }
     }
 
-    private val collection: LinkedList<Organization> = LinkedList()
+    private val collection: CollectionWrapper<Organization> by inject()
     private val requests: Queue<Request> = LinkedList()
-    val commandsApp: KoinApplication
+    val commandManager: CommandManager by inject()
     val idManager: IdManager
-    val initializationDate = Date()
 
     fun execute(commandData: CommandData?) : String? {
         if (commandData?.name == null)
             return null
 
+        val (commandName, commandArguments) = commandData
         val command: Command
         try {
-            command = commandsApp.koin.get(named(commandData.name)) { parametersOf(collection, this) }
-        } catch (e: NoBeanDefFoundException) {
-            return EventMessage.message("${commandData.name}: команда не найдена", TextColor.RED)
+            command = commandManager.getCommand(commandName)
+                ?: return EventMessage.message("${commandName}: команда не найдена", TextColor.RED)
+        } catch (ex: InstanceCreationException) {
+            return EventMessage.message("Объект команды не может быть получен. " +
+                    "Видимо, модули, используемые программой, некорректны.\n" +
+                    "Обратитесь к разработчику: yasamofi404@gelch.com", TextColor.RED)
         }
 
-        val orgCount: Int
+        var output = ""
         try {
-            orgCount = commandData.args.checkArguments(command.argumentTypes)
-        } catch (ex: InvalidArgumentsForCommandException) {
-            return EventMessage.message(ex.message.toString(), TextColor.RED)
-        }
-
-        val factory = OrganizationFactory()
-        for (_i in 1..orgCount) {
-            commandData.args.addOrganization(factory.newOrganizationFromInput())
-        }
-        try {
-            val (commandCompleted, request, message) = command.execute(commandData.args)
+            val (commandCompleted, request, message) = command.execute(commandArguments)
             if (commandCompleted) {
                 if (request != null)
                     requests.add(request)
             }
-            EventMessage.printMessage(message)
-        } catch (e: InvalidArgumentsForCommandException) {
-            EventMessage.printMessage(
-                EventMessage.message(e.message.toString(), TextColor.RED)
-            )
+
+            if (message != null)
+                output += EventMessage.message(message)
+
+        } catch (ex: InvalidArgumentsForCommandException) {
+            output += EventMessage.message(ex.message ?: "", TextColor.RED)
         }
 
         while (requests.isNotEmpty()) {
-            EventMessage.printMessage(requests.poll().process(collection))
+            if (output != "")
+                output += "\n"
+            output += EventMessage.message(requests.poll().process(collection))
         }
 
-        return null
+        return output
     }
 
     init {
         EventMessage.printMessage("Начало загрузки коллекции. Это может занять некоторое время...")
 
-        val output = FileContentLoader(collection).loadDataFromFiles(dataFiles)
+        val output = FileContentLoader(collection).loadDataFromFile()
 
         EventMessage.printMessage("Загрузка коллекции завершена. Отчет о выполнении загрузки:")
         EventMessage.printMessage("---------------------------------------------------------------------")
         EventMessage.printMessage(output, newLine = false)
         EventMessage.printMessage("---------------------------------------------------------------------")
-
-        commandsApp = startKoin {
-            modules(commandsModule)
-        }
 
         idManager = IdManager(collection)
     }

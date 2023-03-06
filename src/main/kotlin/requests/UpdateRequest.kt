@@ -1,6 +1,7 @@
 package requests
 
 import Organization
+import collection.CollectionWrapper
 import exceptions.CancellationException
 import iostreamers.EventMessage
 import iostreamers.TextColor
@@ -21,7 +22,7 @@ class UpdateRequest(
         element.id = id
         newValue = element.clone()
     }
-    override fun process(collection: LinkedList<Organization>): String {
+    override fun process(collection: CollectionWrapper<Organization>): String {/*
         try {
             val i = collection.indexOf(collection.find { it.id == id })
             newValue.id = id
@@ -31,7 +32,7 @@ class UpdateRequest(
         } catch (e: IndexOutOfBoundsException) {
             return EventMessage.message("Элемент с id $id не найден", TextColor.RED)
         }
-
+*/
         return EventMessage.message("Значение элемента с id $id обновлено", TextColor.BLUE)
     }
 
@@ -44,6 +45,7 @@ class UpdateRequest(
         collection!![i] = oldValue!!
         oldValue = null
         collection = null
+
         return "Запрос на обновление значения элемента отменен"
     }
 }

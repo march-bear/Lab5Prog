@@ -1,6 +1,7 @@
 package requests
 
 import Organization
+import collection.CollectionWrapper
 import exceptions.CancellationException
 import iostreamers.EventMessage
 import iostreamers.TextColor
@@ -11,10 +12,11 @@ import java.util.*
  */
 class RemoveLowerRequest(private val element: Organization) : Request {
     private val removedElements: LinkedList<Organization> = LinkedList()
-    private var collection: LinkedList<Organization>? = null
-    override fun process(collection: LinkedList<Organization>): String {
+    private var collection: CollectionWrapper<Organization>? = null
+    override fun process(collection: CollectionWrapper<Organization>): String {
         var i = 0
         var output = ""
+        /*
         while (i < collection.size) {
             if (collection[i] < element) {
                 output += EventMessage.message(
@@ -25,7 +27,7 @@ class RemoveLowerRequest(private val element: Organization) : Request {
             }
             i++
         }
-
+*/
         this.collection = collection
         if (output != "")
             return output

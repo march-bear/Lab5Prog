@@ -1,6 +1,7 @@
 package requests
 
 import Organization
+import collection.CollectionWrapper
 import iostreamers.EventMessage
 import iostreamers.TextColor
 import kotlinx.serialization.encodeToString
@@ -8,13 +9,12 @@ import kotlinx.serialization.json.Json
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
-import java.util.*
 
 /**
  * Запрос на сохранение коллекции в файл
  */
 class SaveRequest(private val fileToSave: String) : Request {
-    override fun process(collection: LinkedList<Organization>): String {
+    override fun process(collection: CollectionWrapper<Organization>): String {
         val file: OutputStreamWriter
         try {
             file = OutputStreamWriter(FileOutputStream(fileToSave))

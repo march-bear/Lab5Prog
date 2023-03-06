@@ -32,5 +32,5 @@ class LinkedListWrapper<E>(
 
     override fun remove(element: E): Boolean = linkedList.remove(element)
 
-    override fun getCollectionType(): String = linkedList::class.simpleName.toString()
+    override fun getCollectionType(): String = "LinkedList"
 }

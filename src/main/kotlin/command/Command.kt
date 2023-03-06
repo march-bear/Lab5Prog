@@ -12,8 +12,8 @@ interface Command {
     /**
      * Список типов аргументов (объектов data-класса ArgumentType)
      */
-    val argumentTypes: List<ArgumentType>
-        get() = listOf()
+    val argumentValidator: ArgumentValidator
+        get() = ArgumentValidator(listOf())
 
     /**
      * Исполняет команду

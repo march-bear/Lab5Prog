@@ -9,11 +9,10 @@ class SaveCommand : Command {
     override val info: String
         get() = "сохранить коллекцию в файл"
 
-    override val argumentTypes: List<ArgumentType>
-        get() = listOf(ArgumentType.STRING)
+    override val argumentValidator = ArgumentValidator(listOf(ArgumentType.STRING))
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
         return CommandResult(
             true,

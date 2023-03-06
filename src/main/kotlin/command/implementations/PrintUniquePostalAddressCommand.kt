@@ -1,19 +1,21 @@
 package command.implementations
 
+import Organization
+import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import command.CommandResult
 import iostreamers.EventMessage
 import iostreamers.TextColor
 
-
-class PrintUniquePostalAddressCommand(private val setOfAddresses: Set<String>) : Command {
+class PrintUniquePostalAddressCommand(private val collection: CollectionWrapper<Organization>) : Command {
     override val info: String
         get() = "вывести уникальные значения поля postalAddress всех элементов в коллекции"
 
     override fun execute(args: CommandArgument): CommandResult {
-        args.checkArguments(argumentTypes)
+        argumentValidator.check(args)
 
+        val setOfAddresses = collection.map { it.postalAddress.toString() }.toSet()
         if (setOfAddresses.isEmpty()) {
             return CommandResult(
                 true,
@@ -21,11 +23,10 @@ class PrintUniquePostalAddressCommand(private val setOfAddresses: Set<String>) :
             )
         }
 
-        var output = EventMessage.message("Уникальные ZIP-коды элементов:\n")
-        var counter = 0
+        var output = EventMessage.message("Уникальные ZIP-коды элементов:")
+
         setOfAddresses.forEach {
-            counter++
-            output += EventMessage.message("$it\n", TextColor.BLUE)
+            output += EventMessage.message("\n$it", TextColor.BLUE)
         }
 
         return CommandResult(

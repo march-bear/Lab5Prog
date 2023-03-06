@@ -10,7 +10,9 @@ import org.valiktor.functions.*
 import org.valiktor.validate
 import java.util.Date
 
-
+/**
+ * Класс хранящихся в коллекции объектов
+ */
 @Serializable
 class Organization() : Comparable<Organization> {
     companion object {
@@ -127,7 +129,7 @@ class Organization() : Comparable<Organization> {
 
     fun clone(): Organization {
         val newOrganization = Organization(name, coordinates.clone(), annualTurnover, fullName,
-            employeesCount?.toLong(), type, postalAddress?.clone())
+            employeesCount, type, postalAddress?.clone())
         newOrganization.id = id
         newOrganization.creationDate = creationDate
         return newOrganization
@@ -151,8 +153,24 @@ class Organization() : Comparable<Organization> {
 
         return true
     }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + coordinates.hashCode()
+        result = 31 * result + creationDate.hashCode()
+        result = 31 * result + annualTurnover
+        result = 31 * result + (fullName?.hashCode() ?: 0)
+        result = 31 * result + (employeesCount?.hashCode() ?: 0)
+        result = 31 * result + type.hashCode()
+        result = 31 * result + (postalAddress?.hashCode() ?: 0)
+        return result
+    }
 }
 
+/**
+ * Класс координат. Объекты класса используются элементами коллекции
+ */
 @Serializable
 class Coordinates(
     var x: Double = 0.0,
@@ -176,8 +194,18 @@ class Coordinates(
 
         return true
     }
+
+    override fun hashCode(): Int {
+        var result = x.hashCode()
+        result = 31 * result + y
+        return result
+    }
 }
 
+
+/**
+ * Класс адресов. Объекты класса используются элементами коллекции
+ */
 @Serializable
 class Address(var zipCode: String) {
     override fun toString(): String {
@@ -197,6 +225,10 @@ class Address(var zipCode: String) {
         if (zipCode != other.zipCode) return false
 
         return true
+    }
+
+    override fun hashCode(): Int {
+        return zipCode.hashCode()
     }
 }
 
