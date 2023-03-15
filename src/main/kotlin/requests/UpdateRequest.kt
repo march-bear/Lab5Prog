@@ -43,7 +43,7 @@ class UpdateRequest(
             oldValue = null
             collection = null
 
-            return "Запрос на обновление значения элемента отменен"
+            return Messenger.message("Запрос на обновление значения элемента отменен", TextColor.BLUE)
         }
 
         throw CancellationException("Отмена запроса невозможна, так как коллекция уже была модифицирована")

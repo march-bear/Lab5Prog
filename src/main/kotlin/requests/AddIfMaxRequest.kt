@@ -1,5 +1,6 @@
 package requests
 
+import CollectionController
 import IdManager
 import Organization
 import collection.CollectionWrapper
@@ -18,15 +19,14 @@ class AddIfMaxRequest(
     private var collection: CollectionWrapper<Organization>? = null
 
     override fun process(collection: CollectionWrapper<Organization>): Response {
-        if (collection.isEmpty() || element > collection.max()) {
+        if (newElement == null || !CollectionController.checkUniquenessId(newElement!!.id, collection)) {
             element.id = idManager.generateId()
-                ?: return Response(
-                    false,
-                    Messenger.message("Коллекция переполнена", TextColor.RED),
-                )
-
-            collection.add(element.clone())
+                ?: return Response(false, Messenger.message("Коллекция переполнена", TextColor.RED))
             newElement = element.clone()
+        }
+
+        if (collection.isEmpty() || newElement!! > collection.max()) {
+            collection.add(newElement!!)
             this.collection = collection
             return Response(
                 true,
@@ -45,7 +45,6 @@ class AddIfMaxRequest(
 
         val res = collection!!.remove(newElement!!)
         collection = null
-        newElement = null
         if (res)
             return "Запрос на добавление элемента отменен"
         else

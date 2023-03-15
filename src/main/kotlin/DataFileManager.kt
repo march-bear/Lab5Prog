@@ -96,7 +96,7 @@ class DataFileManager(private val collection: CollectionWrapper<Organization>, d
         if (!dataHasBeenLoaded)
             throw MethodCallException("В сохранении отказано: коллекция ещё не была загружена")
 
-        val data = Json.encodeToString(collection)
+        val data = Json.encodeToString(collection.toList())
         writeToFile(data)
         return true
     }

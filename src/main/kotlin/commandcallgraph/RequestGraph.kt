@@ -17,6 +17,10 @@ class RequestGraph(private val collection: CollectionWrapper<Organization>) {
         currLeaf = leafs.first()
     }
 
+    fun getCurrLeafId(): String {
+        return currLeaf.id
+    }
+
     fun addLeaf(request: Request, name: String = request::class.simpleName ?: "REQUEST"): String {
         val requestClassName = request::class.simpleName.toString().uppercase()
         val id = "${name.uppercase()}_${getNumber(requestClassName)}"
@@ -29,12 +33,11 @@ class RequestGraph(private val collection: CollectionWrapper<Organization>) {
         return id
     }
 
-    fun rollback(leafId: String) {
+    fun rollback(leafId: String): Boolean {
         val targetLeaf = leafs.find { it.id == leafId}
 
         if (targetLeaf == null) {
-            println("Запрос не найден")
-            return
+            return false
         } else {
             val route = getRoute(currLeaf, targetLeaf)
             while (route.isNotEmpty()) {
@@ -47,6 +50,7 @@ class RequestGraph(private val collection: CollectionWrapper<Organization>) {
         }
 
         currLeaf = targetLeaf
+        return true
     }
 
     private fun getRoute(currLeaf: Leaf, targetLeaf: Leaf): Queue<Pair<RequestAction, Request>> {

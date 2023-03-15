@@ -1,12 +1,9 @@
 package collection
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import java.util.concurrent.ConcurrentLinkedQueue
 
-@Serializable
 class ConcurrentLinkedQueue<E>(
-    @Contextual private val queue: ConcurrentLinkedQueue<E> = ConcurrentLinkedQueue()
+    private val queue: ConcurrentLinkedQueue<E> = ConcurrentLinkedQueue()
 ): CollectionWrapperInterface<E> {
     override val size: Int
         get() = queue.size

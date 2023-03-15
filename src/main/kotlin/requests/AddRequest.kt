@@ -17,14 +17,13 @@ class AddRequest(
     private var newElement: Organization? = null
     private var collection: CollectionWrapper<Organization>? = null
     override fun process(collection: CollectionWrapper<Organization>): Response {
-        element.id = idManager.generateId()
-            ?: return Response(
-                false,
-                Messenger.message("Коллекция переполнена", TextColor.RED),
-            )
+        if (newElement == null || !CollectionController.checkUniquenessId(newElement!!.id, collection)) {
+            element.id = idManager.generateId()
+                ?: return Response(false, Messenger.message("Коллекция переполнена", TextColor.RED))
+            newElement = element.clone()
+        }
 
-        collection.add(element.clone())
-        newElement = element.clone()
+        collection.add(newElement!!)
         this.collection = collection
 
         return Response(
@@ -38,7 +37,6 @@ class AddRequest(
             throw CancellationException("Отмена запроса невозможна, так как он ещё не был выполнен или уже был отменен")
 
         val res = collection!!.remove(newElement!!)
-        newElement = null
         collection = null
 
         if (res)

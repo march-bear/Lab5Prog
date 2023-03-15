@@ -46,7 +46,12 @@ val basicCommandModule = module {
     }
 
     single<Command>(named("update")) { UpdateCommand() }
-    single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
+    single<Command>(named("remove_by_id")) {
+            (
+                _: CollectionWrapper<Organization>,
+                controller: CollectionController?
+            ) -> RemoveByIdCommand(controller?.idManager)
+    }
     single<Command>(named("clear")) { ClearCommand() }
     single<Command>(named("save")) {
             (_: CollectionWrapper<Organization>, controller: CollectionController?) -> SaveCommand(controller)
@@ -56,8 +61,7 @@ val basicCommandModule = module {
             (
                 collection: CollectionWrapper<Organization>,
                 controller: CollectionController?
-            ) ->
-        ExecuteScriptCommand(collection, controller)
+            ) -> ExecuteScriptCommand(collection, controller)
     }
 
     single<Command>(named("exit")) { ExitCommand() }

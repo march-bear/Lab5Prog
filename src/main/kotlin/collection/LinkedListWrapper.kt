@@ -11,10 +11,8 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.*
 import java.util.LinkedList
 
-
-@Serializable
 class LinkedListWrapper<E>(
-    @Serializable(with = LinkedListSerializer::class) private val linkedList: LinkedList<E> = LinkedList(),
+    private val linkedList: LinkedList<E> = LinkedList(),
 ) : CollectionWrapperInterface<E> {
     override val size: Int
         get() = linkedList.size
