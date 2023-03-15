@@ -25,6 +25,7 @@ class UpdateRequest(
         oldValue = collection.find { it.id == id}
         if (oldValue != null) {
             collection.replace(oldValue!!, newValue.clone())
+            this.collection = collection
             return Response(
                 true,
                 Messenger.message("Значение элемента с id $id обновлено", TextColor.BLUE)

@@ -14,7 +14,11 @@ class RollbackRequest(private val requestGraph: RequestGraph, private val id: St
         oldCurrLeafId = requestGraph.getCurrLeafId()
         return if (requestGraph.rollback(id)) {
             currLeafId = requestGraph.getCurrLeafId()
-            Response(true, "Коллекции возвращено состояние $id", false)
+            Response(
+                true,
+                Messenger.message("Коллекции возвращено состояние $id", TextColor.BLUE),
+                false
+            )
         }
         else {
             oldCurrLeafId = null

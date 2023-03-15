@@ -2,18 +2,18 @@ package commandcallgraph
 
 import Organization
 import collection.CollectionWrapper
-import iostreamers.Messenger
 import requests.Request
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class RequestGraph(private val collection: CollectionWrapper<Organization>) {
+    private val countNumbers: HashMap<String, Long> = HashMap()
     private val leafs: ArrayList<Leaf> = ArrayList()
     private var currLeaf: Leaf
 
     init {
-        leafs.add(Leaf(null, "ROOT", null))
+        leafs.add(Leaf(null, ROOT_NAME, null))
         currLeaf = leafs.first()
     }
 
@@ -61,7 +61,7 @@ class RequestGraph(private val collection: CollectionWrapper<Organization>) {
         val routeFromRootToCurr = LinkedList<Leaf>()
         var previousToCurrLeaf = currLeaf
 
-        while (previousToCurrLeaf.id != "ROOT") {
+        while (previousToCurrLeaf.id != ROOT_NAME) {
             routeFromRootToCurr.add(previousToCurrLeaf)
             previousToCurrLeaf = previousToCurrLeaf.previousLeaf!!
 
@@ -75,7 +75,7 @@ class RequestGraph(private val collection: CollectionWrapper<Organization>) {
         val routeFromCurrBranchToTarget = LinkedList<Leaf>()
         var previousToTargetLeaf = targetLeaf
 
-        while (previousToTargetLeaf.id != "ROOT") {
+        while (previousToTargetLeaf.id != ROOT_NAME) {
             if (previousToTargetLeaf in routeFromRootToCurr) {
                 var currInRouteRootToCurr: Leaf = routeFromRootToCurr[0]
                 while (currInRouteRootToCurr != previousToTargetLeaf) {
@@ -101,16 +101,17 @@ class RequestGraph(private val collection: CollectionWrapper<Organization>) {
         return result
     }
 
-    private companion object {
-        val countNumbers: HashMap<String, Long> = HashMap()
-        fun getNumber(commandName: String): Long {
-            if (countNumbers[commandName] == null)
-                countNumbers[commandName] = 1L
-            else
-                countNumbers[commandName] = countNumbers[commandName]!! + 1L
+    private fun getNumber(commandName: String): Long {
+        if (countNumbers[commandName] == null)
+            countNumbers[commandName] = 1L
+        else
+            countNumbers[commandName] = countNumbers[commandName]!! + 1L
 
-            return countNumbers[commandName]!!
-        }
+        return countNumbers[commandName]!!
+    }
+
+    companion object {
+        const val ROOT_NAME = "START"
     }
 }
 

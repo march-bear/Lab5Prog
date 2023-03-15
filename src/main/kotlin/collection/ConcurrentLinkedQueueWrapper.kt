@@ -2,7 +2,7 @@ package collection
 
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class ConcurrentLinkedQueue<E>(
+class ConcurrentLinkedQueueWrapper<E>(
     private val queue: ConcurrentLinkedQueue<E> = ConcurrentLinkedQueue()
 ): CollectionWrapperInterface<E> {
     override val size: Int
@@ -31,7 +31,7 @@ class ConcurrentLinkedQueue<E>(
     override fun getCollectionName(): String = "ConcurrentLinkedQueue"
 
     override fun clone(): CollectionWrapperInterface<E> {
-        val queueCopy = collection.ConcurrentLinkedQueue<E>()
+        val queueCopy = collection.ConcurrentLinkedQueueWrapper<E>()
         queueCopy.addAll(queue)
         return queueCopy
     }

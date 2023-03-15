@@ -15,7 +15,13 @@ class ChangeCollectionTypeRequest(private val collectionType: CollectionType) : 
         oldType = collection.getCollectionType()
         collection.replaceCollectionWrapper(wrapper)
 
-        return Response(true, "Good")
+        return Response(
+            true,
+            Messenger.message(
+                "Тип коллекции изменен с $oldType на ${collection.getCollectionType()}",
+                TextColor.BLUE,
+            ),
+        )
     }
 
     override fun cancel(): String {
@@ -32,7 +38,7 @@ class ChangeCollectionTypeRequest(private val collectionType: CollectionType) : 
     private fun getWrapperByType(type: CollectionType): CollectionWrapperInterface<Organization> {
         return when (type) {
             CollectionType.SET -> LinkedHashSetWrapper()
-            CollectionType.QUEUE -> ConcurrentLinkedQueue()
+            CollectionType.QUEUE -> ConcurrentLinkedQueueWrapper()
             CollectionType.LIST -> LinkedListWrapper()
         }
     }

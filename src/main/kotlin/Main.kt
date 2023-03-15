@@ -18,24 +18,11 @@ fun main(args: Array<String>) {
                     userCollectionControllerModule,
                 )
             }
-            val file: File? =  if (args.isEmpty()) null else File(args[0])
-            if (file != null) {
-                if (file.exists()) {
-                    if (file.isDirectory) {
-                        Messenger.printMessage("${args[0]} - директория", TextColor.RED)
-                        return
-                    } else if (!file.canRead() || !file.canWrite()) {
-                        Messenger.printMessage(
-                            "${args[0]} - у пользователя недостаточно прав для работы с файлом",
-                            TextColor.RED
-                        )
-                        return
-                    }
-                }
-            }
+
             val controller: CollectionController
+
             try {
-                controller = app.koin.get { parametersOf(file) }
+                controller = app.koin.get { parametersOf(if (args.isEmpty()) null else File(args[0])) }
             } catch (ex: InstanceCreationException) {
                 if (ex.cause != null && ex.cause!!::class == FileNotFoundException::class) {
                     Messenger.printMessage(
@@ -44,11 +31,11 @@ fun main(args: Array<String>) {
                     return
                 }
                 Messenger.printMessage(
-                    "Контроллер не может быть инициализирован. Обратитесь к разработчику",
+                    "Контроллер не может быть инициализирован. (не) Бейте разработчика",
                     TextColor.RED
                 )
                 return
-            }
+            } catch (ex: Exception) { println(ex); println(Messenger.oops()); return }
 
             Messenger.interactiveModeMessage()
             val reader = Reader(Scanner(System.`in`))

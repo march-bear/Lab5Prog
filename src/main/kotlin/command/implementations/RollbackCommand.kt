@@ -8,7 +8,7 @@ import requests.RollbackRequest
 
 class RollbackCommand(private val requestGraph: RequestGraph?): Command {
     override val info: String
-        get() = "вернуть коллекцию к состоянию по id запроса. Для полного отката вводится ROOT"
+        get() = "вернуть коллекцию к состоянию по id запроса. Для полного отката вводится ${RequestGraph.ROOT_NAME}"
 
     override val argumentValidator: ArgumentValidator = ArgumentValidator(listOf(ArgumentType.STRING))
 

@@ -1,13 +1,12 @@
 import collection.CollectionWrapper
 import collection.LinkedListWrapper
-import collection.ConcurrentLinkedQueue
+import collection.ConcurrentLinkedQueueWrapper
 import command.*
 import command.implementations.*
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.io.File
-import java.io.FileNotFoundException
 import kotlin.collections.HashMap
 
 val commandQualifiers = listOf(
@@ -49,7 +48,7 @@ val basicCommandModule = module {
     single<Command>(named("update")) { UpdateCommand() }
     single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
     single<Command>(named("clear")) { ClearCommand() }
-    single<Command>(named("save")) {
+    factory<Command>(named("save")) {
             (_: CollectionWrapper<Organization>, controller: CollectionController?) -> SaveCommand(controller)
     }
 
@@ -88,9 +87,7 @@ val basicCommandModule = module {
 
     single<Command>(named("oops")) { HackSystemCommand() }
     single<Command>(named("show_field_requirements")) { ShowFieldRequirementsCommand() }
-    factory<Command>(named("change_collection_type")) {
-            (collection: CollectionWrapper<Organization>) -> ChangeCollectionTypeCommand(collection)
-    }
+    factory<Command>(named("change_collection_type")) { ChangeCollectionTypeCommand() }
 
     factory<Command>(named("rollback")) {
             (
@@ -115,5 +112,5 @@ val basicCollectionControllerModule = module {
 val userCollectionControllerModule = module {
     single { (file: File) -> CollectionController(file) }
 
-    single<CollectionWrapper<Organization>> { CollectionWrapper(ConcurrentLinkedQueue()) }
+    single<CollectionWrapper<Organization>> { CollectionWrapper(ConcurrentLinkedQueueWrapper()) }
 }

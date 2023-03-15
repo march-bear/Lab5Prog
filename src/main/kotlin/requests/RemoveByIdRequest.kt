@@ -1,13 +1,11 @@
 package requests
 
 import CollectionController
-import IdManager
 import Organization
 import collection.CollectionWrapper
-import exceptions.InvalidArgumentsForCommandException
 import iostreamers.Messenger
 import iostreamers.TextColor
-import kotlin.coroutines.cancellation.CancellationException
+import exceptions.CancellationException
 
 /**
  * Запрос на удаление элемента из коллекции по его id

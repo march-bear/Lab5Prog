@@ -1,8 +1,9 @@
 package command.implementations
 
-import IdManager
 import Organization
 import command.*
+import iostreamers.Messenger
+import iostreamers.TextColor
 import requests.RemoveByIdRequest
 
 class RemoveByIdCommand : Command {
@@ -18,7 +19,7 @@ class RemoveByIdCommand : Command {
             return CommandResult(
                 true,
                 RemoveByIdRequest(id),
-                message = "Запрос на удаление элемента отправлен"
+                message = Messenger.message("Запрос на удаление элемента отправлен", TextColor.BLUE)
             )
 
         return CommandResult(false, message = "Введенное значение не является id")

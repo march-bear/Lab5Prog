@@ -3,9 +3,11 @@ package command.implementations
 import Organization
 import collection.*
 import command.*
+import iostreamers.Messenger
+import iostreamers.TextColor
 import requests.ChangeCollectionTypeRequest
 
-class ChangeCollectionTypeCommand(private val collection: CollectionWrapper<Organization>): Command {
+class ChangeCollectionTypeCommand: Command {
     override val info: String
         get() = "изменить тип коллекции"
 
@@ -18,13 +20,16 @@ class ChangeCollectionTypeCommand(private val collection: CollectionWrapper<Orga
             "queue" -> ChangeCollectionTypeRequest(CollectionType.QUEUE)
             "list" -> ChangeCollectionTypeRequest(CollectionType.LIST)
             "set" -> ChangeCollectionTypeRequest(CollectionType.SET)
-            else -> return CommandResult(false, message = "Заданный тип коллекции не найден")
+            else -> return CommandResult(
+                false,
+                message = Messenger.message("Заданный тип коллекции не найден", TextColor.RED),
+            )
         }
 
         return CommandResult(
             true,
             request,
-            message = "Запрос на изменение типа коллекции отправлен"
+            message = Messenger.message("Запрос на изменение типа коллекции отправлен", TextColor.BLUE)
         )
     }
 }

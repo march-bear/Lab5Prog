@@ -29,11 +29,17 @@ class ExecuteCommandsRequest(
                 val (command, args) = commands[i]
                 val (commandCompleted, request, message) = command.execute(args)
                 if (commandCompleted) {
-                    if (request != null) {
-                        request.process(collection)
-                        requests.add(request)
-                    }
                     if (message != null) output += Messenger.message(message) + "\n"
+                    if (request != null) {
+                        val (requestCompleted, message) = request.process(collection)
+                        output += message + "\n"
+                        if (requestCompleted) {
+                            requests.add(request)
+                        } else {
+                            throw CommandIsNotCompletedException(message)
+                        }
+
+                    }
                 } else
                     throw CommandIsNotCompletedException("Команда не была выполнена. Сообщение о выполнении:\n" +
                             "$message")
@@ -49,7 +55,6 @@ class ExecuteCommandsRequest(
                 "Ошибка во время исполнения скрипта. Сообщение ошибки:\n$ex",
                 TextColor.RED))
         }
-
         return Response(true, Messenger.message("Скрипт выполнен. Вывод:\n$output", TextColor.BLUE))
     }
 
