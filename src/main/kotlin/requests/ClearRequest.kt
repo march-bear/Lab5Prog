@@ -3,9 +3,8 @@ package requests
 import Organization
 import collection.CollectionWrapper
 import exceptions.CancellationException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
-import java.util.*
 
 /**
  * Запрос на очистку коллекции
@@ -13,11 +12,12 @@ import java.util.*
 class ClearRequest : Request {
     private var oldCollection: CollectionWrapper<Organization>? = null
     private var newCollection: CollectionWrapper<Organization>? = null
-    override fun process(collection: CollectionWrapper<Organization>): String {
-        oldCollection = collection
+    override fun process(collection: CollectionWrapper<Organization>): Response {
+        oldCollection = collection.clone() as CollectionWrapper<Organization>
         newCollection = collection
         collection.clear()
-        return EventMessage.message("Коллекция очищена", TextColor.BLUE)
+
+        return Response(true, Messenger.message("Коллекция очищена", TextColor.BLUE))
     }
 
     override fun cancel(): String {

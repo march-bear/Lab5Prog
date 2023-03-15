@@ -5,7 +5,7 @@ import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 
 class PrintUniquePostalAddressCommand(private val collection: CollectionWrapper<Organization>) : Command {
@@ -19,14 +19,14 @@ class PrintUniquePostalAddressCommand(private val collection: CollectionWrapper<
         if (setOfAddresses.isEmpty()) {
             return CommandResult(
                 true,
-                message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
+                message = Messenger.message("Коллекция пуста", TextColor.BLUE)
             )
         }
 
-        var output = EventMessage.message("Уникальные ZIP-коды элементов:")
+        var output = Messenger.message("Уникальные ZIP-коды элементов:")
 
         setOfAddresses.forEach {
-            output += EventMessage.message("\n$it", TextColor.BLUE)
+            output += Messenger.message("\n$it", TextColor.BLUE)
         }
 
         return CommandResult(

@@ -5,7 +5,7 @@ import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 
 /**
@@ -24,14 +24,14 @@ class GroupCountingByEmployeesCountCommand(private val collection: CollectionWra
         if (map.isEmpty()) {
             return CommandResult(
                 true,
-                message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
+                message = Messenger.message("Коллекция пуста", TextColor.BLUE)
             )
         }
 
         var output = ""
         map.forEach {
-            output += EventMessage.message("employeesCount=${it.key}: ")
-            output += EventMessage.message("${it.value.size}\n", TextColor.BLUE)
+            output += Messenger.message("employeesCount=${it.key}: ")
+            output += Messenger.message("${it.value.size}\n", TextColor.BLUE)
         }
 
         return CommandResult(

@@ -2,7 +2,7 @@ package command.implementations
 
 import IdManager
 import command.*
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import requests.AddRequest
 
@@ -23,7 +23,7 @@ class AddCommand(
         return CommandResult(
             true,
             AddRequest(args.organizations[0], idManager),
-            EventMessage.message("Запрос на добавление элемента в коллекцию отправлен", TextColor.BLUE)
+            Messenger.message("Запрос на добавление элемента в коллекцию отправлен", TextColor.BLUE)
         )
     }
 }

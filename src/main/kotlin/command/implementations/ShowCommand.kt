@@ -5,7 +5,7 @@ import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 
 class ShowCommand(
@@ -20,7 +20,7 @@ class ShowCommand(
         if (collection.isEmpty()) {
             return CommandResult(
                 true,
-                message = EventMessage.message("Коллекция пуста", TextColor.BLUE)
+                message = Messenger.message("Коллекция пуста", TextColor.BLUE)
             )
         }
 

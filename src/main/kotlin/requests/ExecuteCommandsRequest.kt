@@ -7,7 +7,7 @@ import command.CommandArgument
 import exceptions.CancellationException
 import exceptions.CommandIsNotCompletedException
 import exceptions.InvalidArgumentsForCommandException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import java.util.*
 
@@ -21,8 +21,9 @@ class ExecuteCommandsRequest(
 ) : Request {
     private val requests: Stack<Request> = Stack()
     private var collection: CollectionWrapper<Organization>? = null
-    override fun process(collection: CollectionWrapper<Organization>): String {
+    override fun process(collection: CollectionWrapper<Organization>): Response {
         this.collection = collection
+        var output = ""
         try {
             for (i in commands.indices) {
                 val (command, args) = commands[i]
@@ -32,24 +33,24 @@ class ExecuteCommandsRequest(
                         request.process(collection)
                         requests.add(request)
                     }
-                    if (message != null) EventMessage.printMessage(message)
+                    if (message != null) output += Messenger.message(message) + "\n"
                 } else
                     throw CommandIsNotCompletedException("Команда не была выполнена. Сообщение о выполнении:\n" +
                             "$message")
             }
         } catch (ex: CommandIsNotCompletedException) {
             cancel()
-            return EventMessage.message(
+            return Response(false, Messenger.message(
                 "Ошибка во время исполнения скрипта. Сообщение ошибки:\n$ex",
-                TextColor.RED)
+                TextColor.RED))
         } catch (ex: InvalidArgumentsForCommandException) {
             cancel()
-            return EventMessage.message(
+            return Response(false, Messenger.message(
                 "Ошибка во время исполнения скрипта. Сообщение ошибки:\n$ex",
-                TextColor.RED)
+                TextColor.RED))
         }
 
-        return EventMessage.message("Скрипт выполнен", TextColor.BLUE)
+        return Response(true, Messenger.message("Скрипт выполнен. Вывод:\n$output", TextColor.BLUE))
     }
 
     override fun cancel(): String {

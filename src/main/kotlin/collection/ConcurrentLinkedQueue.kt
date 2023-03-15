@@ -1,9 +1,13 @@
 package collection
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
 
-class QueueWrapper<E>(private val queue: Queue<E> = LinkedList()): CollectionWrapperInterface<E> {
+@Serializable
+class ConcurrentLinkedQueue<E>(
+    @Contextual private val queue: ConcurrentLinkedQueue<E> = ConcurrentLinkedQueue()
+): CollectionWrapperInterface<E> {
     override val size: Int
         get() = queue.size
 
@@ -27,5 +31,13 @@ class QueueWrapper<E>(private val queue: Queue<E> = LinkedList()): CollectionWra
 
     override fun iterator(): Iterator<E> = queue.iterator()
 
-    override fun getCollectionType(): String = "Queue"
+    override fun getCollectionName(): String = "ConcurrentLinkedQueue"
+
+    override fun clone(): CollectionWrapperInterface<E> {
+        val queueCopy = collection.ConcurrentLinkedQueue<E>()
+        queueCopy.addAll(queue)
+        return queueCopy
+    }
+
+    override fun getCollectionType(): CollectionType = CollectionType.QUEUE
 }

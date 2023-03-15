@@ -1,12 +1,12 @@
 import collection.CollectionWrapper
 import collection.LinkedListWrapper
-import collection.QueueWrapper
+import collection.ConcurrentLinkedQueue
 import command.*
 import command.implementations.*
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import java.util.*
+import java.io.FileNotFoundException
 import kotlin.collections.HashMap
 
 val commandQualifiers = listOf(
@@ -18,23 +18,24 @@ val commandQualifiers = listOf(
     "group_counting_by_employees_count",
     "print_unique_postal_address",
     "show_field_requirements",
+    "change_collection_type", "rollback"
 )
 
 val basicCommandModule = module {
-    factory<Command>(named("help")) {
+    single<Command>(named("help")) {
         val commandsMap = HashMap<String, String>()
         commandsMap["help"] = HelpCommand(mapOf()).info
-        for (qualifier in commandQualifiers)
+        for (qualifier in commandQualifiers) {
             commandsMap[qualifier] = this.getKoin().get<Command>(named(qualifier)) {
                 parametersOf(CollectionWrapper<Organization>(LinkedListWrapper()), null)
             }.info
-
+        }
         HelpCommand(commandsMap)
     }
 
-    single<Command>(named("info")) { (collection: CollectionWrapper<Organization>) -> InfoCommand(collection) }
+    factory<Command>(named("info")) { (collection: CollectionWrapper<Organization>) -> InfoCommand(collection) }
 
-    single<Command>(named("show")) { (collection: CollectionWrapper<Organization>) -> ShowCommand(collection) }
+    factory<Command>(named("show")) { (collection: CollectionWrapper<Organization>) -> ShowCommand(collection) }
 
     factory<Command>(named("add")) {
             (
@@ -47,7 +48,9 @@ val basicCommandModule = module {
     single<Command>(named("update")) { UpdateCommand() }
     single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
     single<Command>(named("clear")) { ClearCommand() }
-    single<Command>(named("save")) { SaveCommand() }
+    single<Command>(named("save")) {
+            (_: CollectionWrapper<Organization>, controller: CollectionController?) -> SaveCommand(controller)
+    }
 
     factory<Command>(named("execute_script")) {
             (
@@ -67,7 +70,7 @@ val basicCommandModule = module {
         AddIfMaxCommand(controller?.idManager)
 
     }
-    factory<Command>(named("remove_lower")) { RemoveLowerCommand() }
+    single<Command>(named("remove_lower")) { RemoveLowerCommand() }
 
     factory<Command>(named("sum_of_employees_count")) {
             (collection: CollectionWrapper<Organization>) ->
@@ -85,6 +88,16 @@ val basicCommandModule = module {
 
     single<Command>(named("oops")) { HackSystemCommand() }
     single<Command>(named("show_field_requirements")) { ShowFieldRequirementsCommand() }
+    factory<Command>(named("change_collection_type")) {
+            (collection: CollectionWrapper<Organization>) -> ChangeCollectionTypeCommand(collection)
+    }
+
+    factory<Command>(named("rollback")) {
+            (
+                _: CollectionWrapper<Organization>,
+                controller: CollectionController?
+            ) -> RollbackCommand(controller?.requestGraph)
+    }
 }
 
 val basicCommandManagerModule = module {
@@ -94,7 +107,10 @@ val basicCommandManagerModule = module {
 }
 
 val basicCollectionControllerModule = module {
-    single { (fileName: String) -> CollectionController(fileName) }
+    single { (fileName: String) -> try {
+        CollectionController(fileName)
+    } catch (ex: FileNotFoundException) { throw ex }
+    }
 
     single<CollectionWrapper<Organization>> { CollectionWrapper(LinkedListWrapper()) }
 }
@@ -102,5 +118,5 @@ val basicCollectionControllerModule = module {
 val userCollectionControllerModule = module {
     single { (fileName: String) -> CollectionController(fileName) }
 
-    single<CollectionWrapper<Organization>> { CollectionWrapper(QueueWrapper()) }
+    single<CollectionWrapper<Organization>> { CollectionWrapper(ConcurrentLinkedQueue()) }
 }

@@ -1,9 +1,12 @@
 package collection
 
+import kotlinx.serialization.Serializable
 import java.lang.IllegalArgumentException
 import java.util.Date
 
+@Serializable
 class CollectionWrapper<E>(private var collection: CollectionWrapperInterface<E>) : CollectionWrapperInterface<E> {
+    @Serializable(with = Organization.Companion.DateAsLongSerializer::class)
     val initializationDate: Date = Date()
 
     override val size: Int
@@ -15,7 +18,7 @@ class CollectionWrapper<E>(private var collection: CollectionWrapperInterface<E>
 
     override fun remove(): E = collection.remove()
 
-    override fun getCollectionType(): String = collection.getCollectionType()
+    override fun getCollectionName(): String = collection.getCollectionName()
 
     override fun remove(element: E): Boolean = collection.remove(element)
 
@@ -33,7 +36,13 @@ class CollectionWrapper<E>(private var collection: CollectionWrapperInterface<E>
                     "CollectionWrapper")
 
         val tmpCollection = collection
-        collection = wrapper
+        collection = wrapper.clone()
         collection.addAll(tmpCollection)
     }
+
+    override fun clone(): CollectionWrapperInterface<E> {
+        return CollectionWrapper(collection.clone())
+    }
+
+    override fun getCollectionType(): CollectionType = collection.getCollectionType()
 }

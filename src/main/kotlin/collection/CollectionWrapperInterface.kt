@@ -1,5 +1,8 @@
 package collection
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 sealed interface CollectionWrapperInterface<E>: Iterable<E> {
     val size: Int
 
@@ -22,5 +25,9 @@ sealed interface CollectionWrapperInterface<E>: Iterable<E> {
             this.add(elem)
     }
 
-    fun getCollectionType(): String
+    fun getCollectionName(): String
+
+    fun getCollectionType(): CollectionType
+
+    fun clone(): CollectionWrapperInterface<E>
 }

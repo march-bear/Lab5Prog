@@ -1,7 +1,9 @@
 package collection
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
 
+@Serializable
 class LinkedHashSetWrapper<E>(private val set: LinkedHashSet<E> = LinkedHashSet()): CollectionWrapperInterface<E> {
     override val size: Int
         get() = set.size
@@ -14,7 +16,7 @@ class LinkedHashSetWrapper<E>(private val set: LinkedHashSet<E> = LinkedHashSet(
         set.remove(set.find(predicate))
     }
 
-    override fun isEmpty(): Boolean = set.isNotEmpty()
+    override fun isEmpty(): Boolean = set.isEmpty()
 
     override fun clear() = set.clear()
 
@@ -24,7 +26,13 @@ class LinkedHashSetWrapper<E>(private val set: LinkedHashSet<E> = LinkedHashSet(
         return first
     }
 
-    override fun getCollectionType(): String = "LinkedHashSet"
+    override fun getCollectionName(): String = "LinkedHashSet"
+    override fun getCollectionType(): CollectionType = CollectionType.SET
+    override fun clone(): CollectionWrapperInterface<E> {
+        val setCopy = LinkedHashSetWrapper<E>()
+        setCopy.addAll(set)
+        return setCopy
+    }
 
     override fun remove(element: E): Boolean = set.remove(element)
 

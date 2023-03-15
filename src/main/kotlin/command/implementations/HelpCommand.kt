@@ -3,7 +3,7 @@ package command.implementations
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 
 class HelpCommand (private val commandMap: Map<String, String>) : Command {
@@ -16,8 +16,8 @@ class HelpCommand (private val commandMap: Map<String, String>) : Command {
         var output = ""
 
         commandMap.forEach {
-            output += EventMessage.message(String.format("%-40s", "${it.key}:"))
-            output += EventMessage.message(it.value + "\n", TextColor.BLUE)
+            output += Messenger.message(String.format("%-40s", "${it.key}:"))
+            output += Messenger.message(it.value + "\n", TextColor.BLUE)
         }
 
         return CommandResult(true, message = output)

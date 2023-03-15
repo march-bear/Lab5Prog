@@ -1,7 +1,7 @@
 package command.implementations
 
 import command.*
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import requests.RemoveLowerRequest
 
@@ -20,7 +20,7 @@ class RemoveLowerCommand : Command {
         return CommandResult(
             true,
             RemoveLowerRequest(args.organizations[0]),
-            message = EventMessage.message(
+            message = Messenger.message(
                 "Запрос на удаление всех элементов, меньших заданного, отправлен",
                 TextColor.BLUE
             )

@@ -1,6 +1,6 @@
 package iostreamers
 
-class EventMessage {
+class Messenger {
     companion object {
         fun message(text: String, color: TextColor = TextColor.DEFAULT): String {
             return "${color.code}${text}${TextColor.DEFAULT.code}"

@@ -3,7 +3,7 @@ package requests
 import Organization
 import collection.CollectionWrapper
 import exceptions.CancellationException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import java.util.*
 
@@ -13,26 +13,27 @@ import java.util.*
 class RemoveLowerRequest(private val element: Organization) : Request {
     private val removedElements: LinkedList<Organization> = LinkedList()
     private var collection: CollectionWrapper<Organization>? = null
-    override fun process(collection: CollectionWrapper<Organization>): String {
-        var i = 0
+
+    override fun process(collection: CollectionWrapper<Organization>): Response {
         var output = ""
-        /*
-        while (i < collection.size) {
-            if (collection[i] < element) {
-                output += EventMessage.message(
-                    "Удален элемент с id ${collection.removeAt(i).id}\n",
+
+        for (elem in collection.clone()) {
+            if (elem < element) {
+                collection.remove(elem)
+                output += Messenger.message(
+                    "Удален элемент с id ${elem.id}\n",
                     TextColor.BLUE
                 )
-                continue
             }
-            i++
         }
-*/
         this.collection = collection
         if (output != "")
-            return output
+            return Response(true, output)
 
-        return EventMessage.message("В коллекции нет элементов, меньших, чем введенный", TextColor.BLUE)
+        return Response(
+            true,
+            Messenger.message("В коллекции нет элементов, меньших, чем введенный", TextColor.BLUE)
+        )
     }
 
     override fun cancel(): String {
@@ -51,8 +52,10 @@ class RemoveLowerRequest(private val element: Organization) : Request {
 
         for (removedElement in removedElements)
             collection!!.add(removedElement)
+
         removedElements.clear()
         collection = null
+
         return "Запрос на удаление элементов отменен"
     }
 }

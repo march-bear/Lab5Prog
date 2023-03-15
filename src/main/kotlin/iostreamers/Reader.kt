@@ -25,7 +25,6 @@ class Reader(private val sc: Scanner = Scanner(System.`in`)) {
     fun readCommand(): CommandData? {
         if (!sc.hasNextLine())
             return null
-        lineCounter++
         val commandList = readString().split(Pattern.compile("\\s+"), limit = 2)
         return CommandData(commandList[0], CommandArgument(if (commandList.size == 2) commandList[1] else null))
     }

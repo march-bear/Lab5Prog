@@ -3,7 +3,7 @@ package command.implementations
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import requests.ClearRequest
 
@@ -13,11 +13,10 @@ class ClearCommand : Command {
 
     override fun execute(args: CommandArgument): CommandResult {
         argumentValidator.check(args)
-
         return CommandResult(
             true,
             ClearRequest(),
-            message = EventMessage.message("Запрос на очистку коллекции отправлен", TextColor.BLUE)
+            message = Messenger.message("Запрос на очистку коллекции отправлен", TextColor.BLUE)
         )
     }
 }

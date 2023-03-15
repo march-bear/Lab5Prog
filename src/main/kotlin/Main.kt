@@ -1,14 +1,16 @@
 import command.CommandData
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.Reader
 import iostreamers.TextColor
 import org.koin.core.context.startKoin
+import org.koin.core.error.InstanceCreationException
 import org.koin.core.parameter.parametersOf
+import java.io.FileNotFoundException
 import java.util.*
 
 fun main(args: Array<String>) {
     when (args.size) {
-        1 -> {
+        0, 1 -> {
             val app = startKoin {
                 modules(
                     basicCommandManagerModule,
@@ -16,18 +18,35 @@ fun main(args: Array<String>) {
                 )
             }
 
-            val controller = app.koin.get<CollectionController> { parametersOf(args[0]) }
+            val controller: CollectionController
+            try {
+                controller =
+                    app.koin.get { parametersOf(if (args.isEmpty()) null else args[0]) }
+            } catch (ex: InstanceCreationException) {
+                if (ex.cause != null && ex.cause!!::class == FileNotFoundException::class) {
+                    Messenger.printMessage(
+                        "Ошибка во время открытия файла с коллекцией: " +
+                                "${ex.cause!!.message}", TextColor.RED
+                    )
+                    return
+                }
+                Messenger.printMessage(
+                    "Контроллер не может быть инициализирован. Обратитесь к разработчику",
+                    TextColor.RED
+                )
+                return
+            }
 
-            EventMessage.interactiveModeMessage()
+            Messenger.interactiveModeMessage()
             val reader = Reader(Scanner(System.`in`))
             var command: CommandData?
 
-            EventMessage.printMessage(
+            Messenger.printMessage(
                 "\nДобро пожаловать в интерактивный режим! " +
                         "Для просмотра доступных команд введите `help`"
             )
             do {
-                EventMessage.inputPrompt(">>>", " ")
+                Messenger.inputPrompt(">>>", " ")
                 command = reader.readCommand()
                 if (command == null || command.name == "")
                     continue
@@ -42,16 +61,16 @@ fun main(args: Array<String>) {
 
                 try {
                     val message = controller.execute(command)
-                    if (message != null) EventMessage.printMessage(message)
+                    if (message != null) Messenger.printMessage(message)
                 } catch (e: Exception) {
-                    EventMessage.message(e.toString())
-                    EventMessage.printMessage(EventMessage.oops())
+                    Messenger.printMessage(e.toString())
+                    Messenger.printMessage(Messenger.oops())
                 }
             } while (command != null && !(command.name == "exit" && command.args.primitiveTypeArguments == null))
 
-            EventMessage.printMessage("Завершение работы программы (сохранение коллекции не происходит)...")
+            Messenger.printMessage("Завершение работы программы (сохранение коллекции не происходит)...")
         }
-        else -> EventMessage.printMessage(
+        else -> Messenger.printMessage(
             "Программа принимает один аргумент - путь к файлу с коллекцией.\n",
             TextColor.RED
         )

@@ -3,7 +3,7 @@ package command.implementations
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import requests.RemoveHeadRequest
 
@@ -20,7 +20,7 @@ class RemoveHeadCommand : Command {
         return CommandResult(
             true,
             RemoveHeadRequest(),
-            message = EventMessage.message(
+            message = Messenger.message(
                 "Запрос на удаление первого элемента коллекции отправлен",
                 TextColor.BLUE
             )

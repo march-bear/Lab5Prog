@@ -1,5 +1,5 @@
 import exceptions.InvalidFieldValueException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.Reader
 import iostreamers.TextColor
 import org.valiktor.ConstraintViolationException
@@ -52,7 +52,7 @@ class OrganizationFactory(private val reader: Reader? = null) {
             newOrganization.name = r.readString()
         }
 
-        EventMessage.printMessage("Координаты")
+        Messenger.printMessage("Координаты")
         readValueForField("x", "Double") {
             newOrganization.coordinates.x = r.readString().toDoubleOrNull()
                 ?: throw NumberFormatException("Введите дробное числовое значение")
@@ -98,16 +98,16 @@ class OrganizationFactory(private val reader: Reader? = null) {
     private fun readValueForField(message: String, type: String, consumer: Consumer<Unit>) {
         while (true) {
             try {
-                EventMessage.inputPrompt(message, ": ")
+                Messenger.inputPrompt(message, ": ")
                 consumer.accept(Unit)
                 break
             } catch (ex: ConstraintViolationException) {
-                EventMessage.printMessage("Невалидное значение поля, повторите ввод", TextColor.RED)
+                Messenger.printMessage("Невалидное значение поля, повторите ввод", TextColor.RED)
             } catch (ex: IllegalArgumentException) {
-                EventMessage.printMessage("Невалидное значение поля. " +
+                Messenger.printMessage("Невалидное значение поля. " +
                             "Ожидался аргумент типа $type. Повторите ввод", TextColor.RED)
             } catch (ex: NumberFormatException) {
-                EventMessage.printMessage(ex.message ?: "Введите числовое значение", TextColor.RED)
+                Messenger.printMessage(ex.message ?: "Введите числовое значение", TextColor.RED)
             }
         }
     }

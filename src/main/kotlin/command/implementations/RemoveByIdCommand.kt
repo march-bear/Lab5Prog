@@ -13,12 +13,14 @@ class RemoveByIdCommand : Command {
         argumentValidator.check(args)
 
         val id: Long = args.primitiveTypeArguments?.get(0)?.toLong() ?: -1
+        println(1)
         if (Organization.idIsValid(id))
             return CommandResult(
                 true,
                 RemoveByIdRequest(id),
                 message = "Запрос на удаление элемента отправлен"
             )
+        println(2)
         return CommandResult(false, message = "Введенное значение не является id")
     }
 }

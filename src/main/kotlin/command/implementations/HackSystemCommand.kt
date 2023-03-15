@@ -4,7 +4,7 @@ import command.Command
 import command.CommandArgument
 import command.CommandResult
 import exceptions.InvalidArgumentsForCommandException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 
 class HackSystemCommand : Command {
@@ -16,12 +16,12 @@ class HackSystemCommand : Command {
             argumentValidator.check(args)
         } catch (ex: InvalidArgumentsForCommandException) {
             return CommandResult(
-                true, message = EventMessage.message(
+                true, message = Messenger.message(
                     "Не усложняйте работу команде - она прекрасно взломает систему и без доп. аргументов ;)",
                     TextColor.BLUE,
                 )
             )
         }
-        return CommandResult(true, message = EventMessage.oops())
+        return CommandResult(true, message = Messenger.oops())
     }
 }

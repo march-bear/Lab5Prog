@@ -13,27 +13,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/CommandManager.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/ArgumentValidator.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/commandcallgraph/Leaf.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/koin.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/DataFileManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ChangeCollectionTypeCommand.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RollbackCommand.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/exceptions/MethodCallException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ChangeCollectionTypeRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RollbackRequest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/CollectionController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/IdManager.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Organization.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/OrganizationFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionWrapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionWrapperInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionWrapperInterface.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/LinkedHashSetWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/LinkedHashSetWrapper.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/LinkedListWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/LinkedListWrapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/QueueWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/QueueWrapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/Command.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/CommandArgument.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/CommandArgument.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/CommandData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/CommandData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/QueueWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/ConcurrentLinkedQueue.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddIfMaxCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/AddIfMaxCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ClearCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ClearCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExecuteScriptCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExecuteScriptCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExitCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ExitCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/GroupCountingByEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/GroupCountingByEmployeesCountCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/HackSystemCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/HackSystemCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/HelpCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/HelpCommand.kt" afterDir="false" />
@@ -46,7 +45,11 @@
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ShowCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ShowCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/SumOfEmployeesCountCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/SumOfEmployeesCountCommand.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/UpdateCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/UpdateCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/FileContentLoader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/FileContentLoader.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commandcallgraph/Leaf.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commandcallgraph/Leaf.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/CommandNotFountException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/exceptions/IdException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/EventMessage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Messenger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/FileContentLoader.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/iostreamers/Reader.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/modules.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/modules.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/AddIfMaxRequest.kt" afterDir="false" />
@@ -57,7 +60,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveHeadRequest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveLowerRequest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/Request.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/SaveRequest.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,8 +94,8 @@
         <option value="Kotlin Interface" />
         <option value="Kotlin Data Class" />
         <option value="Class" />
-        <option value="Kotlin Enum" />
         <option value="Kotlin File" />
+        <option value="Kotlin Enum" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -334,7 +337,26 @@
       <workItem from="1678087245456" duration="3295000" />
       <workItem from="1678090865189" duration="268000" />
       <workItem from="1678105492105" duration="1988000" />
-      <workItem from="1678108375625" duration="2015000" />
+      <workItem from="1678108375625" duration="2626000" />
+      <workItem from="1678114009134" duration="1411000" />
+      <workItem from="1678188335059" duration="8239000" />
+      <workItem from="1678213564238" duration="1950000" />
+      <workItem from="1678219922274" duration="597000" />
+      <workItem from="1678259575104" duration="2236000" />
+      <workItem from="1678268408172" duration="2001000" />
+      <workItem from="1678282653262" duration="738000" />
+      <workItem from="1678345442706" duration="6353000" />
+      <workItem from="1678352788987" duration="1710000" />
+      <workItem from="1678356466134" duration="2255000" />
+      <workItem from="1678362564915" duration="2000" />
+      <workItem from="1678451967298" duration="5100000" />
+      <workItem from="1678457265986" duration="2357000" />
+      <workItem from="1678563211820" duration="777000" />
+      <workItem from="1678565895639" duration="339000" />
+      <workItem from="1678738606554" duration="2200000" />
+      <workItem from="1678792467061" duration="5233000" />
+      <workItem from="1678801747493" duration="1704000" />
+      <workItem from="1678827583820" duration="26000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -497,7 +519,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678039185045</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Изменения в классах команд и запросов для работы с новым представлением коллекции&#10;Создание класса CommandManager для получения объектов команд&#10;Реализация возможности замены модуля команд и контроллера на другой&#10;Мелкие исправления">
+      <created>1678110581486</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1678110581486</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,7 +568,8 @@
     <MESSAGE value="small fixes" />
     <MESSAGE value="Скорректированы методы отмены запросов&#10;Скорректирована работа класса команды execute_script&#10;Мелкие улучшения" />
     <MESSAGE value="Добавлены классы-обертки коллекций (для будущей реализации команды смены типа коллекции)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавлены классы-обертки коллекций (для будущей реализации команды смены типа коллекции)" />
+    <MESSAGE value="Изменения в классах команд и запросов для работы с новым представлением коллекции&#10;Создание класса CommandManager для получения объектов команд&#10;Реализация возможности замены модуля команд и контроллера на другой&#10;Мелкие исправления" />
+    <option name="LAST_COMMIT_MESSAGE" value="Изменения в классах команд и запросов для работы с новым представлением коллекции&#10;Создание класса CommandManager для получения объектов команд&#10;Реализация возможности замены модуля команд и контроллера на другой&#10;Мелкие исправления" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

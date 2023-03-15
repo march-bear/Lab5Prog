@@ -2,7 +2,7 @@ package command.implementations
 
 import Organization
 import command.*
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import requests.UpdateRequest
 
@@ -21,7 +21,7 @@ class UpdateCommand : Command {
         return CommandResult(
             true,
             UpdateRequest(id, args.organizations[0]),
-            message = EventMessage.message(
+            message = Messenger.message(
                 "Запрос на обновление значения элемента коллекции с id $id отправлен",
                 TextColor.BLUE,
             )

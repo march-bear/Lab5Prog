@@ -5,15 +5,11 @@ import Organization
 import OrganizationFactory
 import collection.CollectionWrapper
 import command.*
-import exceptions.CommandNotFountException
 import exceptions.InvalidFieldValueException
 import exceptions.ScriptException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.Reader
 import iostreamers.TextColor
-import org.koin.core.error.NoBeanDefFoundException
-import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
 import requests.ExecuteCommandsRequest
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -36,6 +32,7 @@ class ExecuteScriptCommand(
     override fun execute(args: CommandArgument): CommandResult {
         if (controller == null)
             return CommandResult(false, message = "Объект команды не предназначен для исполнения")
+
         argumentValidator.check(args)
 
         val commandList: LinkedList<Pair<Command, CommandArgument>> = LinkedList()
@@ -45,14 +42,14 @@ class ExecuteScriptCommand(
             addCommandsFromFile(fileName, commandList)
         } catch (ex: ScriptException) {
             return CommandResult(false,
-                message = EventMessage.message(ex.message ?: ex.toString(), TextColor.RED)
+                message = Messenger.message(ex.message ?: ex.toString(), TextColor.RED)
             )
         }
 
         return CommandResult(
             true,
             request = ExecuteCommandsRequest(commandList),
-            message = EventMessage.message("Запрос на исполнение скрипта отправлен", TextColor.BLUE),
+            message = Messenger.message("Запрос на исполнение скрипта отправлен", TextColor.BLUE),
         )
     }
 
@@ -118,7 +115,7 @@ class ExecuteScriptCommand(
             lineNumber: ULong,
             message: String?
         ): Nothing {
-            throw ScriptException("${message}\n<- Ошибка во время проверки скрипта $fileName, строк $lineNumber")
+            throw ScriptException("${message}\n<- Ошибка во время проверки скрипта $fileName, строка $lineNumber")
         }
     }
 }

@@ -5,7 +5,7 @@ import collection.CollectionWrapper
 import command.Command
 import command.CommandArgument
 import command.CommandResult
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 
 class SumOfEmployeesCountCommand(
@@ -19,9 +19,9 @@ class SumOfEmployeesCountCommand(
 
         val sum = collection.sumOf { it.employeesCount ?: 0 }
         val output = if (sum == 0L)
-            EventMessage.message("Коллекция пуста", TextColor.BLUE)
+            Messenger.message("Коллекция пуста", TextColor.BLUE)
         else
-            "Общее количество работников во всех организациях: " + EventMessage.message("$sum", TextColor.BLUE)
+            "Общее количество работников во всех организациях: " + Messenger.message("$sum", TextColor.BLUE)
 
         return CommandResult(true, message = output)
     }

@@ -2,7 +2,7 @@ package command.implementations
 
 import IdManager
 import command.*
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
 import requests.AddIfMaxRequest
 
@@ -24,7 +24,7 @@ class AddIfMaxCommand(
         return CommandResult(
             true,
             AddIfMaxRequest(args.organizations[0], idManager),
-            message = EventMessage.message("Запрос на добавление элемента отправлен", TextColor.BLUE)
+            message = Messenger.message("Запрос на добавление элемента отправлен", TextColor.BLUE)
         )
 
     }

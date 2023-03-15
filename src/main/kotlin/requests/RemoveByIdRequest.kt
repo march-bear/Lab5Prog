@@ -4,9 +4,8 @@ import CollectionController
 import Organization
 import collection.CollectionWrapper
 import exceptions.InvalidArgumentsForCommandException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
-import java.util.*
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
@@ -15,13 +14,16 @@ import kotlin.coroutines.cancellation.CancellationException
 class RemoveByIdRequest(private val id: Long) : Request {
     private var removedElement: Organization? = null
     private var collection: CollectionWrapper<Organization>? = null
-    override fun process(collection: CollectionWrapper<Organization>): String {
+    override fun process(collection: CollectionWrapper<Organization>): Response {
         removedElement = collection.find { it.id == id }
 
-        if (collection.remove(removedElement!!))
-            return EventMessage.message("Элемент удален", TextColor.BLUE)
+        if (removedElement != null) {
+            collection.remove(removedElement!!)
+            this.collection = collection
+            return Response(true, Messenger.message("Элемент удален", TextColor.BLUE))
+        }
 
-        throw InvalidArgumentsForCommandException("Элемент с id $id не найден")
+        return Response(false, Messenger.message("Элемент с id $id не найден", TextColor.RED))
     }
 
     override fun cancel(): String {

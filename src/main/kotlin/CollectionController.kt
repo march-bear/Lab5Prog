@@ -1,19 +1,19 @@
 import collection.CollectionWrapper
 import command.CommandData
 import command.Command
+import commandcallgraph.RequestGraph
 import exceptions.InvalidArgumentsForCommandException
-import iostreamers.EventMessage
-import iostreamers.FileContentLoader
+import iostreamers.Messenger
 import iostreamers.TextColor
+import kotlinx.serialization.Polymorphic
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.error.DefinitionParameterException
 import org.koin.core.error.InstanceCreationException
 import requests.Request
 import java.util.*
 
 class CollectionController(
-    dataFile: String? = null,
+    dataFileName: String? = null,
 ) : KoinComponent {
     companion object {
         fun checkUniquenessFullName(fullName: String?, collection: CollectionWrapper<Organization>): Boolean {
@@ -39,8 +39,10 @@ class CollectionController(
 
     private val collection: CollectionWrapper<Organization> by inject()
     private val requests: Queue<Request> = LinkedList()
+    val dataFileManager: DataFileManager = DataFileManager(collection, dataFileName)
     val commandManager: CommandManager by inject()
     val idManager: IdManager
+    val requestGraph: RequestGraph = RequestGraph(collection)
 
     fun execute(commandData: CommandData?) : String? {
         if (commandData?.name == null)
@@ -50,9 +52,9 @@ class CollectionController(
         val command: Command
         try {
             command = commandManager.getCommand(commandName)
-                ?: return EventMessage.message("${commandName}: команда не найдена", TextColor.RED)
+                ?: return Messenger.message("${commandName}: команда не найдена", TextColor.RED)
         } catch (ex: InstanceCreationException) {
-            return EventMessage.message("Объект команды не может быть получен. " +
+            return Messenger.message("Объект команды не может быть получен. " +
                     "Видимо, модули, используемые программой, некорректны.\n" +
                     "Обратитесь к разработчику: yasamofi404@gelch.com", TextColor.RED)
         }
@@ -66,30 +68,42 @@ class CollectionController(
             }
 
             if (message != null)
-                output += EventMessage.message(message)
+                output += Messenger.message(message)
 
         } catch (ex: InvalidArgumentsForCommandException) {
-            output += EventMessage.message(ex.message ?: "", TextColor.RED)
+            output += Messenger.message(ex.message ?: "", TextColor.RED)
         }
 
         while (requests.isNotEmpty()) {
             if (output != "")
                 output += "\n"
-            output += EventMessage.message(requests.poll().process(collection))
+            output += try {
+                val request = requests.poll()
+                val (requestCompleted, message, archivable) = request.process(collection)
+                if (requestCompleted && archivable) {
+                    val requestName = requestGraph.addLeaf(request, commandName)
+                    Messenger.message("Запрос обработан, id запроса: $requestName\n", TextColor.BLUE) + message
+                } else {
+                    message
+                }
+            } catch (ex: InvalidArgumentsForCommandException) {
+                Messenger.message(ex.message ?: "", TextColor.RED)
+            }
         }
+
 
         return output
     }
 
     init {
-        EventMessage.printMessage("Начало загрузки коллекции. Это может занять некоторое время...")
+        Messenger.printMessage("Начало загрузки коллекции. Это может занять некоторое время...")
 
-        val output = FileContentLoader(collection).loadDataFromFile()
+        val output = dataFileManager.loadData()
 
-        EventMessage.printMessage("Загрузка коллекции завершена. Отчет о выполнении загрузки:")
-        EventMessage.printMessage("---------------------------------------------------------------------")
-        EventMessage.printMessage(output, newLine = false)
-        EventMessage.printMessage("---------------------------------------------------------------------")
+        Messenger.printMessage("Загрузка коллекции завершена. Отчет о выполнении загрузки:")
+        Messenger.printMessage("---------------------------------------------------------------------")
+        Messenger.printMessage(output)
+        Messenger.printMessage("---------------------------------------------------------------------\n")
 
         idManager = IdManager(collection)
     }

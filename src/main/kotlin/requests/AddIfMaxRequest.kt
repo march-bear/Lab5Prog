@@ -4,10 +4,8 @@ import IdManager
 import Organization
 import collection.CollectionWrapper
 import exceptions.CancellationException
-import exceptions.IdException
-import iostreamers.EventMessage
+import iostreamers.Messenger
 import iostreamers.TextColor
-import java.util.*
 
 /**
  * Запрос на добавление нового элемента в коллекцию, если он является максимальным
@@ -19,15 +17,26 @@ class AddIfMaxRequest(
     private var newElement: Organization? = null
     private var collection: CollectionWrapper<Organization>? = null
 
-    override fun process(collection: CollectionWrapper<Organization>): String {
+    override fun process(collection: CollectionWrapper<Organization>): Response {
         if (collection.isEmpty() || element > collection.max()) {
-            element.id = idManager.generateId() ?: throw IdException("Коллекция полностью заполнена")
+            element.id = idManager.generateId()
+                ?: return Response(
+                    false,
+                    Messenger.message("Коллекция переполнена", TextColor.RED),
+                )
+
             collection.add(element.clone())
             newElement = element.clone()
             this.collection = collection
-            return EventMessage.message("Элемент добавлен в коллекцию", TextColor.BLUE)
+            return Response(
+                true,
+                Messenger.message("Элемент добавлен в коллекцию", TextColor.BLUE)
+            )
         }
-        return EventMessage.message("Элемент не является максимальным", TextColor.BLUE)
+        return Response(
+            true,
+            Messenger.message("Элемент не является максимальным", TextColor.BLUE),
+        )
     }
 
     override fun cancel(): String {
