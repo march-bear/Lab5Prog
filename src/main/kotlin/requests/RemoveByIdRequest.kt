@@ -12,7 +12,7 @@ import kotlin.coroutines.cancellation.CancellationException
 /**
  * Запрос на удаление элемента из коллекции по его id
  */
-class RemoveByIdRequest(private val id: Long, private val idManager: IdManager) : Request {
+class RemoveByIdRequest(private val id: Long) : Request {
     private var removedElement: Organization? = null
     private var collection: CollectionWrapper<Organization>? = null
     override fun process(collection: CollectionWrapper<Organization>): Response {
@@ -31,11 +31,11 @@ class RemoveByIdRequest(private val id: Long, private val idManager: IdManager) 
         if (removedElement == null || collection == null)
             throw CancellationException("Отмена запроса невозможна, так как он ещё не был выполнен или уже был отменен")
 
-        if (!CollectionController.checkUniquenessFullName(removedElement!!.fullName, collection!!))
+        if (!CollectionController.checkUniquenessFullName(removedElement!!.fullName, collection!!) ||
+            !CollectionController.checkUniquenessId(removedElement!!.id, collection!!))
             throw CancellationException("Отмена запроса невозможна, так как в коллекции уже есть элемент с таким же " +
                     "id или полным именем")
 
-        removedElement!!.id = idManager.generateId()!!
         collection!!.add(removedElement!!)
         removedElement = null
         collection = null

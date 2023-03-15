@@ -1,5 +1,6 @@
 package requests
 
+import CollectionController
 import Organization
 import collection.CollectionWrapper
 import exceptions.CancellationException
@@ -35,8 +36,8 @@ class RemoveHeadRequest : Request {
         if (removedElement == null)
             return "Запрос на удаление элемента отменен"
 
-        if (CollectionController.checkUniquenessFullName(removedElement!!.fullName, collection!!) ||
-            collection!!.find { it.id == removedElement!!.id } != null)
+        if (!CollectionController.checkUniquenessFullName(removedElement!!.fullName, collection!!) ||
+            !CollectionController.checkUniquenessId(removedElement!!.id, collection!!))
             throw CancellationException("Отмена запроса невозможна, так как в коллекции уже есть элемент с таким же " +
                     "id или полным именем")
 

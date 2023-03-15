@@ -6,6 +6,7 @@ import command.implementations.*
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import java.io.File
 import java.io.FileNotFoundException
 import kotlin.collections.HashMap
 
@@ -46,12 +47,7 @@ val basicCommandModule = module {
     }
 
     single<Command>(named("update")) { UpdateCommand() }
-    single<Command>(named("remove_by_id")) {
-            (
-                _: CollectionWrapper<Organization>,
-                controller: CollectionController?
-            ) -> RemoveByIdCommand(controller?.idManager)
-    }
+    single<Command>(named("remove_by_id")) { RemoveByIdCommand() }
     single<Command>(named("clear")) { ClearCommand() }
     single<Command>(named("save")) {
             (_: CollectionWrapper<Organization>, controller: CollectionController?) -> SaveCommand(controller)
@@ -111,16 +107,13 @@ val basicCommandManagerModule = module {
 }
 
 val basicCollectionControllerModule = module {
-    single { (fileName: String) -> try {
-        CollectionController(fileName)
-    } catch (ex: FileNotFoundException) { throw ex }
-    }
+    single { (file: File) -> CollectionController(file) }
 
     single<CollectionWrapper<Organization>> { CollectionWrapper(LinkedListWrapper()) }
 }
 
 val userCollectionControllerModule = module {
-    single { (fileName: String) -> CollectionController(fileName) }
+    single { (file: File) -> CollectionController(file) }
 
     single<CollectionWrapper<Organization>> { CollectionWrapper(ConcurrentLinkedQueue()) }
 }

@@ -5,6 +5,7 @@ import iostreamers.TextColor
 import org.koin.core.context.startKoin
 import org.koin.core.error.InstanceCreationException
 import org.koin.core.parameter.parametersOf
+import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
 
@@ -17,16 +18,28 @@ fun main(args: Array<String>) {
                     userCollectionControllerModule,
                 )
             }
-
+            val file: File? =  if (args.isEmpty()) null else File(args[0])
+            if (file != null) {
+                if (file.exists()) {
+                    if (file.isDirectory) {
+                        Messenger.printMessage("${args[0]} - директория", TextColor.RED)
+                        return
+                    } else if (!file.canRead() || !file.canWrite()) {
+                        Messenger.printMessage(
+                            "${args[0]} - у пользователя недостаточно прав для работы с файлом",
+                            TextColor.RED
+                        )
+                        return
+                    }
+                }
+            }
             val controller: CollectionController
             try {
-                controller =
-                    app.koin.get { parametersOf(if (args.isEmpty()) null else args[0]) }
+                controller = app.koin.get { parametersOf(file) }
             } catch (ex: InstanceCreationException) {
                 if (ex.cause != null && ex.cause!!::class == FileNotFoundException::class) {
                     Messenger.printMessage(
-                        "Ошибка во время открытия файла с коллекцией: " +
-                                "${ex.cause!!.message}", TextColor.RED
+                        "Ошибка во время открытия файла с коллекцией: ${ex.cause!!.message}", TextColor.RED
                     )
                     return
                 }

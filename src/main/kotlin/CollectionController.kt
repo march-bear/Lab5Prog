@@ -10,10 +10,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.error.InstanceCreationException
 import requests.Request
+import java.io.File
 import java.util.*
 
 class CollectionController(
-    dataFileName: String? = null,
+    dataFileName: File? = null,
 ) : KoinComponent {
     companion object {
         fun checkUniquenessFullName(fullName: String?, collection: CollectionWrapper<Organization>): Boolean {

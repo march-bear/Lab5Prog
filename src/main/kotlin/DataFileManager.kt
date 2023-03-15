@@ -8,14 +8,15 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
-class DataFileManager(private val collection: CollectionWrapper<Organization>, dataFileName: String? = null) {
+class DataFileManager(private val collection: CollectionWrapper<Organization>, dataFile: File? = null) {
     private var dataHasBeenLoaded = false
-    private val defaultFileIsUsed = dataFileName == null
-    private val dataFile: File = File(if (defaultFileIsUsed) DEFAULT_FILE_NAME else dataFileName!!)
+    private val defaultFileIsUsed = dataFile == null
+    private val dataFile: File = dataFile ?: File(DEFAULT_FILE_NAME)
 
     private fun readFile(): String {
         val stream = InputStreamReader(FileInputStream(dataFile))
@@ -35,17 +36,27 @@ class DataFileManager(private val collection: CollectionWrapper<Organization>, d
             throw MethodCallException("В загрузке отказано: коллекция уже была загружена")
 
         var output = ""
-        if (defaultFileIsUsed)
+        if (defaultFileIsUsed) {
             output += Messenger.message(
                 "ВНИМАНИЕ! На вход не подан не один файл! Загрузка будет произведена из файла по умолчанию\n",
                 TextColor.YELLOW
             )
+        }
+
+        if (!checkFile(dataFile)) {
+            return "$output$dataFile: файл был создан"
+        }
 
         output += "Чтение файла с коллекцией..."
         val data = readFile()
         output += "\nЧтение завершено"
 
         collection.clear()
+
+        if (data.isBlank()) {
+            return "${output}\nФайл пуст, загрузка завершена"
+        }
+
         output += "\nЗагрузка данных в коллекцию...\n"
 
         val tmpCollection: List<Organization>
@@ -98,6 +109,20 @@ class DataFileManager(private val collection: CollectionWrapper<Organization>, d
 
         val data = Json.encodeToString(collection.toList())
         writeToFile(data)
+        return true
+    }
+
+    private fun checkFile(file: File): Boolean {
+        if (!this.dataFile.exists()) {
+            this.dataFile.createNewFile()
+            return false
+        } else if (!this.dataFile.canWrite() || !this.dataFile.canRead()) {
+            throw FileNotFoundException(
+                "Пользователь не обладает достаточными правами для доступа к файлу $file"
+            )
+        } else if (this.dataFile.isDirectory) {
+            throw FileNotFoundException("$file - директория")
+        }
         return true
     }
 

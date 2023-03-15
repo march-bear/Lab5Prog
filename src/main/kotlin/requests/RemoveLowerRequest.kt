@@ -1,5 +1,6 @@
 package requests
 
+import CollectionController
 import Organization
 import collection.CollectionWrapper
 import exceptions.CancellationException
@@ -41,8 +42,8 @@ class RemoveLowerRequest(private val element: Organization) : Request {
             throw CancellationException("Отмена запроса невозможна, так как он ещё не был выполнен или уже был отменен")
 
         for (removedElement in removedElements) {
-            if (CollectionController.checkUniquenessFullName(removedElement.fullName, collection!!) ||
-                collection!!.find { it.id == removedElement.id } != null
+            if (!CollectionController.checkUniquenessFullName(removedElement.fullName, collection!!) ||
+                !CollectionController.checkUniquenessId(removedElement.id, collection!!)
             )
                 throw CancellationException(
                     "Отмена запроса невозможна, так как в коллекции уже есть элемент с таким же " +
