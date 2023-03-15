@@ -1,6 +1,5 @@
 package command.implementations
 
-import Organization
 import collection.*
 import command.*
 import iostreamers.Messenger
@@ -9,7 +8,7 @@ import requests.ChangeCollectionTypeRequest
 
 class ChangeCollectionTypeCommand: Command {
     override val info: String
-        get() = "изменить тип коллекции"
+        get() = "изменить тип коллекции (QUEUE/SET/LIST)"
 
     override val argumentValidator: ArgumentValidator = ArgumentValidator(listOf(ArgumentType.STRING))
 

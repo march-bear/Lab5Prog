@@ -14,19 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="535a2729-c853-4864-9df0-a4f761359a33" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/data.json" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/ConcurrentLinkedQueue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/ConcurrentLinkedQueueWrapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/DataFileManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/DataFileManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/collection/CollectionWrapper.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ChangeCollectionTypeCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/ChangeCollectionTypeCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RemoveByIdCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RemoveByIdCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RollbackCommand.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/command/implementations/RollbackCommand.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/commandcallgraph/RequestGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/commandcallgraph/RequestGraph.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/modules.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/modules.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/ChangeCollectionTypeRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ChangeCollectionTypeRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/ExecuteCommandsRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RemoveByIdRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/RollbackRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/RollbackRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/requests/UpdateRequest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -325,7 +315,8 @@
       <workItem from="1678846694893" duration="8349000" />
       <workItem from="1678866932779" duration="1477000" />
       <workItem from="1678874484626" duration="1695000" />
-      <workItem from="1678876324220" duration="1782000" />
+      <workItem from="1678876324220" duration="7005000" />
+      <workItem from="1678894732325" duration="734000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1676060338105</created>
@@ -516,7 +507,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678854973687</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Мелкие исправления">
+      <created>1678878132522</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1678878132522</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -534,7 +532,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Проект обновлен под сборку с помощью Gradle&#10;Улучшение интерактивного режима&#10;Добавление класса InputStreamController для управления входным потоком, используемым контроллером&#10;Реализована команда execute_script &#10;Создан класс Reader, отвечающий за чтение данных с входного потока&#10;Реализация метода execute класса AddCommand упрощена за счёт создания методов для чтения значений для полей в классе Reader&#10;Мелкие исправления и улучшения" />
     <MESSAGE value="Исправления в build.gradle для корректной сборки jar-файла" />
     <MESSAGE value="Окончательно сформирован класс Organization&#10;В классе Reader добавлен метод для считывания значения любого поля с консоли&#10;Команда add теперь считывает поля с помощью метода из класса Reader&#10;В некоторых классах добавлена обработка строки аргументов&#10;Частично реализована команда чтения json-файлов&#10;Добавлена проверка на уникальность fullName и id&#10;Другие улучшения" />
     <MESSAGE value="Добавлена возможность смены потока входных данных с System.`in` на переданную строку&#10;Исправление: Organization - теперь имплементирует Comparable вместо Comparator&#10;Добавлен вывод сообщения о критической ошибке&#10;Другие улучшения и исправления" />
@@ -559,7 +556,8 @@
     <MESSAGE value="Создание команды смены типа коллекции&#10;Создание класса графа для хранения истории запросов&#10;Реализация rollback&#10;Создание дата-класса Response, изменение методов process классов-запросов - теперь они возвращают Response&#10;Мелкие исправления" />
     <MESSAGE value="Мелкие исправления в логике отмены запросов" />
     <MESSAGE value="Исправления в обработке файла с коллекцией" />
-    <option name="LAST_COMMIT_MESSAGE" value="Исправления в обработке файла с коллекцией" />
+    <MESSAGE value="Мелкие исправления" />
+    <option name="LAST_COMMIT_MESSAGE" value="Мелкие исправления" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

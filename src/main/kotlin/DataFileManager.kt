@@ -44,6 +44,7 @@ class DataFileManager(private val collection: CollectionWrapper<Organization>, d
         }
 
         if (!checkFile(dataFile)) {
+            dataHasBeenLoaded = true
             return "$output$dataFile: файл был создан"
         }
 
